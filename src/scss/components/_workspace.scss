@@ -1959,6 +1959,12 @@ body:not(.restored-scrollbars) .mod-stacked ::-webkit-scrollbar-track {
   border-left: none;
 }
 
+/* backlinks：匹配文字跟随主题强调色（不改 --text-highlight-bg，==高亮== 保持原样） */
+:is(.workspace-leaf-content[data-type="backlink"], .embedded-backlinks)
+  .search-result-file-matched-text {
+  background-color: color-mix(in srgb, var(--domye-accent) 25%, transparent);
+}
+
 /* embedded backlinks */
 body:not(.is-mobile) .embedded-backlinks .nav-header ~ .search-input-container {
   margin: 15px 0 0;
