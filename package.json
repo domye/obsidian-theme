@@ -1,0 +1,17 @@
+{
+  "name": "domye-obsidian-theme",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Domye —— Obsidian 主题（Border 1.13.9 + Phycat 0.3.7 列表/标题移植），SCSS 模块化构建",
+  "scripts": {
+    "dev": "sass --watch --no-source-map src/scss/index.scss theme.css",
+    "build": "sass --no-source-map --style=expanded src/scss/index.scss theme.css",
+    "lint": "node tools/check-tokens.mjs",
+    "test": "node --test \"tools/*.test.mjs\"",
+    "verify": "npm run build && node tools/check-tokens.mjs --verify-build",
+    "check": "npm run lint && npm run test && npm run verify"
+  },
+  "devDependencies": {
+    "sass": "^1.80.6"
+  }
+}

@@ -1,0 +1,32 @@
+// ============================================================================
+// 唯一入口：只负责 @use / @forward，不写任何具体样式。
+//
+// !! 这里的顺序就是最终 theme.css 的层叠顺序，请勿随意调换 !!
+//   variables → mixins → foundations → components → plugins → style-settings
+//
+// 说明：sass 会按 @use 出现的先后顺序输出各模块的 CSS，因此本文件既声明依赖，
+// 也定义了级联顺序（与迁移前单文件自上而下的顺序一致）。
+// ============================================================================
+
+// --- 令牌与工具（不产出 CSS）------------------------------------------------
+@use 'variables';
+@use 'mixins';
+
+// --- 基础层 -----------------------------------------------------------------
+@use 'foundations/colors';
+@use 'foundations/reset';
+@use 'foundations/typography';
+
+// --- 组件层 -----------------------------------------------------------------
+@use 'components/workspace';
+@use 'components/status-bar';
+@use 'components/tabs';
+@use 'components/sidebar';
+@use 'components/modals';
+@use 'components/editor';
+
+// --- 第三方插件 -------------------------------------------------------------
+@use 'plugins/common';
+
+// --- Style Settings（@settings 声明必须最后，声明与面板样式都在这里）---------
+@use 'style-settings';

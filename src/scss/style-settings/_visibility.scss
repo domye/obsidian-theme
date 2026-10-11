@@ -1,0 +1,209 @@
+@use 'sass:list';
+
+/* --- src: baseline L3731–L4093 | 按状态隐藏设置项（hide style setting option） --- */
+/*hide style setting option*/
+
+// ============================================================================
+// 「某个状态开着的时候，哪些设置项不该出现」。
+//
+// 上游 Border 把这三类联动关系手写展开成了**一条** 163 段选择器的规则
+// （`:is()` 里塞 15 个 data-id，同一份 id 列表按 3 个区域 × 2 个模式抄 6 遍）。
+// 这里改成「三张表 + 三个 @each」：
+//
+//   1. 条件守卫   —— 某一项定了值，它的子项就隐藏
+//   2. 区域背景   —— 选了背景来源，同组其余来源项隐藏
+//   3. 激活文件   —— 选了激活样式，同组其余样式项隐藏
+//
+// 代价：原来 1 条规则变成 133 条规则（每条仍是 display: none）。
+// 层叠结果等价——所有规则的声明都相同，只作用于不同 data-id。
+// 改联动关系只需要动表，不必再碰 300 行选择器。
+// ============================================================================
+
+/// 生成「命中的设置项」选择器：单个用属性选择器，多个用 :is() 收敛。
+/// 上游原样是：1 个 id 写 [data-id="x"]，2 个及以上写 :is(...)。
+@function hidden-item($ids) {
+  @if list.length($ids) == 1 {
+    @return '.setting-item[data-id="#{list.nth($ids, 1)}"]';
+  }
+  $parts: ();
+  @each $id in $ids {
+    $parts: list.append($parts, '[data-id="#{$id}"]', comma);
+  }
+  @return '.setting-item:is(#{$parts})';
+}
+
+// --- 1. 条件守卫：前缀选择器 → 它隐藏的设置项 ----------------------------------
+// 键就是完整的前缀选择器（:not(.x) 与正向的 .x 都在这一张表里），值是要隐藏的 data-id。
+$gates: (
+  'body:not(.border-focus-mode)': (
+    'line-active-bg',
+    'line-normal-opacity',
+  ),
+  'body:not(.inline-title-color-customized)': (
+    'inline-title-color',
+  ),
+  'body:not(.background-underlying-Color-light)': (
+    'background-underlying-light',
+  ),
+  'body:not(.background-underlying-CSS-light)': (
+    'background-underlying-CSS-light',
+    'background-underlying-CSS-blend-mode-light',
+  ),
+  'body:not(.background-underlying-Color-dark)': (
+    'background-underlying-dark',
+  ),
+  'body:not(.background-underlying-CSS-dark)': (
+    'background-underlying-CSS-dark',
+    'background-underlying-CSS-blend-mode-dark',
+  ),
+  'body:not(.table-width-customized)': (
+    'table-width',
+  ),
+  'body.file-icon-remove': (
+    'colorful-folder',
+  ),
+  'body:not(.new-tab-image-customize)': (
+    'new-tab-image',
+  ),
+  'body:not(.line-hover-indicator)': (
+    'hover-indicator-color',
+    'focus-indicator-list-level',
+    'focus-indicator-codeblock-line-number',
+  ),
+  'body:not(.codeblock-style-customize)': (
+    'code-background-light',
+    'code-background-dark',
+    'code-border-light',
+    'code-border-dark',
+    'code-normal',
+    'code-comment',
+    'code-function',
+    'code-important',
+    'code-keyword',
+    'code-operator',
+    'code-property',
+    'code-punctuation',
+    'code-string',
+    'code-tag',
+    'code-value',
+  ),
+  'body:not(.callout-style-customize)': (
+    'callout-border-width',
+    'callout-border-opacity',
+    'callout-padding',
+    'callout-radius',
+    'callout-title-color',
+    'callout-title-padding',
+    'callout-title-size',
+    'callout-content-padding',
+    'callout-content-background',
+    'callout-content-radius',
+  ),
+  'body:not(.editor-grid-background-pattren)': (
+    'grid-background-pattern-color',
+    'grid-background-pattern-size',
+  ),
+);
+
+@each $prefix, $ids in $gates {
+  #{$prefix} #{hidden-item($ids)} {
+    display: none;
+  }
+}
+
+// --- 2. 区域背景：选了某个来源，同组其余的隐藏 ---------------------------------
+// 状态类 body.mod-{区域}-split-background-{状态}-{模式}
+// 隐藏 id  background-mod-{区域}-{后缀}-{模式}
+$split-areas: ('root', 'left', 'right');
+$split-modes: ('light', 'dark');
+$split-states: (
+  'primary': ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+  'secondary': ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+  'transparent': ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+  'CSS': ('split',),
+  'customize': ('CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+);
+
+@each $area in $split-areas {
+  @each $mode in $split-modes {
+    @each $state, $suffixes in $split-states {
+      @each $suffix in $suffixes {
+        body.mod-#{$area}-split-background-#{$state}-#{$mode}
+          .setting-item[data-id="background-mod-#{$area}-#{$suffix}-#{$mode}"] {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// --- 3. 激活文件：选了某个样式，同组其余四个设置项隐藏 -------------------------
+$activated-styles: ('default', 'accent', 'tab-style');
+$activated-fields: ('color', 'border-radius', 'background', 'shadow');
+
+@each $mode in $split-modes {
+  @each $style in $activated-styles {
+    @each $field in $activated-fields {
+      body.activated-file-#{$style}-#{$mode}
+        .setting-item[data-id="#{$field}-activated-file-#{$mode}"] {
+        display: none;
+      }
+    }
+  }
+}
+
+// --- 强调色被 Style Settings 接管时，隐藏 Obsidian 自带的强调色选择器 ----------
+.accent-color-override-light.theme-light
+  .mod-settings
+  .vertical-tab-content-container
+  > .vertical-tab-content
+  > .setting-item:nth-child(2)
+  > .setting-item-control:has(> input[type="color"]),
+.accent-color-override-dark.theme-dark
+  .mod-settings
+  .vertical-tab-content-container
+  > .vertical-tab-content
+  > .setting-item:nth-child(2)
+  > .setting-item-control:has(> input[type="color"]) {
+  position: relative;
+  visibility: hidden;
+}
+
+.accent-color-override-light.theme-light
+  .mod-settings
+  .vertical-tab-content-container
+  > .vertical-tab-content
+  > .setting-item:nth-child(2)
+  > .setting-item-control:has(> input[type="color"])::before,
+.accent-color-override-dark.theme-dark
+  .mod-settings
+  .vertical-tab-content-container
+  > .vertical-tab-content
+  > .setting-item:nth-child(2)
+  > .setting-item-control:has(> input[type="color"])::before {
+  content: "Overridden by Style Settings";
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-smaller);
+  position: absolute;
+  width: max-content;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  visibility: visible;
+  pointer-events: none;
+}
+
+.accent-color-override-light.theme-light.is-mobile
+  .mod-settings
+  .vertical-tab-content-container
+  > .vertical-tab-content
+  > .setting-item:nth-child(2)
+  > .setting-item-control:has(> input[type="color"])::before,
+.accent-color-override-dark.theme-dark.is-mobile
+  .mod-settings
+  .vertical-tab-content-container
+  > .vertical-tab-content
+  > .setting-item:nth-child(2)
+  > .setting-item-control:has(> input[type="color"])::before {
+  width: auto;
+}

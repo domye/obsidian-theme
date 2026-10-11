@@ -1,0 +1,204 @@
+/* --- src: baseline L10112–L10155 | Plugin support：DB Folder / Projects --- */
+/* ======== Plugin support ========*/
+
+/*DB folder*/
+body:not(.DB-table-full-width-off) .database-plugin__table {
+  width: 100% !important;
+}
+
+body.DB-table-bg-color-unify .database-plugin__navbar,
+body.DB-table-bg-color-unify .database-plugin__table {
+  --background-primary: transparent;
+  --background-secondary: transparent;
+}
+
+body.DB-table-bg-color-adapt .database-plugin__navbar,
+body.DB-table-bg-color-adapt .database-plugin__table {
+  --background-primary: transparent;
+  --background-secondary: rgba(var(--mono-rgb-100), 0.025);
+}
+
+body.DB-table-bg-color-unify .database-plugin__th:hover,
+body.DB-table-bg-color-unify .data-input:hover,
+body.DB-table-bg-color-adapt .database-plugin__th:hover,
+body.DB-table-bg-color-adapt .data-input:hover {
+  --background-modifier-hover: rgba(var(--mono-rgb-100), 0.025);
+  --background-secondary: var(--background-modifier-hover);
+}
+
+.database-plugin__pagination-button:hover {
+  background-color: var(--interactive-hover);
+}
+
+/* Projects */
+body.Projects-bg-color-unify .projects-container.svelte-gr1f73 {
+  --background-primary: transparent;
+  --background-secondary: transparent;
+  --tab-background-active: var(--background-primary);
+}
+
+body.Projects-bg-color-adapt .projects-container.svelte-gr1f73 {
+  --background-primary: transparent;
+  --background-secondary: rgba(var(--mono-rgb-100), 0.025);
+  --tab-background-active: var(--background-primary);
+}
+
+
+/* --- src: baseline L10290–L10446 | Calendar / Make.md / Checklist / Text Generator / Callout Manager --- */
+/*calendar*/
+.day.svelte-q3wqg9:active .filled.svelte-1widvzq,
+.active.svelte-q3wqg9 .filled.svelte-1widvzq,
+.active.today.svelte-q3wqg9 .filled.svelte-1widvzq {
+  fill: var(--text-on-accent);
+}
+
+.today.svelte-q3wqg9 {
+  box-shadow: inset 0 0 0 1px var(--color-accent);
+}
+
+.reset-button.svelte-1vwr9dd.svelte-1vwr9dd {
+  line-height: 16px;
+}
+
+.workspace-leaf-content[data-type="calendar"] .view-content {
+  padding: 8px 0 0;
+}
+
+#calendar-container {
+  padding: 0 var(--size-4-4);
+}
+
+/* make.md */
+.mk-blink-preview {
+  border-color: var(--divider-color);
+}
+
+.mk-blink-modal .mk-options-menu__search input {
+  border-bottom: 2px solid var(--color-accent);
+}
+
+/* checklist */
+.compact.svelte-sx5ktw > .content.svelte-sx5ktw {
+  --checklist-contentPadding--compact: 4px 2px;
+}
+
+li.svelte-sx5ktw.svelte-sx5ktw {
+  --checklist-listItemMargin: 0 0 4px;
+  --checklist-listItemBackground: transparent;
+  --checklist-listItemBackground--hover: var(--background-modifier-hover);
+}
+
+svg.settings.button.svelte-9fjno5 {
+  background-color: currentColor;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.b{fill:none;}.c{fill-rule:evenodd;}</style></defs><rect class="b" width="24" height="24"/><path d="M2,12c0-.86,.11-1.7,.32-2.5,.55,.03,1.1-.1,1.59-.36,.49-.26,.89-.66,1.17-1.14,.28-.48,.42-1.03,.4-1.58-.01-.55-.18-1.09-.48-1.56,1.21-1.19,2.7-2.05,4.34-2.51,.25,.49,.63,.91,1.11,1.2,.47,.29,1.01,.44,1.57,.44s1.1-.15,1.57-.44c.47-.29,.85-.7,1.11-1.2,1.63,.45,3.13,1.32,4.33,2.51-.3,.46-.47,1-.48,1.56-.01,.55,.12,1.1,.4,1.58,.28,.48,.68,.87,1.17,1.14,.49,.26,1.04,.39,1.59,.36,.42,1.64,.42,3.36,0,5.01-.55-.03-1.1,.09-1.59,.36-.49,.26-.89,.66-1.17,1.14-.28,.48-.42,1.03-.4,1.58,.01,.55,.18,1.09,.48,1.56-1.21,1.19-2.7,2.05-4.33,2.51-.25-.49-.63-.91-1.11-1.2-.47-.29-1.01-.44-1.57-.44s-1.1,.15-1.57,.44c-.47,.29-.85,.7-1.11,1.2-1.63-.45-3.13-1.32-4.34-2.51,.3-.46,.47-1,.48-1.56,.01-.55-.12-1.1-.4-1.58-.28-.48-.68-.87-1.17-1.14-.49-.26-1.04-.39-1.59-.36-.21-.82-.32-1.66-.32-2.5Zm4.8,3c.63,1.09,.81,2.35,.56,3.52,.41,.29,.84,.54,1.3,.75,.92-.82,2.1-1.27,3.34-1.27,1.26,0,2.44,.47,3.34,1.27,.45-.21,.89-.46,1.3-.75-.25-1.2-.05-2.46,.56-3.52,.61-1.07,1.6-1.87,2.77-2.25,.05-.5,.05-1,0-1.5-1.17-.38-2.16-1.18-2.77-2.25-.62-1.07-.82-2.32-.56-3.52-.41-.29-.84-.54-1.3-.75-.92,.82-2.1,1.27-3.33,1.27-1.23,0-2.42-.45-3.34-1.27-.45,.21-.89,.46-1.3,.75,.25,1.2,.05,2.46-.56,3.52-.61,1.07-1.6,1.87-2.77,2.25-.05,.5-.05,1,0,1.5,1.17,.38,2.16,1.18,2.77,2.25Z"/><path class="c" d="M12,14c1.1,0,2-.9,2-2s-.9-2-2-2-2,.9-2,2,.9,2,2,2Zm0,2c2.21,0,4-1.79,4-4s-1.79-4-4-4-4,1.79-4,4,1.79,4,4,4Z"/></svg>');
+}
+
+.checkbox.svelte-1wagsqu {
+  --checklist-checkboxSize: var(--checkbox-size);
+  --checklist-checkboxBorder: 2px solid var(--text-muted);
+  --checklist-checkboxCheckedSize: 8px;
+  --checklist-listItemBorderRadius: var(--radius-s);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 1)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-red);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 2)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-green);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 3)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-orange);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 4)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-yellow);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 5)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-cyan);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 6)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-blue);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 7)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-purple);
+}
+
+body.colorful-checkbox
+  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 8)
+  .checkbox.svelte-1wagsqu {
+  --checklist-checkboxBorder: 2px solid var(--color-pink);
+}
+
+.checked.svelte-1wagsqu {
+  top: calc(
+    calc(
+        var(--checklist-checkboxSize) - var(--checklist-checkboxCheckedSize) - 2
+      ) /
+      2
+  ) !important;
+  left: calc(
+    calc(
+        var(--checklist-checkboxSize) - var(--checklist-checkboxCheckedSize) - 2
+      ) /
+      2
+  ) !important;
+}
+
+.checklist-plugin-main .title {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.search.svelte-rdace4.svelte-rdace4 {
+  box-shadow: 0 0 0 1px var(--background-modifier-border);
+}
+
+.count.svelte-1tzpg3c {
+  --checklist-countBackground: transparent;
+  --checklist-countPadding: 0px;
+}
+
+.svg.svelte-9fjno5 {
+  --checklist-iconSize: 20px;
+}
+
+.search.svelte-rdace4.svelte-rdace4 {
+  --checklist-searchBackground: transparent;
+  --checklist-listItemBorderRadius: var(--input-radius);
+}
+
+.toggle.svelte-sx5ktw.svelte-sx5ktw:hover {
+  opacity: 1 !important;
+}
+
+/* Text Generator */
+.modelTitle {
+  display: none;
+}
+
+/* callout manager */
+body:not(.is-mobile):not(.mod-macos):not(.mod-windows):not(.mod-linux)
+  .workspace::before,
+body:not(.is-mobile):not(.mod-macos):not(.mod-windows):not(.mod-linux)
+  .app-container::before {
+  display: none !important;
+}

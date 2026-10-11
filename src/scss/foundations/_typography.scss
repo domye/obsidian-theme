@@ -1,0 +1,1169 @@
+/* --- src: baseline L8509–L8567 | 段落 / 行高 / 两端对齐 / 内联标题 --- */
+@use '../mixins' as m;
+/* Paragraphs */
+
+body.p-spacing-br :is(.markdown-preview-view, .markdown-rendered) p > br {
+  content: " ";
+  margin-top: var(--p-spacing);
+  display: block;
+}
+
+.markdown-source-view.mod-cm6 .cm-content > div:first-of-type {
+  padding-top: 0 !important;
+}
+
+/* line-height */
+body {
+  --line-height-normal: 1.5;
+  --line-height-tight: 1.3;
+  --line-height-customize: var(--line-height-normal);
+}
+
+.markdown-preview-view,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  line-height: var(--line-height-customize);
+}
+
+/* justify text */
+.text-align-justify
+  .markdown-source-view.mod-cm6
+  .cm-line:not(.HyperMD-codeblock),
+.text-align-justify .markdown-preview-view p {
+  text-align: justify;
+  text-justify: auto;
+}
+
+body {
+  /* Extra */
+  --inline-title-text-transform: var(--h1-text-transform);
+  --h1-text-transform: unset;
+  --h2-text-transform: unset;
+  --h3-text-transform: unset;
+  --h4-text-transform: unset;
+  --h5-text-transform: unset;
+  --h6-text-transform: unset;
+}
+
+.inline-title {
+  text-transform: var(--inline-title-text-transform);
+}
+
+body:not(.is-phone):not(.inline-title-divider-remove)
+  .inline-title:not(.mk-inline-title) {
+  border-bottom: 1px solid var(--divider-color);
+  padding-bottom: var(--size-4-3);
+  margin-bottom: var(--size-4-3);
+}
+
+.embedded-backlinks {
+  border-top: 1px solid var(--divider-color);
+}
+
+
+/* --- src: baseline L10789–L12088 | Phycat 0.3.7 标题样式移植（本地重写） --- */
+/* =================================================================
+   Phycat 标题样式移植 — 取自 Phycat v0.3.7 theme.css
+   覆盖：h1（居中下划线 / 左对齐双竖条）、h2（双子塔 / 胶囊，亮暗各一套）、
+        h3-h6 装饰（色块 / 实心点 / 空心点 / 短横）、标题间距与颜色、折叠图标定位
+   下面这层变量把 Phycat 取色映射到 Border(Core) 变量，改主题色即整体跟随。
+   ================================================================= */
+:root {
+  --h3-icon-shape: url("data:image/svg+xml;utf8,<svg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286z'/></svg>");
+  --h4-icon-shape: url("data:image/svg+xml;utf8,<svg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 22.857c1.257 0 2.286-1.029 2.286-2.286s-1.029-2.286-2.286-2.286-2.286 1.029-2.286 2.286 1.029 2.286 2.286 2.286z'/></svg>");
+  --h5-icon-shape: url("data:image/svg+xml;utf8,<svg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 22.857c1.257 0 2.286-1.029 2.286-2.286s-1.029-2.286-2.286-2.286-2.286 1.029-2.286 2.286 1.029 2.286 2.286 2.286zM4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 11.429c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286z'/></svg>");
+  --h6-icon-shape: url("data:image/svg+xml;utf8,<svg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'><path d='M4.571 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM4.571 11.429c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 18.286c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 25.143c-1.257 0-2.286 1.029-2.286 2.286s1.029 2.286 2.286 2.286 2.286-1.029 2.286-2.286-1.029-2.286-2.286-2.286zM11.429 16c1.257 0 2.286-1.029 2.286-2.286s-1.029-2.286-2.286-2.286-2.286 1.029-2.286 2.286 1.029 2.286 2.286 2.286z'/></svg>");
+}
+
+
+body .markdown-preview-view h1,
+body .markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  color: var(--h1-color) !important;
+}
+body .markdown-preview-view h2,
+body .markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  color: var(--h2-color) !important;
+}
+body .markdown-preview-view h3,
+body .markdown-source-view.mod-cm6 .HyperMD-header-3 {
+  color: var(--h3-color) !important;
+}
+body .markdown-preview-view h4,
+body .markdown-source-view.mod-cm6 .HyperMD-header-4 {
+  color: var(--h4-color) !important;
+}
+body .markdown-preview-view h5,
+body .markdown-source-view.mod-cm6 .HyperMD-header-5 {
+  color: var(--h5-color) !important;
+}
+body .markdown-preview-view h6,
+body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
+  color: var(--h6-color) !important;
+}
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3,
+.markdown-preview-view h4,
+.markdown-preview-view h5,
+.markdown-preview-view h6,
+.markdown-source-view.mod-cm6 .HyperMD-header {
+  color: var(--text-color);
+  font-weight: bold;
+  position: relative;
+  transition:
+    color 0.3s ease,
+    font-weight 0.3s ease;
+  margin-block-start: var(--heading-spacing);
+  margin-block-end: var(--heading-spacing);
+}
+.markdown-preview-view h1 {
+  margin-block-start: calc(
+    var(--heading-spacing) * var(--h1-spacing-scale-start)
+  );
+  margin-block-end: calc(var(--heading-spacing) * var(--h1-spacing-scale-end));
+}
+.markdown-preview-view h2 {
+  margin-block-start: calc(
+    var(--heading-spacing) * var(--h2-spacing-scale-start)
+  );
+  margin-block-end: calc(var(--heading-spacing) * var(--h2-spacing-scale-end));
+}
+.markdown-preview-view h3 {
+  margin-block-start: calc(
+    var(--heading-spacing) * var(--h3-spacing-scale-start)
+  );
+  margin-block-end: calc(var(--heading-spacing) * var(--h3-spacing-scale-end));
+}
+.markdown-preview-view h4 {
+  margin-block-start: calc(
+    var(--heading-spacing) * var(--h4-spacing-scale-start)
+  );
+  margin-block-end: calc(var(--heading-spacing) * var(--h4-spacing-scale-end));
+}
+.markdown-preview-view h5 {
+  margin-block-start: calc(
+    var(--heading-spacing) * var(--h5-spacing-scale-start)
+  );
+  margin-block-end: calc(var(--heading-spacing) * var(--h5-spacing-scale-end));
+}
+.markdown-preview-view h6 {
+  margin-block-start: calc(
+    var(--heading-spacing) * var(--h6-spacing-scale-start)
+  );
+  margin-block-end: calc(var(--heading-spacing) * var(--h6-spacing-scale-end));
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  padding-top: calc(
+    var(--heading-spacing) * var(--h1-spacing-scale-start) - 0.25rem
+  );
+  padding-bottom: calc(
+    var(--heading-spacing) * var(--h1-spacing-scale-end) - 0.25rem
+  );
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  padding-top: calc(
+    var(--heading-spacing) * var(--h2-spacing-scale-start) - 0.25rem
+  );
+  padding-bottom: calc(
+    var(--heading-spacing) * var(--h2-spacing-scale-end) - 0.25rem
+  );
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-3 {
+  padding-top: calc(
+    var(--heading-spacing) * var(--h3-spacing-scale-start) - 0.25rem
+  );
+  padding-bottom: calc(
+    var(--heading-spacing) * var(--h3-spacing-scale-end) - 0.25rem
+  );
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-4 {
+  padding-top: calc(
+    var(--heading-spacing) * var(--h4-spacing-scale-start) - 0.25rem
+  );
+  padding-bottom: calc(
+    var(--heading-spacing) * var(--h4-spacing-scale-end) - 0.25rem
+  );
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-5 {
+  padding-top: calc(
+    var(--heading-spacing) * var(--h5-spacing-scale-start) - 0.25rem
+  );
+  padding-bottom: calc(
+    var(--heading-spacing) * var(--h5-spacing-scale-end) - 0.25rem
+  );
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-6 {
+  padding-top: calc(
+    var(--heading-spacing) * var(--h6-spacing-scale-start) - 0.25rem
+  );
+  padding-bottom: calc(
+    var(--heading-spacing) * var(--h6-spacing-scale-end) - 0.25rem
+  );
+}
+.theme-light .markdown-preview-view .heading-collapse-indicator {
+  margin-inline-start: -47px !important;
+}
+.theme-dark .markdown-preview-view .heading-collapse-indicator {
+  margin-inline-start: -26px !important;
+}
+.theme-light .markdown-preview-view h2 .heading-collapse-indicator {
+  margin-inline-start: -19px !important;
+}
+.theme-dark.h2-style-dark-capsule
+  .markdown-preview-view
+  h2
+  .heading-collapse-indicator {
+  margin-inline-start: -19px !important;
+}
+.theme-dark:not(.h2-style-dark-capsule)
+  .markdown-preview-view
+  h2
+  .heading-collapse-indicator {
+  margin-inline-start: -48px !important;
+}
+.theme-dark .markdown-preview-view h3 .heading-collapse-indicator,
+.theme-light .markdown-preview-view h3 .heading-collapse-indicator {
+  margin-inline-start: -43px !important;
+}
+.theme-dark.h1-align-left .markdown-preview-view h1 .heading-collapse-indicator,
+.theme-light.h1-align-left
+  .markdown-preview-view
+  h1
+  .heading-collapse-indicator {
+  margin-inline-start: -50px !important;
+}
+.h1-align-left
+  .markdown-source-view.mod-cm6
+  .cm-fold-indicator
+  .collapse-indicator {
+  inset-inline-end: 32px;
+}
+.theme-light.h2-style-capsule
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2
+  .collapse-indicator,
+.theme-dark.h2-style-dark-capsule
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2
+  .collapse-indicator {
+  inset-inline-end: -2px;
+}
+.theme-light.h2-style-capsule
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2
+  .collapse-indicator
+  svg,
+.theme-dark.h2-style-dark-capsule
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2
+  .collapse-indicator
+  svg,
+.theme-light.h2-style-capsule
+  .markdown-preview-view
+  h2
+  .heading-collapse-indicator
+  svg,
+.theme-dark.h2-style-dark-capsule
+  .markdown-preview-view
+  h2
+  .heading-collapse-indicator
+  svg {
+  color: var(--phycat-heading-indicator-color);
+}
+.theme-light .markdown-preview-view h1,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  font-weight: 700;
+  line-height: 1.4;
+  padding-bottom: 12px;
+  display: table;
+  width: auto;
+  min-width: 120px;
+  text-align: center;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  position: relative;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+.theme-light .markdown-preview-view h1::after,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-header-1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 40px;
+  height: 4px;
+  border-radius: var(--domye-radius-m);
+  background: var(--h2-bg-gradient);
+  background-size: 100% auto;
+  transform: translateX(-50%);
+  transition:
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s ease;
+}
+.theme-light .markdown-preview-view h1:hover {
+  color: var(--phycat-primary-color);
+  transform: translateY(-2px);
+}
+.theme-light .markdown-preview-view h1:hover::after {
+  width: 100%;
+}
+.theme-light.h1-align-left .markdown-preview-view h1,
+.theme-light.h1-align-left .markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  text-align: left;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  padding-left: 32px;
+}
+.theme-light.h1-align-left .markdown-preview-view h1::before,
+.theme-light.h1-align-left
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-1::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 22px;
+  border-radius: var(--domye-radius-l);
+  top: 45%;
+  transform: translateY(-50%);
+  margin-top: -6px;
+  left: 2px;
+  background-color: var(--secondary-color);
+  opacity: 0.5;
+  transition:
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+.theme-light.h1-align-left .markdown-preview-view h1::after,
+.theme-light.h1-align-left
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-1::after {
+  bottom: auto;
+  width: 10px;
+  height: 22px;
+  border-radius: var(--domye-radius-l);
+  top: 45%;
+  transform: translateY(-50%);
+  margin-top: 4px;
+  left: 8px;
+  background: var(--phycat-primary-color);
+  mix-blend-mode: multiply;
+  transition:
+    bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+  z-index: 1;
+}
+.theme-light.h1-align-left .markdown-preview-view h1:hover {
+  transform: none;
+  color: var(--phycat-primary-color);
+}
+.theme-light.h1-align-left .markdown-preview-view h1:hover::before {
+  height: 32px;
+  margin-top: 0;
+  left: 4px;
+  width: 6px;
+  opacity: 0.3;
+  border-radius: var(--domye-radius-s);
+}
+.theme-light.h1-align-left .markdown-preview-view h1:hover::after {
+  height: 26px;
+  margin-top: 0;
+  left: 12px;
+  width: 6px;
+  border-radius: var(--domye-radius-s);
+}
+.theme-light.h2-style-capsule .markdown-preview-view h2,
+.theme-light.h2-style-capsule .markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  color: var(--phycat-h2-color) !important;
+  font-weight: bold;
+  text-decoration: none !important;
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 16px;
+  border-radius: var(--domye-radius-xl);
+  background-image: var(--h2-bg-gradient) !important;
+  background-size: 200% auto;
+  background-position: 0% center;
+  background-repeat: no-repeat;
+  border: 1px solid transparent !important;
+  background-clip: padding-box;
+  overflow: hidden;
+  border-bottom: none !important;
+  transition:
+    background-position 0.5s ease-out,
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+.theme-light.h2-style-capsule .markdown-preview-view h2:hover {
+  background-position: 100% center;
+  transform: scale(1.01);
+}
+.theme-light.h2-style-capsule
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2
+  .cm-formatting-header {
+  color: var(--phycat-h2-color-2) !important;
+}
+.theme-light:not(.h2-style-capsule) .markdown-preview-view h2,
+.theme-light.h2-style-twin .markdown-preview-view h2,
+.theme-light:not(.h2-style-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2,
+.theme-light.h2-style-twin .markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 0;
+  display: block;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+.theme-light:not(.h2-style-capsule)
+  .markdown-preview-view
+  h2
+  .heading-collapse-indicator,
+.theme-light.h2-style-twin
+  .markdown-preview-view
+  h2
+  .heading-collapse-indicator {
+  margin-inline-start: -43px !important;
+}
+.theme-light:not(.h2-style-capsule) .markdown-preview-view h2::before,
+.theme-light.h2-style-twin .markdown-preview-view h2::before,
+.theme-light:not(.h2-style-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::before,
+.theme-light.h2-style-twin
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: auto;
+  margin-top: 0.1em;
+  height: 1em;
+  width: 5px;
+  background-color: var(--phycat-primary-color);
+  border-radius: var(--domye-radius-m);
+  opacity: 1;
+  transition:
+    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.theme-light:not(.h2-style-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::before,
+.theme-light.h2-style-twin
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::before {
+  margin-top: 0.2em;
+}
+.theme-light:not(.h2-style-capsule) .markdown-preview-view h2::after,
+.theme-light.h2-style-twin .markdown-preview-view h2::after,
+.theme-light:not(.h2-style-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::after,
+.theme-light.h2-style-twin
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: auto;
+  margin-top: 0.3em;
+  height: 0.6em;
+  width: 2px;
+  background-color: var(--secondary-color);
+  border-radius: var(--domye-radius-xs);
+  opacity: 0.6;
+  transition:
+    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s;
+}
+.theme-light:not(.h2-style-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::after,
+.theme-light.h2-style-twin
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::after {
+  margin-top: 0.4em;
+}
+.theme-light:not(.h2-style-capsule) .markdown-preview-view h2:hover,
+.theme-light.h2-style-twin .markdown-preview-view h2:hover {
+  color: var(--phycat-primary-color) !important;
+}
+.theme-light:not(.h2-style-capsule) .markdown-preview-view h2:hover::before,
+.theme-light.h2-style-twin .markdown-preview-view h2:hover::before {
+  top: auto;
+  margin-top: 0em;
+  height: 1.4em;
+  opacity: 0.4;
+}
+.theme-light:not(.h2-style-capsule) .markdown-preview-view h2:hover::after,
+.theme-light.h2-style-twin .markdown-preview-view h2:hover::after {
+  top: auto;
+  margin-top: 0.15em;
+  height: 1.1em;
+  width: 4px;
+  opacity: 1;
+  background-color: var(--phycat-primary-color);
+}
+.theme-light:not(.h2-style-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2
+  .cm-formatting-header,
+.theme-light.h2-style-twin
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2
+  .cm-formatting-header {
+  color: var(--text-faint) !important;
+  opacity: 0.4;
+}
+.theme-light .markdown-preview-view h3 {
+  width: fit-content;
+  padding-left: 15px;
+  transition:
+    width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    padding-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.theme-light .markdown-preview-view h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 1.3rem;
+  border-radius: var(--domye-radius-m);
+  background-color: var(--phycat-primary-color);
+  transition:
+    left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-radius 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.theme-light .markdown-preview-view h3:hover {
+  padding-left: 20px;
+  color: var(--phycat-primary-color);
+}
+.theme-light .markdown-preview-view h3:hover::before {
+  height: 24px;
+  width: 7px;
+}
+.theme-light .markdown-preview-view h4 {
+  padding-left: 20px;
+}
+.theme-light .markdown-preview-view h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--phycat-primary-color);
+  border: var(--domye-border-width) solid var(--phycat-primary-color);
+  transition:
+    left 0.3s ease,
+    top 0.3s ease,
+    transform 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease,
+    border-radius 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.theme-light .markdown-preview-view h4:hover {
+  color: var(--light-deep);
+  transform: translateX(6px);
+}
+.theme-light .markdown-preview-view h4:hover::before {
+  transform: translateY(-50%) scale(1.3);
+}
+.theme-light .markdown-preview-view h5 {
+  padding-left: 20px;
+}
+.theme-light .markdown-preview-view h5::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--phycat-h5-decoration-background);
+  border: calc(var(--domye-border-width) * 2) solid var(--phycat-primary-color);
+  box-sizing: border-box;
+  transition:
+    left 0.3s ease,
+    top 0.3s ease,
+    transform 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease,
+    border-radius 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.theme-light .markdown-preview-view h5:hover {
+  color: var(--light-deep);
+  transform: translateX(6px);
+}
+.theme-light .markdown-preview-view h5:hover::before {
+  background-color: var(--phycat-primary-color);
+  transform: translateY(-50%) scale(1.2);
+}
+.theme-light .markdown-preview-view h6 {
+  padding-left: 20px;
+}
+.theme-light .markdown-preview-view h6::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--phycat-primary-color);
+  font-weight: bold;
+  line-height: 1;
+  transition:
+    left 0.3s ease,
+    top 0.3s ease,
+    transform 0.3s ease,
+    color 0.3s ease,
+    font-weight 0.3s ease;
+}
+.theme-light .markdown-preview-view h6:hover {
+  color: var(--light-deep);
+  transform: translateX(6px);
+}
+.theme-light .markdown-preview-view h6:hover::before {
+  transform: translateY(-50%) scaleX(1.8);
+}
+.theme-dark .markdown-preview-view h1,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  padding-bottom: 12px;
+  border-bottom: none;
+  display: table;
+  width: auto;
+  min-width: 120px;
+  text-align: center;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  position: relative;
+}
+.h1-align-left .markdown-preview-view h1 {
+  padding-bottom: 0;
+}
+.theme-dark .markdown-preview-view h1::after,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-header-1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 40px;
+  height: 4px;
+  border-radius: var(--domye-radius-m);
+  background: var(--h1-underline-color);
+  transform: translateX(-50%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.theme-dark .markdown-preview-view h1:hover::after {
+  width: 100%;
+}
+.theme-dark.h1-align-left .markdown-preview-view h1,
+.theme-dark.h1-align-left .markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  text-align: left;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  padding-left: 32px;
+}
+.theme-dark.h1-align-left .markdown-preview-view h1::before,
+.theme-dark.h1-align-left
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-1::before {
+  content: "";
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  margin-top: -6px;
+  left: 2px;
+  width: 10px;
+  height: 22px;
+  border-radius: var(--domye-radius-l);
+  background-color: var(--secondary-color);
+  opacity: 0.6;
+  transition:
+    top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+.theme-dark.h1-align-left .markdown-preview-view h1::after,
+.theme-dark.h1-align-left
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-1::after {
+  bottom: auto;
+  top: 45%;
+  transform: translateY(-50%);
+  margin-top: 4px;
+  left: 8px;
+  width: 10px;
+  height: 22px;
+  border-radius: var(--domye-radius-l);
+  background: var(--phycat-primary-color);
+  mix-blend-mode: screen;
+  transition:
+    bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+  z-index: 1;
+}
+.theme-dark.h1-align-left .markdown-preview-view h1:hover::before {
+  height: 32px;
+  margin-top: 0;
+  left: 4px;
+  width: 6px;
+  opacity: 0.4;
+}
+.theme-dark.h1-align-left .markdown-preview-view h1:hover::after {
+  height: 26px;
+  margin-top: 0;
+  left: 12px;
+  width: 6px;
+}
+.theme-dark.h2-style-dark-capsule .markdown-preview-view h2,
+.theme-dark.h2-style-dark-capsule
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2 {
+  width: fit-content;
+  padding: 5px 16px;
+  border-radius: var(--domye-radius-xl);
+  display: inline-block;
+  background-color: var(--phycat-h2-background);
+  background-image: var(--h2-bg-image);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid var(--phycat-h2-border-top);
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  transition:
+    color 0.5s ease,
+    transform 0.5s ease,
+    box-shadow 0.5s ease;
+}
+.theme-dark.h2-style-dark-capsule .markdown-preview-view h2::after,
+.theme-dark.h2-style-dark-capsule
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--h2-bg-image-hover);
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.theme-dark.h2-style-dark-capsule .markdown-preview-view h2:hover {
+  color: var(--phycat-primary-color);
+  transform: translateY(-1px);
+}
+.theme-dark.h2-style-dark-capsule .markdown-preview-view h2:hover::after {
+  opacity: 1;
+}
+.theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2,
+.theme-dark.h2-style-dark-twin .markdown-preview-view h2,
+.theme-dark:not(.h2-style-dark-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2,
+.theme-dark.h2-style-dark-twin .markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 0;
+  display: block;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+.theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2::before,
+.theme-dark.h2-style-dark-twin .markdown-preview-view h2::before,
+.theme-dark:not(.h2-style-dark-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::before,
+.theme-dark.h2-style-dark-twin
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: auto;
+  margin-top: 0.2em;
+  height: 1em;
+  width: 5px;
+  background-color: var(--phycat-primary-color);
+  border-radius: var(--domye-radius-m);
+  opacity: 0.8;
+  transition:
+    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2::after,
+.theme-dark.h2-style-dark-twin .markdown-preview-view h2::after,
+.theme-dark:not(.h2-style-dark-capsule)
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::after,
+.theme-dark.h2-style-dark-twin
+  .markdown-source-view.mod-cm6
+  .HyperMD-header-2::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: auto;
+  margin-top: 0.4em;
+  height: 0.6em;
+  width: 2px;
+  background-color: var(--secondary-color);
+  border-radius: var(--domye-radius-xs);
+  opacity: 0.6;
+  transition:
+    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s;
+}
+.theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2:hover,
+.theme-dark.h2-style-dark-twin .markdown-preview-view h2:hover {
+  color: var(--phycat-primary-color) !important;
+}
+.theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2:hover::before,
+.theme-dark.h2-style-dark-twin .markdown-preview-view h2:hover::before {
+  top: auto;
+  margin-top: 0em;
+  height: 1.4em;
+  opacity: 0.5;
+}
+.theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2:hover::after,
+.theme-dark.h2-style-dark-twin .markdown-preview-view h2:hover::after {
+  top: auto;
+  margin-top: 0.15em;
+  height: 1.1em;
+  width: 4px;
+  opacity: 1;
+  background-color: var(--phycat-primary-color);
+}
+.theme-dark .markdown-preview-view h3 {
+  padding-left: 15px;
+  display: block;
+  transition:
+    padding-left 0.3s ease,
+    color 0.3s ease;
+}
+.theme-dark .markdown-preview-view h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 1.3rem;
+  background: var(--phycat-primary-color);
+  border-radius: var(--domye-radius-xs);
+  transition:
+    left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-radius 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0.8;
+}
+.theme-dark .markdown-preview-view h3:hover {
+  color: var(--phycat-primary-color);
+  padding-left: 20px;
+}
+.theme-dark .markdown-preview-view h3:hover::before {
+  height: 24px;
+  opacity: 1;
+}
+.theme-dark .markdown-preview-view h4 {
+  display: flex;
+  align-items: center;
+}
+.theme-dark .markdown-preview-view h4::before {
+  content: "";
+  margin-right: 10px;
+  display: inline-block;
+  background-color: var(--phycat-primary-color);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition:
+    margin-right 0.3s ease,
+    background-color 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease,
+    border-radius 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+.theme-dark .markdown-preview-view h4:hover {
+  color: var(--phycat-primary-color);
+  transform: translateX(5px);
+}
+.theme-dark .markdown-preview-view h4:hover::before {
+  transform: scale(1.2);
+}
+.theme-dark .markdown-preview-view h5 {
+  display: flex;
+  align-items: center;
+}
+.theme-dark .markdown-preview-view h5::before {
+  content: "";
+  margin-right: 10px;
+  display: inline-block;
+  background-color: transparent;
+  border: 1.5px solid var(--phycat-primary-color);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  transition:
+    margin-right 0.3s ease,
+    background-color 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease,
+    border-radius 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+  flex-shrink: 0;
+}
+.theme-dark .markdown-preview-view h5:hover {
+  color: var(--phycat-primary-color);
+  transform: translateX(5px);
+}
+.theme-dark .markdown-preview-view h5:hover::before {
+  background-color: transparent;
+  border-color: var(--phycat-primary-color);
+  transform: scale(1.2);
+}
+.theme-dark .markdown-preview-view h6 {
+  display: flex;
+  align-items: center;
+}
+.theme-dark .markdown-preview-view h6::before {
+  content: "-";
+  color: var(--phycat-primary-color);
+  margin-right: 11px;
+  display: inline-block;
+  font-weight: bold;
+  transition:
+    color 0.3s ease,
+    margin-right 0.3s ease,
+    font-weight 0.3s ease,
+    text-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+.theme-dark .markdown-preview-view h6:hover {
+  color: var(--phycat-primary-color);
+  transform: translateX(5px);
+}
+.theme-dark .markdown-preview-view h6:hover::before {
+  transform: scaleX(1.5);
+}
+// h3–h6 装饰图标：几何 + 遮罩合并到 mixin，逐级只传形状变量
+.markdown-preview-view {
+  @each $level in 3, 4, 5, 6 {
+    h#{$level}::after {
+      @include m.heading-icon(h#{$level}-icon-shape, ' ', 0.5);
+    }
+  }
+}
+.theme-light h3::after,
+.theme-light h4::after,
+.theme-light h5::after,
+.theme-light h6::after {
+  background-color: var(--light-light) !important;
+  opacity: 0.5;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header {
+  font-weight: bold;
+  line-height: 1.4;
+  position: relative;
+}
+.markdown-source-view.mod-cm6 .cm-formatting-header {
+  color: var(--phycat-primary-color);
+  font-family: var(--font-monospace);
+  font-weight: normal;
+  margin-right: 8px;
+  opacity: 0.4;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  text-align: center;
+  justify-content: center;
+  border-bottom: none;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-1::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: var(--domye-radius-m);
+  background: var(--phycat-primary-color);
+  background-image: var(
+    --h2-bg-gradient,
+    linear-gradient(
+      to right,
+      var(--phycat-primary-color),
+      var(--phycat-primary-color)
+    )
+  );
+  margin: 8px auto 0 auto;
+  opacity: 0.8;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-3 {
+  padding-left: 20px;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-3::before {
+  content: "";
+  position: absolute;
+  margin-top: 0.3rem;
+  left: 0;
+  width: 5px;
+  height: 1.3rem;
+  border-radius: var(--domye-radius-m);
+  background-color: var(--phycat-primary-color);
+  opacity: 0.8;
+  pointer-events: none;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-4 {
+  padding-left: 20px;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-4::before {
+  content: "";
+  position: absolute;
+  margin-top: 0.46rem;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--phycat-primary-color);
+  border: var(--domye-border-width) solid var(--phycat-primary-color);
+  pointer-events: none;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-5 {
+  padding-left: 20px;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-5::before {
+  content: "";
+  position: absolute;
+  margin-top: 0.5rem;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: calc(var(--domye-border-width) * 2) solid var(--phycat-primary-color);
+  box-sizing: border-box;
+  background-color: var(--bg-color, transparent);
+  pointer-events: none;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-6 {
+  padding-left: 20px;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-6::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: var(--phycat-primary-color);
+  font-weight: bold;
+  line-height: 1.4;
+  font-family: var(--font-monospace);
+  pointer-events: none;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header:hover::before {
+  opacity: 1;
+  border-color: var(--phycat-primary-color);
+}
+.markdown-source-view.mod-cm6 {
+  @each $level in 3, 4, 5, 6 {
+    .HyperMD-header-#{$level}::after {
+      @include m.heading-icon(h#{$level}-icon-shape);
+      pointer-events: none;
+    }
+  }
+}
