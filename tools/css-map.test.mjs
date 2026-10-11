@@ -44,6 +44,11 @@ test('字符串里的花括号与分号不破坏层级', () => {
   assert.ok(decls(map, '.x')[0].endsWith('color: red'));
 });
 
+test('语句型 at-rule（@charset）不粘到下一个选择器上', () => {
+  const map = parseCss('@charset "UTF-8";\nbody { color: red; }');
+  assert.deepEqual([...map.keys()], ['body']);
+});
+
 test('@media 上下文进 key，规则不丢', () => {
   const map = parseCss('@media (max-width: 600px) { .x { color: red; } }');
   const keys = [...map.keys()];

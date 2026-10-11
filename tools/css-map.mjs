@@ -54,6 +54,13 @@ function walkBlocks(src, context, out) {
       continue;
     }
     if (c === '}') break;
+    if (c === ';') {
+      // 语句型 at-rule（@charset / @import）没有块。清掉缓冲区，
+      // 否则它会被当成下一个选择器的一部分（键变成 `@charset "UTF-8"; body`）。
+      buf = '';
+      i++;
+      continue;
+    }
     if (c === '"' || c === "'") {
       const str = readQuoted(src, i);
       buf += str;

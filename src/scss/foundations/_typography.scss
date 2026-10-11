@@ -269,6 +269,8 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   svg {
   color: var(--phycat-heading-indicator-color);
 }
+// shortcut: light 版 h1–h6 全在下面这一段；dark 版是紧随其后的另一段，
+// 两套结构并不相同（README「未决事项」有配对分析：23 对里只有 3 对完全相同）。改一边必须对照另一边。
 .theme-light .markdown-preview-view h1,
 .theme-light .markdown-source-view.mod-cm6 .HyperMD-header-1 {
   font-weight: 700;
@@ -673,6 +675,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
 .theme-light .markdown-preview-view h6:hover::before {
   transform: translateY(-50%) scaleX(1.8);
 }
+// shortcut: 上面那条注释说的 dark 版就是这一段，与 light 段逐条对应、但值不同。
 .theme-dark .markdown-preview-view h1,
 .theme-dark .markdown-source-view.mod-cm6 .HyperMD-header-1 {
   padding-bottom: 12px;

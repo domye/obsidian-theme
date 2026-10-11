@@ -31,7 +31,10 @@ domye/
 │       ├── _declarations.scss   @settings 的 YAML 声明 ×10（全是注释，不产出 CSS）
 │       ├── _visibility.scss     「某状态下隐藏哪些设置项」，map + @each 生成
 │       └── _panel.scss          设置面板本体的样式
-├── tools/check-tokens.mjs       npm run lint（静态检查）+ npm run verify（构建等价性守卫）
+├── tools/
+│   ├── check-tokens.mjs         npm run lint（静态检查）+ npm run verify（构建等价性守卫）
+│   ├── css-map.mjs              CSS → 「选择器 → 声明」映射，守卫的比较单位
+│   └── css-map.test.mjs         npm run test：解析器回归测试（node --test）
 ├── theme.css                    构建产物（Obsidian 只读这个）
 ├── manifest.json
 └── versions.json

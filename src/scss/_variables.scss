@@ -77,6 +77,8 @@ $tokens-light: (
   'checkbox-border-unchecked': color-mix(in srgb, var(--domye-accent), transparent 50%),
   'checkbox-bg-checked': var(--domye-accent),
   'indentation-guide-color': color-mix(in srgb, var(--domye-accent), white 50%),
+  // callout 的 style-1/2/3 共用这个背景色（浅色模式下是半透明白）
+  'callout-content-bg': #ffffffbf,
 ) !default;
 
 $tokens-dark: (
@@ -103,6 +105,7 @@ $tokens-dark: (
   'checkbox-bg-unchecked': color-mix(in srgb, #ffffff, transparent 95%),
   'checkbox-border-unchecked': color-mix(in srgb, #ffffff, transparent 70%),
   'checkbox-bg-checked': color-mix(in srgb, var(--domye-accent), transparent 80%),
+  'callout-content-bg': #00000040,
 ) !default;
 
 body {
@@ -139,6 +142,9 @@ body {
   --list-marker-color: var(--domye-accent);
   // 兜底值；Style Settings 的 phycat-colors 块可覆盖它（见 style-settings.scss）
   --secondary-color: #bd93f9;
+  // Solarized 代码高亮的红色。两种代码主题都用它，因此不按明暗模式分（
+  // 使用它的 .codeblock-style-solarized-* 选择器本身不带 .theme-* 类）
+  --code-solarized-red: #dc322f;
 
   // H2 装饰：几何固定，颜色来自上面的模式令牌
   --h2-bg-gradient: linear-gradient(
