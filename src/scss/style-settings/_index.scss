@@ -1,7 +1,8 @@
 // ============================================================================
 // Style Settings：一个入口，三个 partial。
 //
-//   _declarations.scss  @settings 的 YAML 声明（8 个设置块）。不产出任何 CSS，
+//   _declarations.scss  @settings 的 YAML 声明（7 个设置块 = Border 原有分区，
+//                       Domye/Phycat 自有项已并入 Components / Editor）。不产出任何 CSS，
 //                       只被 Style Settings 插件扫描——所以它全是注释。
 //   _visibility.scss    「某状态下隐藏哪些设置项」的规则，由一张 map 用 @each 生成。
 //   _panel.scss         设置面板本体（style-settings 视图）的样式。

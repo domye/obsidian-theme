@@ -28,7 +28,7 @@ domye/
 │   ├── plugins/_common.scss     DB Folder / Projects / Calendar / Make.md / Checklist / Text Generator / Callout Manager
 │   └── style-settings/
 │       ├── _index.scss          入口，只 @use
-│       ├── _declarations.scss   @settings 的 YAML 声明 ×10（全是注释，不产出 CSS）
+│       ├── _declarations.scss   @settings 的 YAML 声明 ×7（全是注释，不产出 CSS）
 │       ├── _visibility.scss     「某状态下隐藏哪些设置项」，map + @each 生成
 │       └── _panel.scss          设置面板本体的样式
 ├── tools/

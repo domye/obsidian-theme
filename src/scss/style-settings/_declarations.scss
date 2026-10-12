@@ -1,4 +1,4 @@
-/* --- src: baseline L1–L3730 | Style Settings 声明 ×8（源：Border 1.13.9） --- */
+/* --- src: baseline L1–L3730 | Style Settings 声明 ×7（源：Border 1.13.9；Domye/Phycat 自有项已并入 Components / Editor） --- */
 /* @settings
 
 name: Theme Info
@@ -273,6 +273,57 @@ settings:
         id: restored-scrollbars
         title: 还原 滚动条的样式
         type: class-toggle
+    - 
+        id: Global-appearance
+        title: 全局外观
+        type: heading
+        level: 3
+        collapsed: true
+    -
+        id: domye-accent
+        title: 强调色来源
+        description: 默认跟随 Obsidian 外观设置里的强调色，也可直接填任意 CSS 颜色值。
+        type: variable-text
+        default: hsl(var(--accent-h), var(--accent-s), var(--accent-l))
+    -
+        id: domye-radius
+        title: 圆角大小
+        description: 统一缩放主题自有的装饰圆角（列表标记、复选框、标题装饰条）。
+        type: variable-number-slider
+        default: 4
+        format: px
+        min: 0
+        max: 12
+        step: 1
+    -
+        id: domye-font-size
+        title: 正文字号
+        type: variable-number-slider
+        default: 16
+        format: px
+        min: 12
+        max: 24
+        step: 1
+    -
+        id: domye-heading-spacing
+        title: 标题间距
+        description: 标题上下留白的基准值，各级标题按同倍数放大。
+        type: variable-number-slider
+        default: 0.5
+        format: rem
+        min: 0
+        max: 2
+        step: 0.1
+    -
+        id: domye-border-width
+        title: 边框粗细
+        description: 主题自有描边（h4 实心点、h5 空心点、设置面板缩进线）。
+        type: variable-number-slider
+        default: 1
+        format: px
+        min: 0
+        max: 4
+        step: 1
 
 */
 
@@ -1073,20 +1124,6 @@ settings:
         title: 在视觉上移除工作区的分隔线效果
         description: 针对默认布局
         type: class-toggle
-	- 
-		id: link-external-color
-		title: 外部链接颜色
-		type: variable-themed-color
-		format: hex
-		default-light: '#'
-		default-dark: '#'
-	- 
-		id: link-external-color-hover
-		title: 外部链接颜色（鼠标悬停时）
-		type: variable-themed-color
-		format: hex
-		default-light: '#'
-		default-dark: '#'
 
 */
 
@@ -1890,20 +1927,6 @@ settings:
         title: 在视觉上移除工作区的分隔线效果
         description: 针对默认布局
         type: class-toggle
-	- 
-		id: link-external-color
-		title: 外部链接颜色
-		type: variable-themed-color
-		format: hex
-		default-light: '#'
-		default-dark: '#'
-	- 
-		id: link-external-color-hover
-		title: 外部链接颜色（鼠标悬停时）
-		type: variable-themed-color
-		format: hex
-		default-light: '#'
-		default-dark: '#'
 
 */
 
@@ -2049,6 +2072,346 @@ settings:
 		format: hex
 		default-light: '#'
 		default-dark: '#'
+    - 
+        id: Headings
+        title: 标题
+        type: heading
+        level: 3
+        collapsed: true
+    - 
+        id: h1-underline-color
+        title: H1 下划线（暗色）
+        type: variable-themed-color
+        format: hex
+        default-light: '#ff7096'
+        default-dark: '#ff5555'
+    - 
+        id: phycat-h2-gradient-start
+        title: H2 渐变起点（亮色）
+        type: variable-themed-color
+        format: hex
+        default-light: 'color-mix(in srgb, var(--domye-accent), #fff 35%)'
+        default-dark: 'var(--domye-accent)'
+    - 
+        id: phycat-h2-gradient-middle
+        title: H2 渐变中点（亮色）
+        type: variable-themed-color
+        format: hex
+        default-light: 'var(--domye-accent)'
+        default-dark: 'var(--domye-accent)'
+    - 
+        id: phycat-h2-gradient-end
+        title: H2 渐变终点（亮色）
+        type: variable-themed-color
+        format: hex
+        default-light: 'color-mix(in srgb, var(--domye-accent), #fff 35%)'
+        default-dark: 'var(--domye-accent)'
+    - 
+        id: phycat-h2-radial-color
+        title: H2 径向光晕（暗色）
+        type: variable-themed-color
+        format: hex
+        default-light: 'transparent'
+        default-dark: 'color-mix(in srgb, var(--domye-accent), transparent 85%)'
+    - 
+        id: phycat-h2-radial-hover
+        title: H2 悬停径向光晕（暗色）
+        type: variable-themed-color
+        format: hex
+        default-light: 'transparent'
+        default-dark: 'color-mix(in srgb, var(--domye-accent), transparent 75%)'
+    - 
+        id: phycat-heading-indicator-color
+        title: 标题折叠图标 · 文字
+        type: variable-themed-color
+        format: hex
+        default-light: '#eeeeee'
+        default-dark: '#eeeeee'
+    - 
+        id: phycat-h2-color
+        title: H2 胶囊标题文字
+        description: "亮色胶囊渐变背景上的文字颜色；其他 H2 样式使用标题颜色设置。"
+        type: variable-themed-color
+        format: hex
+        default-light: '#000000'
+        default-dark: '#fff'
+    - 
+        id: phycat-h2-color-2
+        title: H2 编辑模式井号
+        type: variable-themed-color
+        format: hex
+        opacity: true
+        default-light: 'rgba(255, 255, 255, 0.6)'
+        default-dark: 'rgba(255, 255, 255, 0.6)'
+    - 
+        id: phycat-h5-decoration-background
+        title: H5 · 背景
+        type: variable-themed-color
+        format: hex
+        default-light: '#ffffff'
+        default-dark: '#ffffff'
+    - 
+        id: phycat-h2-background
+        title: H2 · 背景
+        type: variable-themed-color
+        format: hex
+        opacity: true
+        default-light: 'rgba(255, 255, 255, 0.02)'
+        default-dark: 'rgba(255, 255, 255, 0.02)'
+    - 
+        id: phycat-h2-border-top
+        title: H2 · 顶部边框
+        type: variable-themed-color
+        format: hex
+        opacity: true
+        default-light: 'rgba(255, 255, 255, 0.08)'
+        default-dark: 'rgba(255, 255, 255, 0.08)'
+    - 
+        id: headings-color-setting
+        title: 标题文字颜色设置
+        type: heading
+        level: 4
+        collapsed: true
+    - 
+        id: h1-light-color
+        title: H1 亮颜色
+        type: variable-color
+        format: hex
+        default: '#000000'
+    - 
+        id: h1-dark-color
+        title: H1 暗颜色
+        type: variable-color
+        format: hex
+        default: '#ffffff'
+    - 
+        id: h2-light-color
+        title: H2 亮颜色
+        description: "标题文字颜色。亮色胶囊样式单独使用“配色设置 → H2 胶囊标题文字”。"
+        type: variable-color
+        format: hex
+        default: '#000000'
+    - 
+        id: h2-dark-color
+        title: H2 暗颜色
+        description: "标题文字颜色。亮色胶囊样式单独使用“配色设置 → H2 胶囊标题文字”。"
+        type: variable-color
+        format: hex
+        default: '#ffffff'
+    - 
+        id: h3-light-color
+        title: H3 亮颜色
+        type: variable-color
+        format: hex
+        default: '#000000'
+    - 
+        id: h3-dark-color
+        title: H3 暗颜色
+        type: variable-color
+        format: hex
+        default: '#ffffff'
+    - 
+        id: h4-light-color
+        title: H4 亮颜色
+        type: variable-color
+        format: hex
+        default: '#000000'
+    - 
+        id: h4-dark-color
+        title: H4 暗颜色
+        type: variable-color
+        format: hex
+        default: '#ffffff'
+    - 
+        id: h5-light-color
+        title: H5 亮颜色
+        type: variable-color
+        format: hex
+        default: '#000000'
+    - 
+        id: h5-dark-color
+        title: H5 暗颜色
+        type: variable-color
+        format: hex
+        default: '#ffffff'
+    - 
+        id: h6-light-color
+        title: H6 亮颜色
+        type: variable-color
+        format: hex
+        default: '#000000'
+    - 
+        id: h6-dark-color
+        title: H6 暗颜色
+        type: variable-color
+        format: hex
+        default: '#ffffff'
+    - 
+        id: heading1-setting
+        title: 一级标题
+        type: heading
+        level: 4
+        collapsed: true
+    - 
+        id: h1-alignment
+        title: H1 对齐方式
+        description: "选择 H1 标题是居中显示还是居左显示。"
+        type: class-select
+        allowEmpty: false
+        default: h1-align-center
+        options:
+            - label: ↔️ Center (Default)
+              value: h1-align-center
+            - label: ⬅️ Left
+              value: h1-align-left
+    - 
+        id: h1-size
+        title: H1字体大小
+        type: variable-number
+        default: 1.618
+        format: em
+    - 
+        id: heading2-setting
+        title: 二级标题
+        type: heading
+        level: 4
+        collapsed: true
+    - 
+        id: h2-style-select
+        title: 亮色模式风格
+        description: "选择原有的胶囊背景风格或新的双子塔风格。"
+        type: class-select
+        allowEmpty: false
+        default: h2-style-twin
+        options:
+            - label: 🏛️ Twin Pillars (New)
+              value: h2-style-twin
+            - label: 💊 Capsule (Original)
+              value: h2-style-capsule
+    - 
+        id: h2-style-dark-select
+        title: 暗色模式选择风格
+        description: "选择原有的玻璃胶囊风格或新的霓虹双子塔风格。"
+        type: class-select
+        allowEmpty: false
+        default: h2-style-dark-twin
+        options:
+            - label: 🏙️ Neon Twin (New)
+              value: h2-style-dark-twin
+            - label: 🔮 Glass Capsule (Original)
+              value: h2-style-dark-capsule
+    - 
+        id: h2-size
+        title: H2字体大小
+        type: variable-number
+        default: 1.462
+        format: em
+    - 
+        id: h2-spacing-scale-start
+        title: H2前间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: h2-spacing-scale-end
+        title: H2后间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: heading3-setting
+        title: 三级标题
+        type: heading
+        level: 4
+        collapsed: true
+    - 
+        id: h3-size
+        title: H3字体大小
+        type: variable-number
+        default: 1.318
+        format: em
+    - 
+        id: h3-spacing-scale-start
+        title: H3前间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: h3-spacing-scale-end
+        title: H3后间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: heading4-setting
+        title: 四级标题
+        type: heading
+        level: 4
+        collapsed: true
+    - 
+        id: h4-size
+        title: H4字体大小
+        type: variable-number
+        default: 1.2
+        format: em
+    - 
+        id: h4-spacing-scale-start
+        title: H4前间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: h4-spacing-scale-end
+        title: H4后间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: heading5-setting
+        title: 五级标题
+        type: heading
+        level: 4
+        collapsed: true
+    - 
+        id: h5-size
+        title: H5字体大小
+        type: variable-number
+        default: 1.2
+        format: em
+    - 
+        id: h5-spacing-scale-start
+        title: H5前间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: h5-spacing-scale-end
+        title: H5后间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: heading6-setting
+        title: 六级标题
+        type: heading
+        level: 4
+        collapsed: true
+    - 
+        id: h6-size
+        title: H6字体大小
+        type: variable-number
+        default: 1.2
+        format: em
+    - 
+        id: h6-spacing-scale-start
+        title: H6前间距
+        type: variable-number
+        default: 1.5
+    - 
+        id: h6-spacing-scale-end
+        title: H6后间距
+        type: variable-number
+        default: 1.5
+    -
+        id: secondary-color
+        title: H1 左对齐装饰条
+        description: 仅在开启「H1 左对齐」时生效。
+        type: variable-themed-color
+        format: hex
+        default-light: '#bd93f9'
+        default-dark: '#bd93f9'
     - 
         id: Paragraph
         title: 段落
@@ -2717,7 +3080,6 @@ settings:
 		default-light: '#'
 		default-dark: '#'
 
-
 */
 
 /* @settings
@@ -2794,407 +3156,5 @@ settings:
         title: 多彩选框
         type: class-toggle
 
-
 */
 
-/* @settings
-
-name: 📑 Headings / 标题
-id: headings
-settings:
-    - 
-        id: h1-underline-color
-        title: H1 下划线（暗色）
-        type: variable-themed-color
-        format: hex
-        default-light: '#ff7096'
-        default-dark: '#ff5555'
-    - 
-        id: phycat-h2-gradient-start
-        title: H2 渐变起点（亮色）
-        type: variable-themed-color
-        format: hex
-        default-light: 'color-mix(in srgb, var(--domye-accent), #fff 35%)'
-        default-dark: 'var(--domye-accent)'
-    - 
-        id: phycat-h2-gradient-middle
-        title: H2 渐变中点（亮色）
-        type: variable-themed-color
-        format: hex
-        default-light: 'var(--domye-accent)'
-        default-dark: 'var(--domye-accent)'
-    - 
-        id: phycat-h2-gradient-end
-        title: H2 渐变终点（亮色）
-        type: variable-themed-color
-        format: hex
-        default-light: 'color-mix(in srgb, var(--domye-accent), #fff 35%)'
-        default-dark: 'var(--domye-accent)'
-    - 
-        id: phycat-h2-radial-color
-        title: H2 径向光晕（暗色）
-        type: variable-themed-color
-        format: hex
-        default-light: 'transparent'
-        default-dark: 'color-mix(in srgb, var(--domye-accent), transparent 85%)'
-    - 
-        id: phycat-h2-radial-hover
-        title: H2 悬停径向光晕（暗色）
-        type: variable-themed-color
-        format: hex
-        default-light: 'transparent'
-        default-dark: 'color-mix(in srgb, var(--domye-accent), transparent 75%)'
-    - 
-        id: phycat-heading-indicator-color
-        title: 标题折叠图标 · 文字
-        type: variable-themed-color
-        format: hex
-        default-light: '#eeeeee'
-        default-dark: '#eeeeee'
-    - 
-        id: phycat-h2-color
-        title: H2 胶囊标题文字
-        description: "亮色胶囊渐变背景上的文字颜色；其他 H2 样式使用标题颜色设置。"
-        type: variable-themed-color
-        format: hex
-        default-light: '#000000'
-        default-dark: '#fff'
-    - 
-        id: phycat-h2-color-2
-        title: H2 编辑模式井号
-        type: variable-themed-color
-        format: hex
-        opacity: true
-        default-light: 'rgba(255, 255, 255, 0.6)'
-        default-dark: 'rgba(255, 255, 255, 0.6)'
-    - 
-        id: phycat-h5-decoration-background
-        title: H5 · 背景
-        type: variable-themed-color
-        format: hex
-        default-light: '#ffffff'
-        default-dark: '#ffffff'
-    - 
-        id: phycat-h2-background
-        title: H2 · 背景
-        type: variable-themed-color
-        format: hex
-        opacity: true
-        default-light: 'rgba(255, 255, 255, 0.02)'
-        default-dark: 'rgba(255, 255, 255, 0.02)'
-    - 
-        id: phycat-h2-border-top
-        title: H2 · 顶部边框
-        type: variable-themed-color
-        format: hex
-        opacity: true
-        default-light: 'rgba(255, 255, 255, 0.08)'
-        default-dark: 'rgba(255, 255, 255, 0.08)'
-    - 
-        id: headings-color-setting
-        title: 标题文字颜色设置
-        type: heading
-        level: 3
-        collapsed: true
-    - 
-        id: h1-light-color
-        title: H1 亮颜色
-        type: variable-color
-        format: hex
-        default: '#000000'
-    - 
-        id: h1-dark-color
-        title: H1 暗颜色
-        type: variable-color
-        format: hex
-        default: '#ffffff'
-    - 
-        id: h2-light-color
-        title: H2 亮颜色
-        description: "标题文字颜色。亮色胶囊样式单独使用“配色设置 → H2 胶囊标题文字”。"
-        type: variable-color
-        format: hex
-        default: '#000000'
-    - 
-        id: h2-dark-color
-        title: H2 暗颜色
-        description: "标题文字颜色。亮色胶囊样式单独使用“配色设置 → H2 胶囊标题文字”。"
-        type: variable-color
-        format: hex
-        default: '#ffffff'
-    - 
-        id: h3-light-color
-        title: H3 亮颜色
-        type: variable-color
-        format: hex
-        default: '#000000'
-    - 
-        id: h3-dark-color
-        title: H3 暗颜色
-        type: variable-color
-        format: hex
-        default: '#ffffff'
-    - 
-        id: h4-light-color
-        title: H4 亮颜色
-        type: variable-color
-        format: hex
-        default: '#000000'
-    - 
-        id: h4-dark-color
-        title: H4 暗颜色
-        type: variable-color
-        format: hex
-        default: '#ffffff'
-    - 
-        id: h5-light-color
-        title: H5 亮颜色
-        type: variable-color
-        format: hex
-        default: '#000000'
-    - 
-        id: h5-dark-color
-        title: H5 暗颜色
-        type: variable-color
-        format: hex
-        default: '#ffffff'
-    - 
-        id: h6-light-color
-        title: H6 亮颜色
-        type: variable-color
-        format: hex
-        default: '#000000'
-    - 
-        id: h6-dark-color
-        title: H6 暗颜色
-        type: variable-color
-        format: hex
-        default: '#ffffff'
-    - 
-        id: heading1-setting
-        title: 一级标题
-        type: heading
-        level: 3
-        collapsed: true
-    - 
-        id: h1-alignment
-        title: H1 对齐方式
-        description: "选择 H1 标题是居中显示还是居左显示。"
-        type: class-select
-        allowEmpty: false
-        default: h1-align-center
-        options:
-            - label: ↔️ Center (Default)
-              value: h1-align-center
-            - label: ⬅️ Left
-              value: h1-align-left
-    - 
-        id: h1-size
-        title: H1字体大小
-        type: variable-number
-        default: 1.618
-        format: em
-    - 
-        id: heading2-setting
-        title: 二级标题
-        type: heading
-        level: 3
-        collapsed: true
-    - 
-        id: h2-style-select
-        title: 亮色模式风格
-        description: "选择原有的胶囊背景风格或新的双子塔风格。"
-        type: class-select
-        allowEmpty: false
-        default: h2-style-twin
-        options:
-            - label: 🏛️ Twin Pillars (New)
-              value: h2-style-twin
-            - label: 💊 Capsule (Original)
-              value: h2-style-capsule
-    - 
-        id: h2-style-dark-select
-        title: 暗色模式选择风格
-        description: "选择原有的玻璃胶囊风格或新的霓虹双子塔风格。"
-        type: class-select
-        allowEmpty: false
-        default: h2-style-dark-twin
-        options:
-            - label: 🏙️ Neon Twin (New)
-              value: h2-style-dark-twin
-            - label: 🔮 Glass Capsule (Original)
-              value: h2-style-dark-capsule
-    - 
-        id: h2-size
-        title: H2字体大小
-        type: variable-number
-        default: 1.462
-        format: em
-    - 
-        id: h2-spacing-scale-start
-        title: H2前间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: h2-spacing-scale-end
-        title: H2后间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: heading3-setting
-        title: 三级标题
-        type: heading
-        level: 3
-        collapsed: true
-    - 
-        id: h3-size
-        title: H3字体大小
-        type: variable-number
-        default: 1.318
-        format: em
-    - 
-        id: h3-spacing-scale-start
-        title: H3前间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: h3-spacing-scale-end
-        title: H3后间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: heading4-setting
-        title: 四级标题
-        type: heading
-        level: 3
-        collapsed: true
-    - 
-        id: h4-size
-        title: H4字体大小
-        type: variable-number
-        default: 1.2
-        format: em
-    - 
-        id: h4-spacing-scale-start
-        title: H4前间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: h4-spacing-scale-end
-        title: H4后间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: heading5-setting
-        title: 五级标题
-        type: heading
-        level: 3
-        collapsed: true
-    - 
-        id: h5-size
-        title: H5字体大小
-        type: variable-number
-        default: 1.2
-        format: em
-    - 
-        id: h5-spacing-scale-start
-        title: H5前间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: h5-spacing-scale-end
-        title: H5后间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: heading6-setting
-        title: 六级标题
-        type: heading
-        level: 3
-        collapsed: true
-    - 
-        id: h6-size
-        title: H6字体大小
-        type: variable-number
-        default: 1.2
-        format: em
-    - 
-        id: h6-spacing-scale-start
-        title: H6前间距
-        type: variable-number
-        default: 1.5
-    - 
-        id: h6-spacing-scale-end
-        title: H6后间距
-        type: variable-number
-        default: 1.5
-*/
-
-
-/* --- src: baseline L4183–L4255 | Domye 自有面板（上面 8 块来自 Border） --- */
-/* @settings
-
-name: 🎨 Domye Appearance
-id: domye-appearance
-settings:
-    -
-        id: domye-accent
-        title: 强调色来源
-        description: 默认跟随 Obsidian 外观设置里的强调色，也可直接填任意 CSS 颜色值。
-        type: variable-text
-        default: hsl(var(--accent-h), var(--accent-s), var(--accent-l))
-    -
-        id: domye-radius
-        title: 圆角大小
-        description: 统一缩放主题自有的装饰圆角（列表标记、复选框、标题装饰条）。
-        type: variable-number-slider
-        default: 4
-        format: px
-        min: 0
-        max: 12
-        step: 1
-    -
-        id: domye-font-size
-        title: 正文字号
-        type: variable-number-slider
-        default: 16
-        format: px
-        min: 12
-        max: 24
-        step: 1
-    -
-        id: domye-heading-spacing
-        title: 标题间距
-        description: 标题上下留白的基准值，各级标题按同倍数放大。
-        type: variable-number-slider
-        default: 0.5
-        format: rem
-        min: 0
-        max: 2
-        step: 0.1
-    -
-        id: domye-border-width
-        title: 边框粗细
-        description: 主题自有描边（h4 实心点、h5 空心点、设置面板缩进线）。
-        type: variable-number-slider
-        default: 1
-        format: px
-        min: 0
-        max: 4
-        step: 1
-*/
-
-/* @settings
-
-name: 🐱 Phycat colors
-id: phycat-colors
-settings:
-    -
-        id: secondary-color
-        title: H1 左对齐装饰条
-        description: 仅在开启「H1 左对齐」时生效。
-        type: variable-themed-color
-        format: hex
-        default-light: '#bd93f9'
-        default-dark: '#bd93f9'
-*/

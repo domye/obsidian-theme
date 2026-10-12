@@ -623,61 +623,23 @@ body {
   --callout-content-radius: 0px;
 }
 
-.theme-light
+/* 4 套 callout 样式：明暗同值，只写一份（与 body 默认值相同的声明不再重复）*/
+body:is(.theme-light, .theme-dark)
   .callout:is([data-callout-metadata*="style-1"], [data-callout*="style-1"]),
-.callout-style-1.theme-light {
+.callout-style-1:is(.theme-light, .theme-dark) {
   --callout-border-width: 1px;
-  --callout-border-opacity: 0.25;
   --callout-padding: 0;
-  --callout-radius: var(--radius-s);
-  --callout-title-color: inherit;
   --callout-title-padding: 8px 16px;
-  --callout-title-size: inherit;
   --callout-content-padding: 0px 16px;
   --callout-content-background: var(--callout-content-bg);
-  --callout-content-radius: 0px;
 }
 
-.theme-dark
-  .callout:is([data-callout-metadata*="style-1"], [data-callout*="style-1"]),
-.callout-style-1.theme-dark {
-  --callout-border-width: 1px;
-  --callout-border-opacity: 0.25;
-  --callout-padding: 0;
-  --callout-radius: var(--radius-s);
-  --callout-title-color: inherit;
-  --callout-title-padding: 8px 16px;
-  --callout-title-size: inherit;
-  --callout-content-padding: 0px 16px;
-  --callout-content-background: var(--callout-content-bg);
-  --callout-content-radius: 0px;
-}
-
-.theme-light
+body:is(.theme-light, .theme-dark)
   .callout:is([data-callout-metadata*="style-2"], [data-callout*="style-2"]),
-.callout-style-2.theme-light {
+.callout-style-2:is(.theme-light, .theme-dark) {
   --callout-border-width: 1px;
-  --callout-border-opacity: 0.25;
   --callout-padding: 0 6px 6px;
-  --callout-radius: var(--radius-s);
-  --callout-title-color: inherit;
   --callout-title-padding: 8px 16px;
-  --callout-title-size: inherit;
-  --callout-content-padding: 0px 16px;
-  --callout-content-background: var(--callout-content-bg);
-  --callout-content-radius: 4px;
-}
-
-.theme-dark
-  .callout:is([data-callout-metadata*="style-2"], [data-callout*="style-2"]),
-.callout-style-2.theme-dark {
-  --callout-border-width: 1px;
-  --callout-border-opacity: 0.25;
-  --callout-padding: 0 6px 6px;
-  --callout-radius: var(--radius-s);
-  --callout-title-color: inherit;
-  --callout-title-padding: 8px 16px;
-  --callout-title-size: inherit;
   --callout-content-padding: 0px 16px;
   --callout-content-background: var(--callout-content-bg);
   --callout-content-radius: 4px;
@@ -688,45 +650,17 @@ body:is(.theme-light, .theme-dark)
 .callout-style-3:is(.theme-light, .theme-dark) {
   --callout-border-width: 0 0 0 4px;
   --callout-border-opacity: 1;
-  --callout-padding: var(--size-4-3) var(--size-4-3) var(--size-4-3)
-    var(--size-4-6);
-  --callout-radius: var(--radius-s);
-  --callout-title-color: inherit;
-  --callout-title-padding: 0;
-  --callout-title-size: inherit;
-  --callout-content-padding: 0;
-  --callout-content-background: transparent;
-  --callout-content-radius: 0px;
 }
 
-.theme-light
+body:is(.theme-light, .theme-dark)
   .callout:is([data-callout-metadata*="style-4"], [data-callout*="style-4"]),
-.callout-style-4.theme-light {
+.callout-style-4:is(.theme-light, .theme-dark) {
   --callout-border-width: 0 0 0 4px;
   --callout-border-opacity: 1;
   --callout-padding: 0;
-  --callout-radius: var(--radius-s);
-  --callout-title-color: inherit;
   --callout-title-padding: 8px 16px;
-  --callout-title-size: inherit;
   --callout-content-padding: 0px 16px;
   --callout-content-background: var(--callout-content-bg);
-  --callout-content-radius: 0px;
-}
-
-.theme-dark
-  .callout:is([data-callout-metadata*="style-4"], [data-callout*="style-4"]),
-.callout-style-4.theme-dark {
-  --callout-border-width: 0 0 0 4px;
-  --callout-border-opacity: 1;
-  --callout-padding: 0;
-  --callout-radius: var(--radius-s);
-  --callout-title-color: inherit;
-  --callout-title-padding: 8px 16px;
-  --callout-title-size: inherit;
-  --callout-content-padding: 0px 16px;
-  --callout-content-background: var(--callout-content-bg);
-  --callout-content-radius: 0px;
 }
 
 .callout-content {
