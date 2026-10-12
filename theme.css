@@ -4697,13 +4697,80 @@ body {
 body {
   --grid-background-pattern-size: 36px;
   --grid-background-pattern-color: var(--background-modifier-border);
+  /* 内置图案皮肤（被当 mask 用，本身颜色不影响结果）*/
+  --bg-shape-cross: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h30v30H0z' fill='none'/%3E%3Cpath d='M0 0L15 15M30 0L15 15M0 30L15 15M30 30L15 15' stroke='black' stroke-width='0.4'/%3E%3C/svg%3E");
+  --bg-shape-star: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Cpath d='M10 10l2-6l2 6l6 2l-6 2l-2 6l-2-6l-6-2Z' fill='black'/%3E%3Cpath d='M30 15l1-3l1 3l3 1l-3 1l-1 3l-1-3l-3-1Z' fill='black'/%3E%3Cpath d='M25 30l1.5-4.5l1.5 4.5l4.5 1.5l-4.5 1.5l-1.5 4.5l-1.5-4.5l-4.5-1.5Z' fill='black'/%3E%3C/svg%3E");
+  --bg-shape-hex: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Cpath d='M10 5l10 0l5 8.66l-5 8.66l-10 0l-5-8.66Z' fill='none' stroke='black' stroke-width='0.4'/%3E%3Cpath d='M20 22.32l10 0l5 8.66l-5 8.66l-10 0l-5-8.66Z' fill='none' stroke='black' stroke-width='0.4'/%3E%3C/svg%3E");
+  --bg-shape-dot: url("data:image/svg+xml,%3Csvg width='15' height='15' viewBox='0 0 15 15' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7.5' cy='7.5' r='0.5' fill='black'/%3E%3Ccircle cx='7.5' cy='2.5' r='0.5' fill='black'/%3E%3Ccircle cx='7.5' cy='12.5' r='0.5' fill='black'/%3E%3Ccircle cx='2.5' cy='7.5' r='0.5' fill='black'/%3E%3Ccircle cx='12.5' cy='7.5' r='0.5' fill='black'/%3E%3C/svg%3E");
+  --bg-shape-tri: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h30v30H0z' fill='none'/%3E%3Cpath d='M0 0L30 0L15 15Z' fill='black'/%3E%3Cpath d='M30 30L0 30L15 15Z' fill='black'/%3E%3C/svg%3E");
+  --bg-shape-grid: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0z' fill='none'/%3E%3Cpath d='M20 0v20M0 20h20' stroke='black' stroke-width='0.7'/%3E%3C/svg%3E");
+  --bg-shape-none: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=");
 }
 
+/* 图案层：叶子自身的 ::before（position: relative 是 Obsidian core 已有的，不重复声明），
+   z-index: -1 让它在叶子背景之上、正文之下；isolation 把它锁在叶子这一层。
+   图案本体当 mask 用，填色用 background-color，所以 7 种图案都跟随 --grid-background-pattern-color。*/
 .editor-grid-background-pattren .workspace-leaf-content[data-type=markdown],
 .editor-grid-background-pattren .export-image-preview-container.markdown-rendered {
-  background-image: linear-gradient(to right, var(--grid-background-pattern-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-background-pattern-color) 1px, transparent 1px);
-  background-size: var(--grid-background-pattern-size) var(--grid-background-pattern-size);
-  background-position: center;
+  --bg-shape-current: var(--bg-shape-grid);
+  isolation: isolate;
+}
+.editor-grid-background-pattren .workspace-leaf-content[data-type=markdown]::before,
+.editor-grid-background-pattren .export-image-preview-container.markdown-rendered::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--grid-background-pattern-color);
+  -webkit-mask-image: var(--bg-shape-current);
+  mask-image: var(--bg-shape-current);
+  -webkit-mask-size: var(--grid-background-pattern-size) var(--grid-background-pattern-size);
+  mask-size: var(--grid-background-pattern-size) var(--grid-background-pattern-size);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+/* 导出图片预览容器 core 没给定位，inset: 0 的 ::before 需要它 */
+.editor-grid-background-pattren .export-image-preview-container.markdown-rendered {
+  position: relative;
+}
+
+.editor-grid-background-pattren.bg-pattern-cross .workspace-leaf-content[data-type=markdown],
+.editor-grid-background-pattren.bg-pattern-cross .export-image-preview-container.markdown-rendered {
+  --bg-shape-current: var(--bg-shape-cross);
+}
+
+.editor-grid-background-pattren.bg-pattern-star .workspace-leaf-content[data-type=markdown],
+.editor-grid-background-pattren.bg-pattern-star .export-image-preview-container.markdown-rendered {
+  --bg-shape-current: var(--bg-shape-star);
+}
+
+.editor-grid-background-pattren.bg-pattern-hex .workspace-leaf-content[data-type=markdown],
+.editor-grid-background-pattren.bg-pattern-hex .export-image-preview-container.markdown-rendered {
+  --bg-shape-current: var(--bg-shape-hex);
+}
+
+.editor-grid-background-pattren.bg-pattern-dot .workspace-leaf-content[data-type=markdown],
+.editor-grid-background-pattren.bg-pattern-dot .export-image-preview-container.markdown-rendered {
+  --bg-shape-current: var(--bg-shape-dot);
+}
+
+.editor-grid-background-pattren.bg-pattern-tri .workspace-leaf-content[data-type=markdown],
+.editor-grid-background-pattren.bg-pattern-tri .export-image-preview-container.markdown-rendered {
+  --bg-shape-current: var(--bg-shape-tri);
+}
+
+.editor-grid-background-pattren.bg-pattern-grid .workspace-leaf-content[data-type=markdown],
+.editor-grid-background-pattren.bg-pattern-grid .export-image-preview-container.markdown-rendered {
+  --bg-shape-current: var(--bg-shape-grid);
+}
+
+.editor-grid-background-pattren.bg-pattern-none .workspace-leaf-content[data-type=markdown],
+.editor-grid-background-pattren.bg-pattern-none .export-image-preview-container.markdown-rendered {
+  --bg-shape-current: var(--bg-shape-none);
 }
 
 /* --- src: baseline L8568–L9938 | link・tag・高亮・行悬停・列表・复选框・callout・引用・代码・表格・嵌入・图片・PDF・图标 --- */
@@ -8394,11 +8461,34 @@ settings:
         level: 3
     - 
         id: editor-grid-background-pattren
-        title: 启用 网格背景图案
+        title: 启用 背景图案
         type: class-toggle
     - 
+        id: editor-bg-pattern
+        title: 图案样式
+        description: 7 种图案共用：图案本体当遮罩，填色取「图案颜色」，尺寸取「图案尺寸」。
+        type: class-select
+        allowEmpty: false
+        default: bg-pattern-grid
+        options:
+            -   label: 方格网
+                value: bg-pattern-grid
+            -   label: 交叉斜线
+                value: bg-pattern-cross
+            -   label: 星点
+                value: bg-pattern-star
+            -   label: 六边形
+                value: bg-pattern-hex
+            -   label: 十字圆点
+                value: bg-pattern-dot
+            -   label: 三角形
+                value: bg-pattern-tri
+            -   label: 无背景
+                value: bg-pattern-none
+    - 
 		id: grid-background-pattern-color
-		title: 自定义 网格背景图案颜色
+		title: 图案颜色
+		description: 7 种图案都跟随此颜色（内置 SVG 只提供形状，颜色由主题填充）
 		type: variable-themed-color
 		opacity: true
 		format: hex
@@ -8406,7 +8496,7 @@ settings:
 		default-dark: '#'
     - 
         id: grid-background-pattern-size
-        title: 自定义 网格背景图案尺寸
+        title: 图案尺寸
         description: 接受任何 CSS background-size 值
         type: variable-text
         default: 36px
@@ -9594,7 +9684,7 @@ body:not(.callout-style-customize) .setting-item:is([data-id=callout-border-widt
   display: none;
 }
 
-body:not(.editor-grid-background-pattren) .setting-item:is([data-id=grid-background-pattern-color], [data-id=grid-background-pattern-size]) {
+body:not(.editor-grid-background-pattren) .setting-item:is([data-id=editor-bg-pattern], [data-id=grid-background-pattern-color], [data-id=grid-background-pattern-size]) {
   display: none;
 }
 

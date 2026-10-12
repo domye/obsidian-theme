@@ -2005,11 +2005,34 @@ settings:
         level: 3
     - 
         id: editor-grid-background-pattren
-        title: 启用 网格背景图案
+        title: 启用 背景图案
         type: class-toggle
     - 
+        id: editor-bg-pattern
+        title: 图案样式
+        description: 7 种图案共用：图案本体当遮罩，填色取「图案颜色」，尺寸取「图案尺寸」。
+        type: class-select
+        allowEmpty: false
+        default: bg-pattern-grid
+        options:
+            -   label: 方格网
+                value: bg-pattern-grid
+            -   label: 交叉斜线
+                value: bg-pattern-cross
+            -   label: 星点
+                value: bg-pattern-star
+            -   label: 六边形
+                value: bg-pattern-hex
+            -   label: 十字圆点
+                value: bg-pattern-dot
+            -   label: 三角形
+                value: bg-pattern-tri
+            -   label: 无背景
+                value: bg-pattern-none
+    - 
 		id: grid-background-pattern-color
-		title: 自定义 网格背景图案颜色
+		title: 图案颜色
+		description: 7 种图案都跟随此颜色（内置 SVG 只提供形状，颜色由主题填充）
 		type: variable-themed-color
 		opacity: true
 		format: hex
@@ -2017,7 +2040,7 @@ settings:
 		default-dark: '#'
     - 
         id: grid-background-pattern-size
-        title: 自定义 网格背景图案尺寸
+        title: 图案尺寸
         description: 接受任何 CSS background-size 值
         type: variable-text
         default: 36px
