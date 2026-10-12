@@ -3,8 +3,9 @@
 单文件 `theme.css` 已迁移为 SCSS 模块化工程，`theme.css` 现在是构建产物。
 
 - 来源：**Border v1.13.9**（Akifyss）为主干 + **Phycat v0.3.7**（Xujilong）的列表/标题样式移植
-- 迁移前的单文件可在 git 里取回：`git show bd31a17:.obsidian/themes/domye/theme.css`
-  （下面各文件顶部的 `src: baseline L1234–L5678` 注释指的就是这份迁移前文件的行号，用于标记「哪段是上游原样搬过来的、哪段是本地改写的」）
+- 迁移前的单文件**不在本仓库**，在笔记仓库里：`git -C ../笔记 show bd31a17:.obsidian/themes/domye/theme.css`
+  （下面各文件顶部的 `src: baseline L1234–L5678` 注释指的就是这份迁移前文件的行号，用于标记「哪段是上游原样搬过来的、哪段是本地改写的」；`bd31a17` 在本主题仓库里不存在）
+- 两份移植来源单文件放在 `tools/`：`border-origin.css`、`phycat-origin.css`（**尚未纳入版本管理**，新 clone 取不到）
 
 ## 目录结构
 
@@ -32,8 +33,12 @@ domye/
 │       ├── _visibility.scss     「某状态下隐藏哪些设置项」，map + @each 生成
 │       └── _panel.scss          设置面板本体的样式
 ├── tools/
-│   ├── check-tokens.mjs         npm run lint（静态检查）+ npm run verify（构建等价性守卫）
+│   ├── check-tokens.mjs         npm run lint / verify 的入口：读事实 → 跑规则 → 打印
+│   ├── theme-facts.mjs          事实层：SCSS 扫描、@settings 解析、sass 编译、class 提取
+│   ├── rules.mjs                规则层：纯函数，只接收事实并返回违规列表
 │   ├── css-map.mjs              CSS → 「选择器 → 声明」映射，守卫的比较单位
+│   ├── rules.test.mjs           npm run test：规则回归测试（喂假事实）
+│   ├── theme-facts.test.mjs     npm run test：解析器与 class 提取的回归测试
 │   └── css-map.test.mjs         npm run test：解析器回归测试（node --test）
 ├── theme.css                    构建产物（Obsidian 只读这个）
 ├── manifest.json
@@ -48,8 +53,7 @@ domye/
 npm install          # 只装 sass
 npm run dev          # 监听 src/scss → theme.css
 npm run build        # 一次性构建（expanded）
-npm run build:min    # 压缩版
-npm run lint         # 静态检查：同块重复声明（error）、默认值漂移（error）、零引用变量、裸字面量
+npm run lint         # 静态检查：同块重复声明（error）、默认值漂移（error）、面板选项没有消费方（error）、零引用变量、裸字面量
 npm run verify       # 重建并守卫 theme.css：按「选择器 → 声明」逐条比对，容忍注释与选择器列表的拆分
 npm run test         # 检查工具自身的解析器回归测试（node --test）
 npm run check        # lint + test + verify
@@ -67,19 +71,20 @@ npm run check        # lint + test + verify
 4. 新增令牌先进 `_variables.scss`，不要在组件文件里裸写十六进制或圆角像素值；主题自有的圆角用 `var(--domye-radius-*)`。
 5. `@settings` 的 YAML 一律用 `/* ... */` 普通注释即可；若要改成 `--style=compressed` 构建，必须写成 `/*!`，否则注释会被压掉、Style Settings 面板失效。
 6. 同一属性不要在同一个规则块里写两遍——`npm run lint` 会把第二种作为 error 报出来（后写的静默生效，先写的是死代码）。
+7. **面板选项必须有消费方**：`class-toggle` 的 `id`、`class-select` 的每个 `value`，在运行时都会变成 `body` 上的 class；`npm run lint` 会去编译产物里找对应的 `.类名`，找不到就报错（死开关）。确实只需要默认样式、不需要任何规则的选项，就在那行标 `# no-style 说明`——契约写在声明旁边，而不是散在检查器的白名单里。
 
 ## Style Settings
 
-面板里新增两块：
+面板里的 Domye / Phycat 自有项已并入 Border 原有的两个块（不再是单独的顶层区）：
 
-| 块 | 项 | 驱动 |
+| 位置 | 项 | 驱动 |
 |---|---|---|
-| 🎨 Domye Appearance | 强调色来源 | `--domye-accent`（默认 `hsl(var(--accent-h)…)`，即跟随 Obsidian 强调色） |
+| Components → 全局外观 | 强调色来源 | `--domye-accent`（默认 `hsl(var(--accent-h)…)`，即跟随 Obsidian 强调色） |
 | | 圆角大小 | `--domye-radius`，派生 `--domye-radius-xs…xl`（0.5/0.75/1/1.5/2 倍） |
 | | 正文字号 | `--font-text-size`（Obsidian 官方变量） |
 | | 标题间距 | `--heading-spacing` |
 | | 边框粗细 | `--domye-border-width`（h4 实心点 / h5 空心点 / 设置面板缩进线） |
-| 🐱 Phycat colors | H1 左对齐装饰条 | `--secondary-color` |
+| Editor → 标题 | 次要色 | `--secondary-color`（H1 左对齐装饰条 / H2 双子塔） |
 
 这几项的默认值刻意等于迁移前的字面量，不动滑块时渲染结果与迁移前完全一致。
 
@@ -87,7 +92,7 @@ npm run check        # lint + test + verify
 
 - **死变量**：`--glow-shadow-text/box`、`--glow-color`、`--h2-shadow-color/hover`、`--phycat-h1-box-shadow`、`--phycat-h2-text-shadow`、`--phycat-h2-hover-box-shadow`、`--light-lighter` 全部零引用（阴影/光效在此前的提交里已被移除），连同对应的 6 个 `@settings` 项一起删除。
 - **重复声明**：`body` 块里 `--h1/h2/h3-line-height` 各写了两遍（第一遍是死代码）；`--domye-accent`、`--phycat-primary-color` 在两个 `body` 块里各写了一遍。现在只保留生效值，并集中到 `_variables.scss` 由 `$headings` map 生成。
-- **Style Settings 里被吞掉的值**：`.obsidian/plugins/obsidian-style-settings/data.json` 里有 `phycat-colors@@secondary-color@@light = #387bb9`，但主题里没有 `phycat-colors` 这个 `@settings` 块，插件的逻辑是「设置块不存在就跳过」，所以这个值一直没生效，主题硬编码的 `#bd93f9` 反而赢了。现已补回该设置块（默认 `#bd93f9`，与你原来的硬编码一致），你存的值从下次载入开始生效。
+- **Style Settings 里被吞掉的值**：`.obsidian/plugins/obsidian-style-settings/data.json` 里的 `phycat-colors@@secondary-color@@light`（= `#387bb9`）在主题里**没有对应块**（后来把 `🐱 Phycat colors` 并进了 `Editor`），插件的逻辑是「设置块不存在就跳过」，所以这个值当前不生效。想让它生效：面板里直接改（`Editor → 标题 → 次要色`，或 `Editor → 文本 → 斜体颜色`），或把 data.json 的键名改成 `Editor@@secondary-color@@light`（块 id 变了，键名跟着变）。
   > `phycat-colors@@bg-color`、`@@text-color`、`@@text-color-secondary` 三个残留键仍然无效（主题里已改用 Border 的 `--background-primary` / `--text-normal` / `--text-muted`）。要么在 Style Settings 里手动改回去，要么从 data.json 里删掉这三个键。
 - **图标遮罩重复**：h3–h6 的装饰图标原本 `-webkit-mask-image` / `mask-image` 各写 8 遍，现由 `heading-icon()` mixin 统一输出。
 

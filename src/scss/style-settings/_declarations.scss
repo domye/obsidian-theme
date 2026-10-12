@@ -106,7 +106,7 @@ settings:
             -   label: text buttons (obsidian default)
                 value: new-tab-text-btn-restore
             -   label: default
-                value: new-tab-btn-default
+                value: new-tab-btn-default  # no-style 默认按钮样式，不需要额外 class
     - 
         id: new-tab-image-select
         title: 新标签页 图像
@@ -117,7 +117,7 @@ settings:
             -   label: none
                 value: new-tab-image-none
             -   label: obsidian logo
-                value: new-tab-image-default
+                value: new-tab-image-default  # no-style Obsidian 默认 logo，不需要额外 class
             -   label: old default
                 value: new-tab-image-old
             -   label: customize image
@@ -232,7 +232,7 @@ settings:
         default: canvas-card-menu-center
         options:
             -   label: center(obsidian default)
-                value: canvas-card-menu-center
+                value: canvas-card-menu-center  # no-style 居中就是 Obsidian 默认位置
             -   label: left
                 value: canvas-card-menu-left
             -   label: right
@@ -349,7 +349,7 @@ settings:
         default: theme-light-background-default
         options:
             -   label: default
-                value: theme-light-background-default
+                value: theme-light-background-default  # no-style 亮色默认配色，不需要额外 class
             -   label: old default
                 value: theme-light-background-old-default
             -   label: colored
@@ -1151,7 +1151,7 @@ settings:
             -   label: brighter
                 value: theme-dark-background-brighter
             -   label: default
-                value: theme-dark-background-default
+                value: theme-dark-background-default  # no-style 暗色默认配色，不需要额外 class
             -   label: darker
                 value: theme-dark-background-darker
             -   label: pure black
@@ -2085,7 +2085,7 @@ settings:
         default: inline-title-color-default
         options:
             -   label: H1 color
-                value: inline-title-color-default
+                value: inline-title-color-default  # no-style 跟随 H1 颜色即默认，不需要额外 class
             -   label: Customized color
                 value: inline-title-color-customized
 	- 
@@ -2284,7 +2284,7 @@ settings:
         default: h1-align-center
         options:
             - label: ↔️ Center (Default)
-              value: h1-align-center
+              value: h1-align-center  # no-style 居中是本主题默认，只有左对齐才需要 class
             - label: ⬅️ Left
               value: h1-align-left
     - 
@@ -2732,7 +2732,7 @@ settings:
         default: table-width-default
         options:
             -   label: Consistent with line width (Default)
-                value: table-width-default
+                value: table-width-default  # no-style 跟随行宽即默认，不需要额外 class
             -   label: Obsidian default
                 value: table-width-obsidian-default
             -   label: Customize table width
@@ -3145,7 +3145,7 @@ settings:
         default: DB-table-bg-color-default
         options:
             -   label: Default
-                value: DB-table-bg-color-default
+                value: DB-table-bg-color-default  # no-style 默认背景，不需要额外 class
             -   label: Adapt to lower background
                 value: DB-table-bg-color-adapt
             -   label: Unify background color
@@ -3164,7 +3164,7 @@ settings:
         default: Projects-bg-color-default
         options:
             -   label: Default
-                value: Projects-bg-color-default
+                value: Projects-bg-color-default  # no-style 默认背景，不需要额外 class
             -   label: Adapt to lower background
                 value: Projects-bg-color-adapt
             -   label: Unify background color

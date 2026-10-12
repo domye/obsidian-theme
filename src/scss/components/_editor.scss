@@ -695,13 +695,14 @@ input[type="checkbox"]:checked:after {
 // 属性用单引号包住：任务字符里有 " 时，双引号写法在 sass 里是语法错误。
 @mixin task-checkbox($tasks, $suffix: "") {
   @each $task in $tasks {
+    /* 属性选择器用单引号：任务字符里可能有 "（[data-task='"']），双引号会被插值撑破 */
     body:not(.disable-alternative-checkboxes)
-      input[data-task="#{$task}"]:checked#{$suffix},
+      input[data-task='#{$task}']:checked#{$suffix},
     body:not(.disable-alternative-checkboxes)
-      li[data-task="#{$task}"]
+      li[data-task='#{$task}']
       > input:checked#{$suffix},
     body:not(.disable-alternative-checkboxes)
-      li[data-task="#{$task}"]
+      li[data-task='#{$task}']
       > p
       > input:checked#{$suffix} {
       @content;
