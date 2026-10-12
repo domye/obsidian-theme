@@ -839,47 +839,60 @@ kbd {
   color: var(--text-muted);
 }
 
-/*inline code*/
+/*inline code —— 移植 Phycat 药丸：底色/边框取自主题色，hover 只换底色与边框（去发光、去缩放）*/
 body {
-  --inline-code-normal: var(--color-pink);
-  --inline-code-background-light: var(--background-alt-light);
-  --inline-code-background-dark: var(--background-alt-dark);
+  --inline-code-normal: var(--phycat-primary-color);
+  --inline-code-background-light: color-mix(
+    in srgb,
+    var(--phycat-primary-color),
+    transparent 90%
+  );
+  --inline-code-background-dark: color-mix(
+    in srgb,
+    var(--phycat-primary-color),
+    transparent 90%
+  );
+  --inline-code-border-color: color-mix(
+    in srgb,
+    var(--phycat-primary-color),
+    transparent 85%
+  );
+  --inline-code-hover-color: var(--text-on-accent);
 }
 
+/* 格式化标记（反引号）、缩进代码与搜索高亮只沿用着色，不加药丸装饰 */
 .markdown-rendered :not(pre) > code,
 .cm-s-obsidian span.cm-inline-code {
   color: var(--inline-code-normal);
 }
 
-.theme-light
-  .cm-s-obsidian
-  span.cm-inline-code:not(.cm-formatting):not(.cm-hmd-indented-code):not(
-    .obsidian-search-match-highlight
-  ),
-.theme-light .cm-s-obsidian span.cm-inline-code,
-.theme-light :not(pre) > code {
-  background: var(--inline-code-background-light);
-}
+@each $mode in (light, dark) {
+  .theme-#{$mode}
+    :is(.cm-s-obsidian span.cm-inline-code, :not(pre) > code):not(
+      .cm-formatting
+    ):not(.cm-hmd-indented-code):not(.obsidian-search-match-highlight) {
+    font-family: var(--font-monospace);
+    letter-spacing: 0.5px;
+    background: var(--inline-code-background-#{$mode});
+    border: var(--domye-border-width) solid var(--inline-code-border-color);
+    border-radius: var(--domye-radius-s);
+    padding: 2px 6px;
+    margin: 0 2px;
+    vertical-align: middle;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    transition:
+      color var(--anim-duration-fast) ease,
+      background-color var(--anim-duration-fast) ease,
+      border-color var(--anim-duration-fast) ease;
 
-.theme-dark
-  .cm-s-obsidian
-  span.cm-inline-code:not(.cm-formatting):not(.cm-hmd-indented-code):not(
-    .obsidian-search-match-highlight
-  ),
-.theme-dark .cm-s-obsidian span.cm-inline-code,
-.theme-dark :not(pre) > code {
-  background: var(--inline-code-background-dark);
-}
-
-.theme-light
-  .cm-s-obsidian
-  span.cm-inline-code
-  span.cm-inline-code.cm-hmd-indented-code,
-.theme-dark
-  .cm-s-obsidian
-  span.cm-inline-code
-  span.cm-inline-code.cm-hmd-indented-code {
-  background: unset;
+    &:hover {
+      color: var(--inline-code-hover-color);
+      background: var(--phycat-primary-color);
+      border-color: var(--phycat-primary-color);
+      text-decoration: none;
+    }
+  }
 }
 
 /*codeblock*/
