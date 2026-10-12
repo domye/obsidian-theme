@@ -397,24 +397,134 @@ body {
   --cursor-link: pointer;
 }
 
-/* ====== Bold ====== */
+/* ====== Bold / Italic ====== */
+/* 移植 Phycat 0.3.7：配色 + 粗体下划线 / 斜体波浪线；只去掉发光（text-shadow）*/
 
 body {
   --bold-weight: var(--font-semibold);
-  --bold-color: var(--color-red);
+  /* Phycat 的 --text-bold 就是 --light-deep（亮色 = 主题色加深、暗色 = 主题色）*/
+  --bold-color: var(--light-deep);
+  /* 斜体默认跟粗体同色（改「粗体颜色」时斜体自动跟随，不用单独调）*/
+  --italic-color: var(--bold-color);
 }
 
 .cm-s-obsidian span.cm-quote.cm-strong {
   color: var(--bold-color);
 }
 
-/* Italic */
-body {
-  --italic-color: var(--color-orange);
-}
-
 .cm-s-obsidian span.cm-quote.cm-em {
   color: var(--italic-color);
+}
+
+/* 波浪线取斜体色本身（斜体色一变，线跟着变）*/
+.theme-light {
+  --phycat-italic-wave-color: color-mix(
+    in srgb,
+    var(--italic-color),
+    transparent 60%
+  );
+}
+
+.theme-dark {
+  --phycat-italic-wave-color: color-mix(
+    in srgb,
+    var(--italic-color),
+    white 20%
+  );
+}
+
+/* 粗体：下划线要用边框画（透明 → hover 变主题色）*/
+.markdown-preview-view strong,
+.cm-s-obsidian .cm-strong,
+.markdown-source-view.mod-cm6 strong {
+  display: inline;
+  position: relative;
+  border-bottom: 2px solid transparent;
+  box-decoration-break: clone;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-light .markdown-preview-view strong:hover,
+.theme-light .cm-s-obsidian .cm-strong:hover,
+.theme-light .markdown-source-view.mod-cm6 strong:hover {
+  color: var(--phycat-primary-color);
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--phycat-primary-color),
+    transparent 70%
+  );
+}
+
+.theme-dark .markdown-preview-view strong:hover,
+.theme-dark .cm-s-obsidian .cm-strong:hover,
+.theme-dark .markdown-source-view.mod-cm6 strong:hover {
+  border-bottom-color: var(--phycat-primary-color);
+}
+
+/* 斜体：两道 radial-gradient 拼出波浪线，hover 时波浪流动 */
+.markdown-preview-view em,
+.cm-s-obsidian .cm-em,
+.markdown-source-view.mod-cm6 em {
+  font-style: italic;
+  text-decoration: none;
+  display: inline;
+  padding-bottom: 2px;
+  background-repeat: repeat-x;
+  background-position: 0 100%, 0 calc(100% - 2px);
+  background-size: 16px 2px;
+  background-image:
+    radial-gradient(
+      circle at 4px -7.5px,
+      transparent 8px,
+      var(--phycat-italic-wave-color) 8.333px,
+      var(--phycat-italic-wave-color) 8.667px,
+      transparent 9px
+    ),
+    radial-gradient(
+      circle at 12px 9.5px,
+      transparent 8px,
+      var(--phycat-italic-wave-color) 8.333px,
+      var(--phycat-italic-wave-color) 8.667px,
+      transparent 9px
+    );
+  transition: color 0.2s ease, -webkit-text-stroke 0.2s ease;
+  box-decoration-break: clone;
+}
+
+.theme-light .markdown-preview-view em:hover,
+.theme-light .cm-s-obsidian .cm-em:hover,
+.theme-light .markdown-source-view.mod-cm6 em:hover {
+  color: var(--phycat-primary-color);
+  --phycat-italic-wave-color: var(--phycat-primary-color);
+  -webkit-text-stroke: 0.6px var(--phycat-primary-color);
+  animation: phycat-italic-wave 0.8s linear infinite;
+}
+
+.theme-dark .markdown-preview-view em:hover,
+.theme-dark .cm-s-obsidian .cm-em:hover,
+.theme-dark .markdown-source-view.mod-cm6 em:hover {
+  color: var(--phycat-primary-color);
+  --phycat-italic-wave-color: var(--phycat-primary-color);
+  -webkit-text-stroke: 0.5px var(--phycat-primary-color);
+  animation: phycat-italic-wave 0.8s linear infinite;
+}
+
+@keyframes phycat-italic-wave {
+  from {
+    background-position-x: 0;
+  }
+
+  to {
+    background-position-x: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .markdown-preview-view em:hover,
+  .cm-s-obsidian .cm-em:hover,
+  .markdown-source-view.mod-cm6 em:hover {
+    animation: none;
+  }
 }
 
 /* --- */

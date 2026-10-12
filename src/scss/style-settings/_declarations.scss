@@ -2429,8 +2429,8 @@ settings:
         default: 1.5
     -
         id: secondary-color
-        title: H1 左对齐装饰条
-        description: 仅在开启「H1 左对齐」时生效。
+        title: 次要色（H1 左对齐装饰条 / H2 双子塔）
+        description: 只驱动标题装饰：H1 左对齐时的装饰条、H2 双子塔/霓虹双子塔的装饰。斜体颜色请用「文本 → 斜体颜色」。
         type: variable-themed-color
         format: hex
         default-light: '#bd93f9'
@@ -2482,6 +2482,7 @@ settings:
     - 
         id: italic-color
 		title: 斜体颜色
+		description: 默认自动跟随「粗体颜色」，一般不用填；填了才单独生效。
 		type: variable-themed-color
 		format: hex
 		default-light: '#'
