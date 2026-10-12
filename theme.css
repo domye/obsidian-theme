@@ -43,6 +43,8 @@ body {
   --h6-spacing-scale-start: 1.5;
   --h6-spacing-scale-end: 1.5;
   --phycat-primary-color: var(--domye-accent);
+  --phycat-interactive-color: var(--link-color);
+  --phycat-interactive-hover: var(--link-color-hover);
   --phycat-check-on-accent: var(--text-on-accent);
   --phycat-task-color: #ffffff;
   --phycat-task-color-2: #888888;
@@ -4777,12 +4779,108 @@ body {
 /* ====== link ====== */
 body {
   /* Links */
-  --link-external-color: var(--color-blue);
-  --link-external-color-hover: var(--color-blue);
+  /* Phycat：内外链接同色（互动色），下划线换成自定义的 [ ] 装饰 */
+  --link-external-color: var(--link-color);
+  --link-external-color-hover: var(--link-color-hover);
 }
 
 .cm-s-obsidian span:is(.cm-link, .cm-url) a {
   color: var(--link-external-color);
+}
+
+/* --- 移植 Phycat 0.3.7 的链接效果 ---
+   ① 无下划线、文字用互动色（原来 external-link 是蓝色）
+   ② 两侧用 ::before / ::after 画 [ ]
+   ③ hover：底色变互动色的 10% 透明，[ ] 向外弹开 4px 并变粗变色
+   ④ 干掉外部链接自带的箭头图标（core 是用 background-image 画的）
+   注：颜色走 --phycat-interactive-* 映射，所以面板的「链接颜色 / 链接悬停颜色」仍生效 */
+.markdown-preview-view a.internal-link,
+.markdown-preview-view a.external-link,
+.markdown-source-view.mod-cm6 .cm-link.cm-underline,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline,
+.markdown-source-view.mod-cm6 .cm-table-widget a {
+  color: var(--phycat-interactive-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0 2px;
+  margin: 0;
+  border-radius: var(--domye-radius-s);
+  position: relative;
+  border-bottom: none;
+  background-image: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.markdown-preview-view a.internal-link::before,
+.markdown-preview-view a.external-link::before,
+.markdown-source-view.mod-cm6 .cm-link.cm-underline::before,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline::before,
+.markdown-source-view.mod-cm6 .cm-table-widget a::before {
+  content: "[";
+  display: inline-block;
+  color: var(--text-muted);
+  margin-right: 1px;
+  opacity: 0.7;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s, opacity 0.3s;
+}
+
+.markdown-preview-view a.internal-link::after,
+.markdown-preview-view a.external-link::after,
+.markdown-source-view.mod-cm6 .cm-link.cm-underline::after,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline::after,
+.markdown-source-view.mod-cm6 .cm-table-widget a::after {
+  content: "]";
+  display: inline-block;
+  color: var(--text-muted);
+  margin-left: 1px;
+  opacity: 0.7;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s, opacity 0.3s;
+}
+
+.markdown-preview-view a.internal-link:hover,
+.markdown-preview-view a.external-link:hover,
+.markdown-source-view.mod-cm6 .cm-link.cm-underline:hover,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline:hover,
+.markdown-source-view.mod-cm6 .cm-table-widget a:hover {
+  color: var(--phycat-interactive-hover);
+  border-radius: var(--domye-radius-s);
+  background-color: color-mix(in srgb, var(--phycat-interactive-hover), transparent 90%);
+  text-decoration: none;
+}
+
+.markdown-preview-view a.internal-link:hover::before,
+.markdown-preview-view a.external-link:hover::before,
+.markdown-source-view.mod-cm6 .cm-link.cm-underline:hover::before,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline:hover::before,
+.markdown-source-view.mod-cm6 .cm-table-widget a:hover::before {
+  transform: translateX(-4px);
+  color: var(--phycat-interactive-hover);
+  font-weight: bold;
+  opacity: 1;
+}
+
+.markdown-preview-view a.internal-link:hover::after,
+.markdown-preview-view a.external-link:hover::after,
+.markdown-source-view.mod-cm6 .cm-link.cm-underline:hover::after,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline:hover::after,
+.markdown-source-view.mod-cm6 .cm-table-widget a:hover::after {
+  transform: translateX(4px);
+  color: var(--phycat-interactive-hover);
+  font-weight: bold;
+  opacity: 1;
+}
+
+/* 干掉外部链接的箭头图标：core 是用 .external-link 的 background-image 画的（右边还留 0.9em 内边距）。
+   加 body 前缀把特异性抬到 (0,1,1)，压过 core 的 .external-link (0,1,0)，
+   这样不管链接在阅读视图的 <a>、还是实时预览的 .cm-link / .cm-url 里，箭头都盖得住 */
+body .external-link {
+  background-image: none;
+  padding-inline-end: 0;
+}
+
+.markdown-preview-view .external-link-icon {
+  display: none;
 }
 
 a:not(.tag, .raindrop-tag, .clickable-icon, :has(img:not(.link-favicon))):hover,
