@@ -890,6 +890,13 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   margin-inline-start: -50px !important;
 }
 
+/* 编辑器里的折叠按钮位置：core 默认 inset-inline-end: 0（贴在行尾），
+   Phycat 把它往左收 22px 贴近标题文字；左对齐时是 32px（见下一条）。
+   注意不能省：少了这条，阅读视图的位置对但实时预览会甩到最右边。*/
+.markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator {
+  inset-inline-end: 22px;
+}
+
 .h1-align-left .markdown-source-view.mod-cm6 .cm-fold-indicator .collapse-indicator {
   inset-inline-end: 32px;
 }
