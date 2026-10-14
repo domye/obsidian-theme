@@ -1,0 +1,41 @@
+// ============================================================================
+// 区域背景（split background）的共享数据：区域 / 模式 / 背景来源 / 令牌命名。
+//
+// 这张表有两个消费者，命名必须一致，所以它不写在任何一边：
+//   components/_workspace.scss       按来源把背景令牌赋到 body 上，卡片容器消费它
+//   style-settings/_visibility.scss  某个来源选中时，隐藏同组其余来源的设置项
+//
+// 本文件不产出任何 CSS（只有变量与函数），因此加进 @use 链不改变层叠顺序。
+// 术语见 GLOSSARY.md。
+// ============================================================================
+
+/// 三个区域。名称会进类名与令牌名：mod-{区域}-…、background-mod-{区域}-…
+$split-areas: (left, right, root);
+
+/// 模式后缀。
+$split-modes: (light, dark);
+
+/// 背景来源 → 它能覆盖的令牌族。
+/// 「选了这个来源，同组其余来源的设置项就该消失」这条联动关系只读这张表。
+$split-sources: (
+  primary: ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+  secondary: ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+  transparent: ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+  CSS: ('split',),
+  customize: ('CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
+);
+
+/// 令牌名（不含 `--`）：background-mod-left-split、background-mod-left-CSS-light。
+/// 运行时它同时是 Style Settings 的选项 id（见 style-settings/_declarations.scss），
+/// 所以数据 id 与 CSS 变量共用这一个命名函数。
+@function token($area, $token, $mode: null) {
+  @if $mode == null {
+    @return 'background-mod-#{$area}-#{$token}';
+  }
+  @return 'background-mod-#{$area}-#{$token}-#{$mode}';
+}
+
+/// body 上的状态开关类：mod-left-split-background-CSS-light。
+@function state-class($area, $state, $mode) {
+  @return 'mod-#{$area}-split-background-#{$state}-#{$mode}';
+}

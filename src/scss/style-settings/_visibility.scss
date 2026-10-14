@@ -1,4 +1,5 @@
 @use 'sass:list';
+@use '../split-background' as split;
 
 /* --- src: baseline L3731–L4093 | 按状态隐藏设置项（hide style setting option） --- */
 /*hide style setting option*/
@@ -113,24 +114,17 @@ $gates: (
 }
 
 // --- 2. 区域背景：选了某个来源，同组其余的隐藏 ---------------------------------
-// 状态类 body.mod-{区域}-split-background-{状态}-{模式}
-// 隐藏 id  background-mod-{区域}-{后缀}-{模式}
-$split-areas: ('root', 'left', 'right');
-$split-modes: ('light', 'dark');
-$split-states: (
-  'primary': ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
-  'secondary': ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
-  'transparent': ('split', 'CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
-  'CSS': ('split',),
-  'customize': ('CSS', 'CSS-blend-mode', 'CSS-backdrop-filter'),
-);
-
-@each $area in $split-areas {
-  @each $mode in $split-modes {
-    @each $state, $suffixes in $split-states {
+// 区域 / 模式 / 来源与令牌命名都取自 ../_split-background.scss：另一个消费者是
+// components/_workspace.scss（那边是给背景赋值）。以前两份状态清单各写一遍，
+// 改了一边忘了另一边不会有任何提示。
+// 生成顺序从 root/left/right 变为 left/right/root（表的顺序）：规则之间互斥
+// （不同 data-id、同一份 display: none），层叠结果不变。
+@each $area in split.$split-areas {
+  @each $mode in split.$split-modes {
+    @each $state, $suffixes in split.$split-sources {
       @each $suffix in $suffixes {
-        body.mod-#{$area}-split-background-#{$state}-#{$mode}
-          .setting-item[data-id="background-mod-#{$area}-#{$suffix}-#{$mode}"] {
+        body.#{split.state-class($area, $state, $mode)}
+          .setting-item[data-id="#{split.token($area, $suffix, $mode)}"] {
           display: none;
         }
       }
@@ -142,7 +136,7 @@ $split-states: (
 $activated-styles: ('default', 'accent', 'tab-style');
 $activated-fields: ('color', 'border-radius', 'background', 'shadow');
 
-@each $mode in $split-modes {
+@each $mode in split.$split-modes {
   @each $style in $activated-styles {
     @each $field in $activated-fields {
       body.activated-file-#{$style}-#{$mode}

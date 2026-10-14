@@ -15,6 +15,7 @@ domye/
 │   ├── index.scss               唯一入口，只写 @use，同时定义层叠顺序
 │   ├── _variables.scss          设计令牌（$ 变量 + 输出为 CSS 变量）
 │   ├── _mixins.scss             heading-icon()：h3–h6 装饰图标
+│   ├── _split-background.scss   区域背景的共享表（区域 / 模式 / 背景来源 / 令牌命名，不产出 CSS）
 │   ├── foundations/
 │   │   ├── _colors.scss         accent HSL + .theme-light/.theme-dark 调色板
 │   │   ├── _reset.scss          animations 基础动效令牌 / scrollbar
@@ -30,7 +31,7 @@ domye/
 │   └── style-settings/
 │       ├── _index.scss          入口，只 @use
 │       ├── _declarations.scss   @settings 的 YAML 声明 ×7（全是注释，不产出 CSS）
-│       ├── _visibility.scss     「某状态下隐藏哪些设置项」，map + @each 生成
+│       ├── _visibility.scss     「某状态下隐藏哪些设置项」，map + @each 生成（区域背景那张表读 _split-background.scss）
 │       └── _panel.scss          设置面板本体的样式
 ├── tools/
 │   ├── check-tokens.mjs         npm run lint / verify 的入口：读事实 → 跑规则 → 打印
@@ -69,6 +70,7 @@ npm run check        # lint + test + verify
 2. `@use` 的顺序 = 最终 CSS 的层叠顺序，不要随意调换。
 3. 颜色令牌写在 `body.theme-light` / `body.theme-dark`，非颜色令牌写在 `body`。
 4. 新增令牌先进 `_variables.scss`，不要在组件文件里裸写十六进制或圆角像素值；主题自有的圆角用 `var(--domye-radius-*)`。
+   > 区域背景（`--background-mod-*`）是例外：那张表与命名在 `_split-background.scss`，两个消费者（`components/_workspace.scss`、`style-settings/_visibility.scss`）都从它取，不要在本地再抄一份区域或来源清单。术语见 `GLOSSARY.md`。
 5. `@settings` 的 YAML 一律用 `/* ... */` 普通注释即可；若要改成 `--style=compressed` 构建，必须写成 `/*!`，否则注释会被压掉、Style Settings 面板失效。
 6. 同一属性不要在同一个规则块里写两遍——`npm run lint` 会把第二种作为 error 报出来（后写的静默生效，先写的是死代码）。
 7. **面板选项必须有消费方**：`class-toggle` 的 `id`、`class-select` 的每个 `value`，在运行时都会变成 `body` 上的 class；`npm run lint` 会去编译产物里找对应的 `.类名`，找不到就报错（死开关）。确实只需要默认样式、不需要任何规则的选项，就在那行标 `# no-style 说明`——契约写在声明旁边，而不是散在检查器的白名单里。
