@@ -1,0 +1,14 @@
+#!/bin/sh
+# 提交前跑一遍完整检查（lint + 单测 + 产物守卫）。
+#
+# 装上（一次即可，写进仓库本地配置）：
+#   git config core.hooksPath tools/hooks
+# 拆掉：
+#   git config --unset core.hooksPath
+#
+# 守卫的语义：改了 src/scss 却忘了 npm run build，theme.css 就会落后于源码——
+# 这一步拦住它。确实是有意改样式时，先 npm run build 再提交。
+
+set -e
+cd "$(git rev-parse --show-toplevel)"
+npm run check

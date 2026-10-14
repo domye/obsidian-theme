@@ -1,4 +1,5 @@
 /* --- src: baseline L5805–L6087 | tab 布局与样式 / 分隔线 --- */
+@use '../split-background' as split;
 /* tab */
 /* tab layout */
 
@@ -100,8 +101,8 @@ body:not(.hider-sidebar-buttons)
 }
 
 :is(
-    .theme-dark.card-layout-open-dark.mod-root-split-background-transparent-dark,
-    .theme-light.card-layout-open-light.mod-root-split-background-transparent-light
+    .theme-dark.card-layout-open-dark.#{split.state-class('root', 'transparent', 'dark')},
+    .theme-light.card-layout-open-light.#{split.state-class('root', 'transparent', 'light')}
   )
   .is-sidedock-collapsed,
 :is(.theme-dark.card-layout-open-dark, .theme-light.card-layout-open-light)

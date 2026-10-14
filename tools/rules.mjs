@@ -68,14 +68,16 @@ export function checkLiterals(scssFacts) {
 
 // ── Style Settings 默认值 ↔ Sass 令牌默认值 ────────────────────────────────
 // 两处写同一个数字就会漂移，所以把绑定关系写死成表：改了一边忘了另一边，跑 lint 就报。
+// 表里写的是令牌名（`$radius-base` / `--secondary-color`），值从事实层取；
+// 不在这里对源码重写正则——那种写法把「文件长什么样」编进了规则里。
 
 export const DEFAULT_BINDINGS = [
-  { id: 'domye-radius', key: 'default', file: '_variables.scss', re: /\$radius-base:\s*([^;!]+)/ },
-  { id: 'domye-font-size', key: 'default', file: '_variables.scss', re: /\$font-size-base:\s*([^;!]+)/ },
-  { id: 'domye-heading-spacing', key: 'default', file: '_variables.scss', re: /\$heading-spacing:\s*([^;!]+)/ },
-  { id: 'domye-border-width', key: 'default', file: '_variables.scss', re: /\$border-width:\s*([^;!]+)/ },
-  { id: 'domye-accent', key: 'default', file: '_variables.scss', re: /\$accent:\s*([^;!]+)/ },
-  { id: 'secondary-color', key: 'default-light', file: '_variables.scss', re: /--secondary-color:\s*([^;]+)/ },
+  { id: 'domye-radius', key: 'default', file: '_variables.scss', token: '$radius-base' },
+  { id: 'domye-font-size', key: 'default', file: '_variables.scss', token: '$font-size-base' },
+  { id: 'domye-heading-spacing', key: 'default', file: '_variables.scss', token: '$heading-spacing' },
+  { id: 'domye-border-width', key: 'default', file: '_variables.scss', token: '$border-width' },
+  { id: 'domye-accent', key: 'default', file: '_variables.scss', token: '$accent' },
+  { id: 'secondary-color', key: 'default-light', file: '_variables.scss', token: '--secondary-color' },
 ];
 
 export function checkDefaults(scssFacts, panelBlocks) {
@@ -84,7 +86,7 @@ export function checkDefaults(scssFacts, panelBlocks) {
   for (const b of DEFAULT_BINDINGS) {
     const entry = entries.get(b.id);
     const yamlValue = entry?.defaults?.[b.key] ?? null;
-    const sassValue = readSassDefault(scssFacts, b.file, b.re);
+    const sassValue = readTokenDefault(scssFacts, b.file, b.token);
     if (yamlValue === null || sassValue === null) {
       hits.push({ id: `${b.id}.${b.key}`, why: '找不到对应值（声明项或令牌被改名/删除？）' });
       continue;
@@ -96,19 +98,87 @@ export function checkDefaults(scssFacts, panelBlocks) {
   return hits;
 }
 
-function readSassDefault(scssFacts, file, re) {
+/// 从事实里取令牌的默认值：`$x`（文件顶层的 sass 变量）或 `--x`（自定义属性定义）。
+function readTokenDefault(scssFacts, file, token) {
   const hit = scssFacts.find((s) => s.rel.endsWith(file));
   if (!hit) return null;
-  const m = hit.src.match(re);
-  return m ? m[1].trim() : null;
+  const pool = token.startsWith('--') ? hit.defs : hit.sassVars;
+  const def = (pool ?? []).find((d) => d.name === token);
+  return def ? def.value : null;
 }
 
 function normalizeDefault(value) {
   return value
+    .replace(/!\s*[a-z-]+/g, '') // sass 的 !default 标志不算值的一部分
     .replace(/^['"]|['"]$/g, '')
     .replace(/\s+/g, ' ')
-    .replace(/\s*(px|rem|em)$/i, '')
-    .trim();
+    .trim()
+    .replace(/(px|rem|em)$/i, ''); // 4px 与 4 是同一个默认值
+}
+
+// ── 动效字面量 ────────────────────────────────────────────────────────────
+// _reset.scss 里那几条动画令牌（--anim-duration-* / --anim-ease-*）就是「全站动效的旋钮」。
+// 组件层再写一遍字面量，旋钮就只管控一半——而且写完之后没人能看出哪一半被控。
+
+const ANIM_TOKEN_HOME = /_reset\.scss$/;
+
+const ANIM_LITERALS = [
+  { re: /(^|[^\d.])0\.3s\b/, want: 'var(--anim-duration-moderate)' },
+  { re: /cubic-bezier\(0\.25, 0\.8, 0\.25, 1\)/, want: 'var(--anim-ease-smooth)' },
+  { re: /cubic-bezier\(0\.4, 0, 0\.2, 1\)/, want: 'var(--anim-ease-standard)' },
+  { re: /cubic-bezier\(0\.175, 0\.885, 0\.32, 1\.275\)/, want: 'var(--anim-ease-swing)' },
+];
+
+export function checkAnimLiterals(scssFacts) {
+  const hits = [];
+  for (const s of scssFacts) {
+    if (ANIM_TOKEN_HOME.test(s.rel)) continue;
+    for (const block of s.blocks) {
+      for (const d of block.decls) {
+        const hit = ANIM_LITERALS.find((x) => x.re.test(d.value));
+        if (hit) hits.push({ file: s.rel, line: d.line, prop: d.prop, want: hit.want });
+      }
+    }
+  }
+  return hits;
+}
+
+// ── 面板契约：选项 id ↔ 主题里的同名变量 ─────────────────────────────
+//
+// 会写变量的选项（颜色 / 文本 / 滑块 / 数字）在运行时写进与 id 同名的 CSS 变量：
+// `id: background-mod-left-CSS-light` ⇒ 该选项把值写进 `--background-mod-left-CSS-light`。
+// 主题里找不到这个变量（既不定义也不 var() 引用）就只有两种可能：选项是死的，
+// 或者它的值本来就是交给 Obsidian core / 第三方插件读的。后者要在 id 那行标
+// `# core-consumed`——契约写在声明旁边，而不是散在检查器的白名单里。
+//
+// 为什么值得查：令牌名现在由 sass 函数生成（见 src/scss/_split-background.scss），
+// 改个命名函数就会让面板上成批的滑块静默失效，而编译、类型、样式都不会有反应。
+
+const WRITES_VARIABLE = new Set([
+  'variable-text',
+  'variable-color',
+  'variable-themed-color',
+  'variable-number',
+  'variable-number-slider',
+]);
+
+export function checkPanelTokenConsumers(panelBlocks, cssTokens) {
+  const hits = [];
+  for (const block of panelBlocks) {
+    for (const entry of block.entries) {
+      if (!WRITES_VARIABLE.has(entry.type)) continue;
+      if (entry.coreConsumed) continue;
+      const token = `--${entry.id}`;
+      if (cssTokens.has(token)) continue;
+      hits.push({
+        block: block.name,
+        id: entry.id,
+        line: entry.line,
+        why: `主题里没有 ${token}：要么补消费方，要么在 id 那行标 \`# core-consumed 说明\``,
+      });
+    }
+  }
+  return hits;
 }
 
 // ── 面板契约：选项值 ↔ 消费方 ──────────────────────────────────────────────

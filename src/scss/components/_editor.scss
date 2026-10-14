@@ -95,7 +95,7 @@ body {
   border-bottom: none;
   background-image: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--anim-duration-moderate) ease;
 }
 
 .markdown-preview-view a.internal-link::before,
@@ -109,9 +109,9 @@ body {
   margin-right: 1px;
   opacity: 0.7;
   transition:
-    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-    color 0.3s,
-    opacity 0.3s;
+    transform var(--anim-duration-moderate) cubic-bezier(0.34, 1.56, 0.64, 1),
+    color var(--anim-duration-moderate),
+    opacity var(--anim-duration-moderate);
 }
 
 .markdown-preview-view a.internal-link::after,
@@ -125,9 +125,9 @@ body {
   margin-left: 1px;
   opacity: 0.7;
   transition:
-    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-    color 0.3s,
-    opacity 0.3s;
+    transform var(--anim-duration-moderate) cubic-bezier(0.34, 1.56, 0.64, 1),
+    color var(--anim-duration-moderate),
+    opacity var(--anim-duration-moderate);
 }
 
 .markdown-preview-view a.internal-link:hover,
@@ -377,74 +377,14 @@ body {
   text-indent: 0px !important;
 }
 
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-1::after {
-  content: "1" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-2::after {
-  content: "2" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-3::after {
-  content: "3" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-4::after {
-  content: "4" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-5::after {
-  content: "5" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-6::after {
-  content: "6" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-7::after {
-  content: "7" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-8::after {
-  content: "8" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-9::after {
-  content: "9" !important;
-}
-
-.line-hover-indicator.focus-indicator-list-level
-  .workspace-leaf-content[data-type="markdown"]
-  .cm-contentContainer
-  .cm-line.HyperMD-list-line.HyperMD-list-line-10::after {
-  content: "10" !important;
+// 列表层级指示符：逐级显示序号（1–10）。
+@for $level from 1 through 10 {
+  .line-hover-indicator.focus-indicator-list-level
+    .workspace-leaf-content[data-type="markdown"]
+    .cm-contentContainer
+    .cm-line.HyperMD-list-line.HyperMD-list-line-#{$level}::after {
+    content: "#{$level}" !important;
+  }
 }
 
 /* active line */
@@ -540,8 +480,8 @@ body {
   border-bottom: 2px solid transparent;
   box-decoration-break: clone;
   transition:
-    border-color 0.3s ease,
-    color 0.3s ease;
+    border-color var(--anim-duration-moderate) ease,
+    color var(--anim-duration-moderate) ease;
 }
 
 .theme-light .markdown-preview-view strong:hover,
@@ -1542,13 +1482,13 @@ svg {
   border-radius: 50%;
   background-color: var(--list-color) !important;
   transition:
-    top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    border-radius 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    background-color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    top var(--anim-duration-moderate) var(--anim-ease-swing),
+    left var(--anim-duration-moderate) var(--anim-ease-swing),
+    transform var(--anim-duration-moderate) var(--anim-ease-swing),
+    height var(--anim-duration-moderate) var(--anim-ease-swing),
+    width var(--anim-duration-moderate) var(--anim-ease-swing),
+    border-radius var(--anim-duration-moderate) var(--anim-ease-swing),
+    background-color var(--anim-duration-moderate) var(--anim-ease-swing);
 }
 .markdown-source-view.is-live-preview {
   --list-padding-inline-start: 0;
@@ -1611,7 +1551,7 @@ svg {
   background-color: var(--checkbox-bg-unchecked) !important;
   border: 2px solid var(--checkbox-border-unchecked) !important;
   box-sizing: border-box !important;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+  transition: all var(--anim-duration-moderate) cubic-bezier(0.175, 0.885, 0.32, 1.4);
   z-index: 1;
 }
 .markdown-preview-view
@@ -1639,7 +1579,7 @@ svg {
   border-right: 0 !important;
   transform: translate(-50%, -50%) rotate(-45deg) scale(0);
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+  transition: all var(--anim-duration-moderate) cubic-bezier(0.175, 0.885, 0.32, 1.4);
 }
 .markdown-preview-view
   .task-list-item
@@ -1715,9 +1655,9 @@ svg {
   padding-left: 4px;
   min-height: calc(var(--line-height-customize) * 1em);
   transition:
-    color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    text-decoration-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    color 0.4s var(--anim-ease-smooth),
+    opacity 0.4s var(--anim-ease-smooth),
+    text-decoration-color 0.4s var(--anim-ease-smooth) !important;
   text-decoration: none !important;
   text-decoration-color: transparent !important;
   text-decoration-thickness: 2px !important;

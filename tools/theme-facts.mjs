@@ -24,7 +24,7 @@ export function readScssFacts(scssDir) {
 }
 
 export function scanScss(src) {
-  const result = { defs: [], refs: [], literals: [], blocks: [], hasDynamicRef: false };
+  const result = { defs: [], sassVars: [], refs: [], literals: [], blocks: [], hasDynamicRef: false };
   const stack = [];
   let buf = '';
   let line = 1;
@@ -39,7 +39,11 @@ export function scanScss(src) {
     if (decl) {
       const block = stack[stack.length - 1];
       if (block) block.decls.push({ ...decl, line: bufLine });
-      if (decl.prop.startsWith('--')) result.defs.push({ name: decl.prop, line: bufLine });
+      if (decl.prop.startsWith('--')) result.defs.push({ name: decl.prop, value: decl.value, line: bufLine });
+      // sass 变量只算文件顶层的：块里的 $x 是局部变量，不参与「默认值漂移」比对。
+      else if (decl.prop.startsWith('$') && !block) {
+        result.sassVars.push({ name: decl.prop, value: decl.value, line: bufLine });
+      }
       collectRefs(decl.value, bufLine, result);
       collectLiterals(decl.value, bufLine, result);
     }
@@ -196,11 +200,16 @@ function readEntries(blockBody, bodyStart, declarationsSrc) {
   const settingsAt = blockBody.search(/^settings:\s*$/m);
   if (settingsAt === -1) return [];
   const region = blockBody.slice(settingsAt);
-  // 条目的分隔符是行首的 `- `（标签/值里的 `-` 都有缩进，不会误伤）
-  const marks = [...region.matchAll(/^[ \t]*-[ \t]*$/gm)].map((x) => x.index);
-  return marks
+  // 条目的分隔符是行首的 `- `（标签/值里的 `-` 都有缩进，不会误伤）；
+  // 只认最浅一级的 `- `：`alt-format:` 这类嵌套列表也是行首 `- `，
+  // 但它比条目深一层，不是面板选项（以前它会被当成一条 id: accent-rgb 的条目）。
+  // 缩进按视觉列数算：这份 YAML 里 4 空格与 1 个 tab 混用，都是同一个层级。
+  const marks = [...region.matchAll(/^([ \t]*)-[ \t]*$/gm)];
+  const indent = marks.reduce((min, x) => Math.min(min, indentWidth(x[1])), Infinity);
+  const marksAt = marks.filter((x) => indentWidth(x[1]) === indent).map((x) => x.index);
+  return marksAt
     .map((at, i) => {
-      const chunk = region.slice(at, i + 1 < marks.length ? marks[i + 1] : region.length);
+      const chunk = region.slice(at, i + 1 < marksAt.length ? marksAt[i + 1] : region.length);
       return readEntry(chunk, bodyStart + settingsAt + at, declarationsSrc);
     })
     .filter((e) => e.id);
@@ -208,8 +217,11 @@ function readEntries(blockBody, bodyStart, declarationsSrc) {
 
 function readEntry(chunk, offset, declarationsSrc) {
   const lines = chunk.split('\n');
+  const { id, marker } = readId(lines);
   return {
-    id: firstMatch(lines, /^\s*id:\s*(\S+)\s*$/),
+    id,
+    // 契约写在声明旁边：`id: xxx  # core-consumed 说明` = 这个值由 Obsidian core 读，主题不消费
+    coreConsumed: marker.startsWith('core-consumed'),
     type: firstMatch(lines, /^\s*type:\s*(\S+)\s*$/),
     line: lineAt(declarationsSrc, offset),
     defaults: {
@@ -219,6 +231,20 @@ function readEntry(chunk, offset, declarationsSrc) {
     },
     options: readOptions(lines),
   };
+}
+
+/// `id: <值>`，可带行尾 `# 说明`（标记与 id 写在同一行，读代码时两件事就在一起）。
+function readId(lines) {
+  for (const line of lines) {
+    const m = line.match(/^\s*id:\s*(\S+)\s*(?:#\s*(.*))?$/);
+    if (m) return { id: m[1], marker: (m[2] ?? '').trim() };
+  }
+  return { id: undefined, marker: '' };
+}
+
+/// 缩进宽度：一个 tab 记 4 列（这份 YAML 混用 tab 与空格写同一层级）。
+function indentWidth(whitespace) {
+  return whitespace.replace(/\t/g, '    ').length;
 }
 
 function readOptions(lines) {
@@ -254,6 +280,17 @@ import { parseCss } from './css-map.mjs';
 export async function compileScss(entryFile) {
   const { compile } = await import('sass');
   return compile(entryFile, { style: 'expanded' }).css;
+}
+
+/// 从编译产物里取出所有自定义属性名：定义了的，或被 var() 引用的。
+/// 面板上的滑块/颜色选项会写进同名变量，主题至少得读它——读不到就是死选项。
+/// 先去掉注释：注释里写个变量名（说明文字、头部注释）不算消费方；
+export function tokenNamesFromCss(css) {
+  const body = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const names = new Set();
+  for (const m of body.matchAll(/(--[a-zA-Z0-9_-]+)\s*:/g)) names.add(m[1]);
+  for (const m of body.matchAll(/var\(\s*(--[a-zA-Z0-9_-]+)/g)) names.add(m[1]);
+  return names;
 }
 
 /// 从编译产物里取出所有 class 名。

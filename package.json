@@ -8,7 +8,7 @@
     "build": "sass --no-source-map --style=expanded src/scss/index.scss theme.css",
     "lint": "node tools/check-tokens.mjs",
     "test": "node --test \"tools/*.test.mjs\"",
-    "verify": "npm run build && node tools/check-tokens.mjs --verify-build",
+    "verify": "node tools/check-tokens.mjs --verify-build",
     "check": "npm run lint && npm run test && npm run verify"
   },
   "devDependencies": {

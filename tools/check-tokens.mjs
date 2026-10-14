@@ -16,14 +16,16 @@ import { readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { compareRuleMaps, parseCss } from './css-map.mjs';
-import { classNamesFromCss, compileScss, readPanelFacts, readScssFacts } from './theme-facts.mjs';
+import { compareRuleMaps, MIN_SELECTORS, parseCss } from './css-map.mjs';
+import { classNamesFromCss, compileScss, readPanelFacts, readScssFacts, tokenNamesFromCss } from './theme-facts.mjs';
 import {
+  checkAnimLiterals,
   checkDeadVars,
   checkDefaults,
   checkDuplicateDecls,
   checkLiterals,
   checkPanelClassConsumers,
+  checkPanelTokenConsumers,
 } from './rules.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
@@ -32,10 +34,7 @@ const ENTRY = join(SCSS_DIR, 'index.scss');
 const THEME_CSS = join(ROOT, 'theme.css');
 const DECLARATIONS = join(SCSS_DIR, 'style-settings/_declarations.scss');
 
-// 低于这个条数就判定解析器出了问题，而不是「主题变小了」。
-// 当前主题约 1400 条选择器：宽松，但远高于 0——空映射再也过不了。
-const MIN_SELECTORS = 1000;
-
+// 低于这个条数就判定解析器出了问题，而不是「主题变小了」（阈值定义在 css-map.mjs）。
 const rel = (p) => relative(ROOT, p).replace(/\\/g, '/');
 
 function verifyBuild(goldenPath, css) {
@@ -48,6 +47,8 @@ function verifyBuild(goldenPath, css) {
   }
   console.error(`✗ 构建不等价：${rel(goldenPath)} 与重建结果有实质差异`);
   console.error(`  ${diff}`);
+  console.error('  → 如果这是有意改的样式：npm run build 更新基准，再跑一次本检查。');
+  console.error('  → 否则就是「改了 SCSS 但产物没跟上」，或改出了没预期的差异。');
   return 1;
 }
 
@@ -76,8 +77,10 @@ async function main() {
   const dupes = checkDuplicateDecls(scssFacts);
   const { dead, dynamic } = checkDeadVars(scssFacts);
   const literals = checkLiterals(scssFacts);
+  const animLiterals = checkAnimLiterals(scssFacts);
   const defaults = checkDefaults(scssFacts, panel);
   const danglingOptions = checkPanelClassConsumers(panel, classNamesFromCss(css));
+  const danglingTokens = checkPanelTokenConsumers(panel, tokenNamesFromCss(css));
 
   let code = 0;
   code += report('同一规则块内重复声明', dupes, true, (d) => `${d.file}:${d.line}  ${d.prop}  ← ${d.selector}`);
@@ -87,6 +90,18 @@ async function main() {
     danglingOptions,
     true,
     (d) => `${rel(DECLARATIONS)}:${d.line}  [${d.block}] ${d.id} → ${d.value}：${d.why}`
+  );
+  code += report(
+    '面板选项没有消费方（变量没人读）',
+    danglingTokens,
+    true,
+    (d) => `${rel(DECLARATIONS)}:${d.line}  [${d.block}] ${d.id}：${d.why}`
+  );
+  code += report(
+    '动效字面量（该用 _reset.scss 里的令牌）',
+    animLiterals,
+    true,
+    (d) => `${d.file}:${d.line}  ${d.prop}  应写 ${d.want}`
   );
   if (dynamic) console.log('· 检测到动态 var(--#{...})，死变量检查仅供提示');
   report('主题自有命名空间下的零引用变量', dead, false, (d) => `${d.file}:${d.line}  ${d.name}`);

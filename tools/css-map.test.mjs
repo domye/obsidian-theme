@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
-import { compareRuleMaps, parseCss } from './css-map.mjs';
+import { compareRuleMaps, MIN_SELECTORS, parseCss } from './css-map.mjs';
 
 const decls = (map, sel) => map.get(sel);
 
@@ -66,8 +66,8 @@ test('compareRuleMaps：相同返回 null，不同返回说明', () => {
   const a = parseCss('.x { color: red; }');
   const b = parseCss('.x { color: red; }');
   const c = parseCss('.x { color: blue; }');
-  assert.equal(compareRuleMaps(a, b), null);
-  assert.match(compareRuleMaps(a, c), /\.x/);
+  assert.equal(compareRuleMaps(a, b, 1), null);
+  assert.match(compareRuleMaps(a, c, 1), /\.x/);
 });
 
 test('compareRuleMaps：空映射 + 下限，必须报异常而不是判等价', () => {
@@ -82,6 +82,10 @@ test('compareRuleMaps：低于下限的一侧同样要报', () => {
   const one = parseCss('.x { color: red; }');
   assert.equal(one.size, 1);
   assert.match(compareRuleMaps(one, one, 1000), /解析结果异常/);
+});
+
+test('compareRuleMaps：整个主题的规模下限定义在 css-map.mjs 里', () => {
+  assert.equal(MIN_SELECTORS, 1000);
 });
 
 test('冒烟：真实 theme.css 能解析出足够多的选择器', () => {

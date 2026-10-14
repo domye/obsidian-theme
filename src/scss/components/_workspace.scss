@@ -68,6 +68,10 @@ $split-workspace: (
 
 /* ====== background ===== */
 body {
+  --background-underlying-light: var(--background-tertiary);
+  --background-underlying-dark: var(--background-tertiary);
+  --background-underlying: var(--background-tertiary);
+
   // 区域背景的默认值（三区域 × 令牌族），表见文件顶部。
   @each $area, $spec in $split-workspace {
     @each $suffix, $value in $split-defaults {
@@ -621,36 +625,20 @@ body.theme-dark.card-layout-open-dark
   box-shadow: inset 0px 1px 0px transparent;
 }
 
-body.theme-light.mod-left-split-background-transparent-light.card-layout-open-light.tab-autohide
-  .mod-left-split
-  .workspace-tabs:not(.mod-top)
-  .workspace-tab-container
-  > .workspace-leaf,
-body.theme-dark.mod-left-split-background-transparent-dark.card-layout-open-dark.tab-autohide
-  .mod-left-split
-  .workspace-tabs:not(.mod-top)
-  .workspace-tab-container
-  > .workspace-leaf,
-body.theme-light.mod-right-split-background-transparent-light.card-layout-open-light.tab-autohide
-  .mod-right-split
-  .workspace-tabs:not(.mod-top)
-  .workspace-tab-container
-  > .workspace-leaf,
-body.theme-dark.mod-right-split-background-transparent-dark.card-layout-open-dark.tab-autohide
-  .mod-right-split
-  .workspace-tabs:not(.mod-top)
-  .workspace-tab-container
-  > .workspace-leaf,
-body.theme-light.mod-root-split-background-transparent-light.card-layout-open-light.tab-autohide
-  .mod-root
-  .workspace-tabs:not(.mod-top)
-  .workspace-tab-container
-  > .workspace-leaf,
-body.theme-dark.mod-root-split-background-transparent-dark.card-layout-open-dark.tab-autohide
-  .mod-root
-  .workspace-tabs:not(.mod-top)
-  .workspace-tab-container
-  > .workspace-leaf {
+// tab-autohide：透明 + 卡片布局开着时，叶子阴影与圆角复位。
+// 六条选择器 = 三区域 × 两模式，与上面的区域背景同一张表。
+$autohide-selectors: ();
+@each $area, $spec in $split-workspace {
+  @each $mode in split.$split-modes {
+    $autohide-selectors: list.append(
+      $autohide-selectors,
+      'body.theme-#{$mode}.#{split.state-class($area, 'transparent', $mode)}.card-layout-open-#{$mode}.tab-autohide #{map.get($spec, 'panel')} .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf',
+      comma
+    );
+  }
+}
+
+#{$autohide-selectors} {
   box-shadow: inset 0px 1px 0px var(--divider-color);
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;

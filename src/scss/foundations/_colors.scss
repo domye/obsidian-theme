@@ -1,4 +1,9 @@
 /* --- src: baseline L4094–L4539 | accent HSL + .theme-light/.theme-dark 调色板 --- */
+// 令牌层的第二半（第一半在 src/scss/_variables.scss）：
+//   这里管「颜色」——强调色 HSL、亮/暗两套调色板、--shadow-s/l。
+//   _variables.scss 管非颜色令牌与由 sass 变量派生的模式色令牌。
+// 两边选择器形状刻意不同（这里是 .theme-light/.theme-dark，那边是 body.theme-light），
+// 降级会改层叠、属于会改视觉的改动——不要为了「合并成一个文件」而搬动它们。
 /* color */
 
 body {

@@ -1,4 +1,5 @@
 /* --- src: baseline L10112–L10155 | Plugin support：DB Folder / Projects --- */
+@use '../mixins' as mixins;
 /* ======== Plugin support ========*/
 
 /*DB folder*/
@@ -100,52 +101,17 @@ svg.settings.button.svelte-9fjno5 {
   --checklist-listItemBorderRadius: var(--radius-s);
 }
 
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 1)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-red);
-}
-
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 2)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-green);
-}
-
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 3)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-orange);
-}
-
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 4)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-yellow);
-}
-
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 5)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-cyan);
-}
-
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 6)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-blue);
-}
-
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 7)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-purple);
-}
-
-body.colorful-checkbox
-  li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + 8)
-  .checkbox.svelte-1wagsqu {
-  --checklist-checkboxBorder: 2px solid var(--color-pink);
+// 8 色轮转（色序与文件夹图标的轮转不同，刻意保留各自的设计）。
+@include mixins.color-rotation(
+  ('red', 'green', 'orange', 'yellow', 'cyan', 'blue', 'purple', 'pink'),
+  1
+)
+  using ($color, $n) {
+  body.colorful-checkbox
+    li.svelte-sx5ktw.svelte-sx5ktw:nth-child(8n + #{$n})
+    .checkbox.svelte-1wagsqu {
+    --checklist-checkboxBorder: 2px solid var(--color-#{$color});
+  }
 }
 
 .checked.svelte-1wagsqu {

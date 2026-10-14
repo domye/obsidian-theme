@@ -581,6 +581,11 @@ body {
   --anim-duration-fast: calc(150ms / var(--anim-speed));
   --anim-duration-moderate: calc(300ms / var(--anim-speed));
   --anim-duration-slow: calc(600ms / var(--anim-speed));
+  /* 缓和曲线：组件层里重复出现的那几条曲线在这里起名，改一处全站跟随。
+     值就是组件里原本写死的字面量，所以换过去不改渲染。 */
+  --anim-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --anim-ease-smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --anim-ease-swing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --anim-in: var(--anim-duration-fast) var(--anim-duration-superfast)
     var(--anim-motion-swing);
   --anim-out: var(--anim-duration-moderate) var(--anim-duration-slow)
@@ -795,7 +800,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   color: var(--text-color);
   font-weight: bold;
   position: relative;
-  transition: color 0.3s ease, font-weight 0.3s ease;
+  transition: color var(--anim-duration-moderate) ease, font-weight var(--anim-duration-moderate) ease;
   margin-block-start: var(--heading-spacing);
   margin-block-end: var(--heading-spacing);
 }
@@ -925,7 +930,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   margin-left: auto !important;
   margin-right: auto !important;
   position: relative;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition: color var(--anim-duration-moderate) ease, transform var(--anim-duration-moderate) ease;
 }
 
 .theme-light .markdown-preview-view h1::after,
@@ -940,7 +945,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background: var(--h2-bg-gradient);
   background-size: 100% auto;
   transform: translateX(-50%);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
+  transition: width var(--anim-duration-moderate) var(--anim-ease-standard), transform var(--anim-duration-moderate) ease;
 }
 
 .theme-light .markdown-preview-view h1:hover {
@@ -973,7 +978,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   left: 2px;
   background-color: var(--secondary-color);
   opacity: 0.5;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1), top 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width var(--anim-duration-moderate) var(--anim-ease-standard), height var(--anim-duration-moderate) var(--anim-ease-standard), border-radius var(--anim-duration-moderate) var(--anim-ease-standard), top var(--anim-duration-moderate) var(--anim-ease-standard), transform var(--anim-duration-moderate) var(--anim-ease-standard), margin-top var(--anim-duration-moderate) var(--anim-ease-standard), left var(--anim-duration-moderate) var(--anim-ease-standard), background-color var(--anim-duration-moderate) var(--anim-ease-standard), opacity var(--anim-duration-moderate) var(--anim-ease-standard);
   z-index: 0;
 }
 
@@ -989,7 +994,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   left: 8px;
   background: var(--phycat-primary-color);
   mix-blend-mode: multiply;
-  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, height 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, left 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+  transition: bottom var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, width var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, height var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, border-radius var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, transform var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, margin-top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, left var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, box-shadow var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s;
   z-index: 1;
 }
 
@@ -1056,7 +1061,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   padding-right: 0;
   display: block;
   width: 100%;
-  transition: color 0.3s ease;
+  transition: color var(--anim-duration-moderate) ease;
 }
 
 .theme-light:not(.h2-style-capsule) .markdown-preview-view h2 .heading-collapse-indicator,
@@ -1078,7 +1083,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--phycat-primary-color);
   border-radius: var(--domye-radius-m);
   opacity: 1;
-  transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: left 0.4s var(--anim-ease-smooth), top 0.4s var(--anim-ease-smooth), margin-top 0.4s var(--anim-ease-smooth), height 0.4s var(--anim-ease-smooth), width 0.4s var(--anim-ease-smooth), background-color 0.4s var(--anim-ease-smooth), border-radius 0.4s var(--anim-ease-smooth), opacity 0.4s var(--anim-ease-smooth);
 }
 
 .theme-light:not(.h2-style-capsule) .markdown-source-view.mod-cm6 .HyperMD-header-2::before,
@@ -1100,7 +1105,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--secondary-color);
   border-radius: var(--domye-radius-xs);
   opacity: 0.6;
-  transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s;
+  transition: left 0.4s var(--anim-ease-smooth) 0.05s, top 0.4s var(--anim-ease-smooth) 0.05s, margin-top 0.4s var(--anim-ease-smooth) 0.05s, height 0.4s var(--anim-ease-smooth) 0.05s, width 0.4s var(--anim-ease-smooth) 0.05s, background-color 0.4s var(--anim-ease-smooth) 0.05s, border-radius 0.4s var(--anim-ease-smooth) 0.05s, opacity 0.4s var(--anim-ease-smooth) 0.05s;
 }
 
 .theme-light:not(.h2-style-capsule) .markdown-source-view.mod-cm6 .HyperMD-header-2::after,
@@ -1140,7 +1145,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
 .theme-light .markdown-preview-view h3 {
   width: fit-content;
   padding-left: 15px;
-  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), padding-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: width var(--anim-duration-moderate) var(--anim-ease-smooth), padding-left var(--anim-duration-moderate) var(--anim-ease-smooth), color var(--anim-duration-moderate) var(--anim-ease-smooth);
 }
 
 .theme-light .markdown-preview-view h3::before {
@@ -1153,7 +1158,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   height: 1.3rem;
   border-radius: var(--domye-radius-m);
   background-color: var(--phycat-primary-color);
-  transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: left var(--anim-duration-moderate) var(--anim-ease-smooth), top var(--anim-duration-moderate) var(--anim-ease-smooth), transform var(--anim-duration-moderate) var(--anim-ease-smooth), width var(--anim-duration-moderate) var(--anim-ease-smooth), height var(--anim-duration-moderate) var(--anim-ease-smooth), border-radius var(--anim-duration-moderate) var(--anim-ease-smooth), background-color var(--anim-duration-moderate) var(--anim-ease-smooth);
 }
 
 .theme-light .markdown-preview-view h3:hover {
@@ -1181,7 +1186,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: 50%;
   background-color: var(--phycat-primary-color);
   border: var(--domye-border-width) solid var(--phycat-primary-color);
-  transition: left 0.3s ease, top 0.3s ease, transform 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: left var(--anim-duration-moderate) ease, top var(--anim-duration-moderate) ease, transform var(--anim-duration-moderate) ease, width var(--anim-duration-moderate) ease, height var(--anim-duration-moderate) ease, border-radius var(--anim-duration-moderate) ease, background-color var(--anim-duration-moderate) ease, box-shadow var(--anim-duration-moderate) ease;
 }
 
 .theme-light .markdown-preview-view h4:hover {
@@ -1209,7 +1214,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--phycat-h5-decoration-background);
   border: calc(var(--domye-border-width) * 2) solid var(--phycat-primary-color);
   box-sizing: border-box;
-  transition: left 0.3s ease, top 0.3s ease, transform 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: left var(--anim-duration-moderate) ease, top var(--anim-duration-moderate) ease, transform var(--anim-duration-moderate) ease, width var(--anim-duration-moderate) ease, height var(--anim-duration-moderate) ease, border-radius var(--anim-duration-moderate) ease, background-color var(--anim-duration-moderate) ease, box-shadow var(--anim-duration-moderate) ease;
 }
 
 .theme-light .markdown-preview-view h5:hover {
@@ -1235,7 +1240,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   color: var(--phycat-primary-color);
   font-weight: bold;
   line-height: 1;
-  transition: left 0.3s ease, top 0.3s ease, transform 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+  transition: left var(--anim-duration-moderate) ease, top var(--anim-duration-moderate) ease, transform var(--anim-duration-moderate) ease, color var(--anim-duration-moderate) ease, font-weight var(--anim-duration-moderate) ease;
 }
 
 .theme-light .markdown-preview-view h6:hover {
@@ -1277,7 +1282,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-m);
   background: var(--h1-underline-color);
   transform: translateX(-50%);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width var(--anim-duration-moderate) var(--anim-ease-standard);
   pointer-events: none;
 }
 
@@ -1306,7 +1311,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-l);
   background-color: var(--secondary-color);
   opacity: 0.6;
-  transition: top 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: top var(--anim-duration-moderate) var(--anim-ease-standard), transform var(--anim-duration-moderate) var(--anim-ease-standard), margin-top var(--anim-duration-moderate) var(--anim-ease-standard), left var(--anim-duration-moderate) var(--anim-ease-standard), width var(--anim-duration-moderate) var(--anim-ease-standard), height var(--anim-duration-moderate) var(--anim-ease-standard), border-radius var(--anim-duration-moderate) var(--anim-ease-standard), background-color var(--anim-duration-moderate) var(--anim-ease-standard), opacity var(--anim-duration-moderate) var(--anim-ease-standard);
   z-index: 0;
 }
 
@@ -1322,7 +1327,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-l);
   background: var(--phycat-primary-color);
   mix-blend-mode: screen;
-  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, left 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, height 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s, box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+  transition: bottom var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, transform var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, margin-top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, left var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, width var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, height var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, border-radius var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s, box-shadow var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s;
   z-index: 1;
 }
 
@@ -1399,7 +1404,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   padding-right: 0;
   display: block;
   width: 100%;
-  transition: color 0.3s ease;
+  transition: color var(--anim-duration-moderate) ease;
 }
 
 .theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2::before,
@@ -1416,7 +1421,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--phycat-primary-color);
   border-radius: var(--domye-radius-m);
   opacity: 0.8;
-  transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: left 0.4s var(--anim-ease-smooth), top 0.4s var(--anim-ease-smooth), margin-top 0.4s var(--anim-ease-smooth), height 0.4s var(--anim-ease-smooth), width 0.4s var(--anim-ease-smooth), background-color 0.4s var(--anim-ease-smooth), border-radius 0.4s var(--anim-ease-smooth), opacity 0.4s var(--anim-ease-smooth), box-shadow 0.4s var(--anim-ease-smooth);
 }
 
 .theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2::after,
@@ -1433,7 +1438,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--secondary-color);
   border-radius: var(--domye-radius-xs);
   opacity: 0.6;
-  transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s, box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s;
+  transition: left 0.4s var(--anim-ease-smooth) 0.05s, top 0.4s var(--anim-ease-smooth) 0.05s, margin-top 0.4s var(--anim-ease-smooth) 0.05s, height 0.4s var(--anim-ease-smooth) 0.05s, width 0.4s var(--anim-ease-smooth) 0.05s, background-color 0.4s var(--anim-ease-smooth) 0.05s, border-radius 0.4s var(--anim-ease-smooth) 0.05s, opacity 0.4s var(--anim-ease-smooth) 0.05s, box-shadow 0.4s var(--anim-ease-smooth) 0.05s;
 }
 
 .theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2:hover,
@@ -1462,7 +1467,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
 .theme-dark .markdown-preview-view h3 {
   padding-left: 15px;
   display: block;
-  transition: padding-left 0.3s ease, color 0.3s ease;
+  transition: padding-left var(--anim-duration-moderate) ease, color var(--anim-duration-moderate) ease;
 }
 
 .theme-dark .markdown-preview-view h3::before {
@@ -1475,7 +1480,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   height: 1.3rem;
   background: var(--phycat-primary-color);
   border-radius: var(--domye-radius-xs);
-  transition: left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: left var(--anim-duration-moderate) var(--anim-ease-smooth), top var(--anim-duration-moderate) var(--anim-ease-smooth), transform var(--anim-duration-moderate) var(--anim-ease-smooth), width var(--anim-duration-moderate) var(--anim-ease-smooth), height var(--anim-duration-moderate) var(--anim-ease-smooth), border-radius var(--anim-duration-moderate) var(--anim-ease-smooth), opacity var(--anim-duration-moderate) var(--anim-ease-smooth), box-shadow var(--anim-duration-moderate) var(--anim-ease-smooth);
   opacity: 0.8;
 }
 
@@ -1502,7 +1507,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  transition: margin-right 0.3s ease, background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: margin-right var(--anim-duration-moderate) ease, background-color var(--anim-duration-moderate) ease, width var(--anim-duration-moderate) ease, height var(--anim-duration-moderate) ease, border-radius var(--anim-duration-moderate) ease, transform var(--anim-duration-moderate) ease, box-shadow var(--anim-duration-moderate) ease;
   flex-shrink: 0;
 }
 
@@ -1530,7 +1535,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   height: 8px;
   border-radius: 50%;
   box-sizing: border-box;
-  transition: margin-right 0.3s ease, background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  transition: margin-right var(--anim-duration-moderate) ease, background-color var(--anim-duration-moderate) ease, width var(--anim-duration-moderate) ease, height var(--anim-duration-moderate) ease, border-radius var(--anim-duration-moderate) ease, border-color var(--anim-duration-moderate) ease, box-shadow var(--anim-duration-moderate) ease, transform var(--anim-duration-moderate) ease;
   flex-shrink: 0;
 }
 
@@ -1556,7 +1561,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   margin-right: 11px;
   display: inline-block;
   font-weight: bold;
-  transition: color 0.3s ease, margin-right 0.3s ease, font-weight 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+  transition: color var(--anim-duration-moderate) ease, margin-right var(--anim-duration-moderate) ease, font-weight var(--anim-duration-moderate) ease, text-shadow var(--anim-duration-moderate) ease, transform var(--anim-duration-moderate) ease;
 }
 
 .theme-dark .markdown-preview-view h6:hover {
@@ -1834,6 +1839,9 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
 /*----------workspace----------*/
 /* ====== background ===== */
 body {
+  --background-underlying-light: var(--background-tertiary);
+  --background-underlying-dark: var(--background-tertiary);
+  --background-underlying: var(--background-tertiary);
   --background-mod-left-split-light: var(--background-primary);
   --background-mod-left-split-dark: var(--background-primary);
   --background-mod-left-split: var(--background-primary);
@@ -2143,7 +2151,8 @@ body.theme-dark.mod-left-split-background-customize-dark {
 }
 
 /* --- */
-body:not(.is-mobile).card-layout-open-light.theme-light .workspace-split.mod-left-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-left-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-left-split .workspace-tabs:not(.mod-top), body:not(.is-mobile).card-layout-open-dark.theme-dark .workspace-split.mod-left-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-left-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-left-split .workspace-tabs:not(.mod-top) {
+body:not(.is-mobile).card-layout-open-light.theme-light .workspace-split.mod-left-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-left-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-left-split .workspace-tabs:not(.mod-top),
+body:not(.is-mobile).card-layout-open-dark.theme-dark .workspace-split.mod-left-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-left-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-left-split .workspace-tabs:not(.mod-top) {
   background: var(--background-mod-left-split) !important;
 }
 
@@ -2200,7 +2209,8 @@ body.theme-dark.mod-right-split-background-customize-dark {
 }
 
 /* --- */
-body:not(.is-mobile).card-layout-open-light.theme-light .workspace-split.mod-right-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-right-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-right-split .workspace-tabs:not(.mod-top), body:not(.is-mobile).card-layout-open-dark.theme-dark .workspace-split.mod-right-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-right-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-right-split .workspace-tabs:not(.mod-top) {
+body:not(.is-mobile).card-layout-open-light.theme-light .workspace-split.mod-right-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-right-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-right-split .workspace-tabs:not(.mod-top),
+body:not(.is-mobile).card-layout-open-dark.theme-dark .workspace-split.mod-right-split .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-right-split .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-right-split .workspace-tabs:not(.mod-top) {
   background: var(--background-mod-right-split) !important;
 }
 
@@ -2264,7 +2274,8 @@ body.theme-dark.mod-root-split-background-customize-dark {
 }
 
 /* --- */
-body:not(.is-mobile).card-layout-open-light.theme-light .workspace-split.mod-root .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-root .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-root .workspace-tabs:not(.mod-top), body:not(.is-mobile).card-layout-open-dark.theme-dark .workspace-split.mod-root .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-root .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-root .workspace-tabs:not(.mod-top) {
+body:not(.is-mobile).card-layout-open-light.theme-light .workspace-split.mod-root .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-root .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-light).theme-light .workspace-split.mod-root .workspace-tabs:not(.mod-top),
+body:not(.is-mobile).card-layout-open-dark.theme-dark .workspace-split.mod-root .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-root .workspace-tabs.mod-top .workspace-tab-container, body:not(.is-mobile):not(.card-layout-open-dark).theme-dark .workspace-split.mod-root .workspace-tabs:not(.mod-top) {
   background: var(--background-mod-root-split) !important;
 }
 
@@ -2441,12 +2452,7 @@ body.theme-dark.card-layout-open-dark .workspace-tabs:not(.mod-top) .workspace-t
   box-shadow: inset 0px 1px 0px transparent;
 }
 
-body.theme-light.mod-left-split-background-transparent-light.card-layout-open-light.tab-autohide .mod-left-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf,
-body.theme-dark.mod-left-split-background-transparent-dark.card-layout-open-dark.tab-autohide .mod-left-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf,
-body.theme-light.mod-right-split-background-transparent-light.card-layout-open-light.tab-autohide .mod-right-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf,
-body.theme-dark.mod-right-split-background-transparent-dark.card-layout-open-dark.tab-autohide .mod-right-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf,
-body.theme-light.mod-root-split-background-transparent-light.card-layout-open-light.tab-autohide .mod-root .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf,
-body.theme-dark.mod-root-split-background-transparent-dark.card-layout-open-dark.tab-autohide .mod-root .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf {
+body.theme-light.mod-left-split-background-transparent-light.card-layout-open-light.tab-autohide .mod-left-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf, body.theme-dark.mod-left-split-background-transparent-dark.card-layout-open-dark.tab-autohide .mod-left-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf, body.theme-light.mod-right-split-background-transparent-light.card-layout-open-light.tab-autohide .mod-right-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf, body.theme-dark.mod-right-split-background-transparent-dark.card-layout-open-dark.tab-autohide .mod-right-split .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf, body.theme-light.mod-root-split-background-transparent-light.card-layout-open-light.tab-autohide .mod-root .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf, body.theme-dark.mod-root-split-background-transparent-dark.card-layout-open-dark.tab-autohide .mod-root .workspace-tabs:not(.mod-top) .workspace-tab-container > .workspace-leaf {
   box-shadow: inset 0px 1px 0px var(--divider-color);
   border-top-left-radius: 0px !important;
   border-top-right-radius: 0px !important;
@@ -4237,6 +4243,7 @@ body:not(.file-icon-remove) .workspace-leaf-content[data-type=bookmarks] svg.luc
 }
 
 /*colorful folder icon*/
+/*colorful folder icon*/
 body:not(.file-icon-remove) .nav-folder:nth-child(8n+2) {
   --colorful-folder-color: var(--color-red);
 }
@@ -4800,7 +4807,7 @@ body {
   border-bottom: none;
   background-image: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--anim-duration-moderate) ease;
 }
 
 .markdown-preview-view a.internal-link::before,
@@ -4813,7 +4820,7 @@ body {
   color: var(--text-muted);
   margin-right: 1px;
   opacity: 0.7;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s, opacity 0.3s;
+  transition: transform var(--anim-duration-moderate) cubic-bezier(0.34, 1.56, 0.64, 1), color var(--anim-duration-moderate), opacity var(--anim-duration-moderate);
 }
 
 .markdown-preview-view a.internal-link::after,
@@ -4826,7 +4833,7 @@ body {
   color: var(--text-muted);
   margin-left: 1px;
   opacity: 0.7;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s, opacity 0.3s;
+  transition: transform var(--anim-duration-moderate) cubic-bezier(0.34, 1.56, 0.64, 1), color var(--anim-duration-moderate), opacity var(--anim-duration-moderate);
 }
 
 .markdown-preview-view a.internal-link:hover,
@@ -5128,7 +5135,7 @@ body {
   position: relative;
   border-bottom: 2px solid transparent;
   box-decoration-break: clone;
-  transition: border-color 0.3s ease, color 0.3s ease;
+  transition: border-color var(--anim-duration-moderate) ease, color var(--anim-duration-moderate) ease;
 }
 
 .theme-light .markdown-preview-view strong:hover,
@@ -6290,7 +6297,7 @@ svg {
   width: 6px;
   border-radius: 50%;
   background-color: var(--list-color) !important;
-  transition: top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-radius 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: top var(--anim-duration-moderate) var(--anim-ease-swing), left var(--anim-duration-moderate) var(--anim-ease-swing), transform var(--anim-duration-moderate) var(--anim-ease-swing), height var(--anim-duration-moderate) var(--anim-ease-swing), width var(--anim-duration-moderate) var(--anim-ease-swing), border-radius var(--anim-duration-moderate) var(--anim-ease-swing), background-color var(--anim-duration-moderate) var(--anim-ease-swing);
 }
 
 .markdown-source-view.is-live-preview {
@@ -6358,7 +6365,7 @@ svg {
   background-color: var(--checkbox-bg-unchecked) !important;
   border: 2px solid var(--checkbox-border-unchecked) !important;
   box-sizing: border-box !important;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+  transition: all var(--anim-duration-moderate) cubic-bezier(0.175, 0.885, 0.32, 1.4);
   z-index: 1;
 }
 
@@ -6386,7 +6393,7 @@ svg {
   border-right: 0 !important;
   transform: translate(-50%, -50%) rotate(-45deg) scale(0);
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+  transition: all var(--anim-duration-moderate) cubic-bezier(0.175, 0.885, 0.32, 1.4);
 }
 
 .markdown-preview-view .task-list-item > input.task-list-item-checkbox:checked::after,
@@ -6462,7 +6469,7 @@ svg {
   list-style: none;
   padding-left: 4px;
   min-height: calc(var(--line-height-customize) * 1em);
-  transition: color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), text-decoration-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  transition: color 0.4s var(--anim-ease-smooth), opacity 0.4s var(--anim-ease-smooth), text-decoration-color 0.4s var(--anim-ease-smooth) !important;
   text-decoration: none !important;
   text-decoration-color: transparent !important;
   text-decoration-thickness: 2px !important;
@@ -6811,7 +6818,7 @@ settings:
         collapsed: true
         level: 3
     - 
-		id: graph-text
+		id: graph-text  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-text color
 		type: variable-themed-color
 		opacity: true
@@ -6819,7 +6826,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-line
+		id: graph-line  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-line color
 		type: variable-themed-color
 		opacity: true
@@ -6827,7 +6834,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node
+		id: graph-node  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node color
 		type: variable-themed-color
 		opacity: true
@@ -6835,7 +6842,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-unresolved
+		id: graph-node-unresolved  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-unresolved color
 		type: variable-themed-color
 		opacity: true
@@ -6843,7 +6850,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-focused
+		id: graph-node-focused  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-focused color
 		type: variable-themed-color
 		opacity: true
@@ -6851,7 +6858,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-tag
+		id: graph-node-tag  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-tag color
 		type: variable-themed-color
 		opacity: true
@@ -6859,7 +6866,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-attachment
+		id: graph-node-attachment  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-attachment color
 		type: variable-themed-color
 		opacity: true
@@ -7042,7 +7049,7 @@ settings:
         collapsed: true
         level: 4
     - 
-        id: accent-light
+        id: accent-light  # core-consumed：Obsidian core 读它，主题不消费
         title: 主题色（亮色模式）
         description: 分开来设置亮色模式与暗色模式的强调色
         type: variable-color
@@ -7538,7 +7545,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-        id: text-on-accent-inverted
+        id: text-on-accent-inverted  # core-consumed：Obsidian core 读它，主题不消费
 		title: text-on-accent-inverted（亮色模式）
 		type: variable-themed-color
 		format: hex
@@ -7843,7 +7850,7 @@ settings:
         collapsed: true
         level: 4
     - 
-        id: accent-dark
+        id: accent-dark  # core-consumed：Obsidian core 读它，主题不消费
         title: 主题色（暗色模式）
         description: 分开来设置亮色模式与暗色模式的强调色
         type: variable-color
@@ -8339,7 +8346,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-        id: text-on-accent-inverted
+        id: text-on-accent-inverted  # core-consumed：Obsidian core 读它，主题不消费
 		title: text-on-accent-inverted（暗色模式）
 		type: variable-themed-color
 		format: hex
@@ -8728,18 +8735,18 @@ settings:
         title: 移除页内标题分隔线
         type: class-toggle
     - 
-		id: inline-title-font
+		id: inline-title-font  # core-consumed：Obsidian core 读它，主题不消费
 		title: 页内标题 字体
 		type: variable-text
 		default: ''
 	- 
-		id: inline-title-size
+		id: inline-title-size  # core-consumed：Obsidian core 读它，主题不消费
 		title: 页内标题 字体大小
         description: 接受任何 CSS font-size 值
 		type: variable-text
 		default: 1.5em
 	- 
-        id: inline-title-weight
+        id: inline-title-weight  # core-consumed：Obsidian core 读它，主题不消费
         title: 页内标题 字重
         description: 接受 100-900 的值
         type: variable-number
@@ -8762,7 +8769,7 @@ settings:
             -   label: Customized color
                 value: inline-title-color-customized
 	- 
-		id: inline-title-color
+		id: inline-title-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 自定义 页内标题 文本颜色
 		type: variable-themed-color
 		format: hex
@@ -9125,7 +9132,7 @@ settings:
         type: variable-number
         default: 1.5
 	- 
-		id: file-line-width
+		id: file-line-width  # core-consumed：Obsidian core 读它，主题不消费
 		title: 段落行宽（需开启“缩减栏宽”）
 		type: variable-text
 		default: 700px
@@ -9207,19 +9214,19 @@ settings:
 		default-light: '#'
 		default-dark: '#'
 	- 
-		id: link-decoration
+		id: link-decoration  # core-consumed：Obsidian core 读它，主题不消费
 		title: 链接装饰
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-decoration-hover
+		id: link-decoration-hover  # core-consumed：Obsidian core 读它，主题不消费
 		title: 链接装饰（鼠标悬停时）
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-decoration-thickness
+		id: link-decoration-thickness  # core-consumed：Obsidian core 读它，主题不消费
 		title: 链接装饰厚度
         description: 接受任何 CSS text-decoration-thickness 值
 		type: variable-text
@@ -9231,14 +9238,14 @@ settings:
 		level: 4
 		collapsed: true
 	- 
-		id: link-unresolved-color
+		id: link-unresolved-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接颜色
 		type: variable-themed-color
 		format: hex
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: link-unresolved-opacity
+		id: link-unresolved-opacity  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接透明度
 		type: variable-number-slider
 		default: 0.7
@@ -9246,19 +9253,19 @@ settings:
 		max: 1
 		step: 0.05
 	- 
-		id: link-unresolved-filter
+		id: link-unresolved-filter  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接 filter
         description: 接受任何 CSS filter 值
 		type: variable-text
 		default: none
 	- 
-		id: link-unresolved-decoration-style
+		id: link-unresolved-decoration-style  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接装饰风格
         description: 接受任何 CSS text-decoration-style 值
 		type: variable-text
 		default: solid
 	- 
-		id: link-unresolved-decoration-color
+		id: link-unresolved-decoration-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接装饰颜色
 		type: variable-themed-color
 		format: hex
@@ -9286,19 +9293,19 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: link-external-decoration
+		id: link-external-decoration  # core-consumed：Obsidian core 读它，主题不消费
 		title: 外部链接装饰
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-external-decoration-hover
+		id: link-external-decoration-hover  # core-consumed：Obsidian core 读它，主题不消费
 		title: 外部链接装饰（鼠标悬停时）
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-external-filter
+		id: link-external-filter  # core-consumed：Obsidian core 读它，主题不消费
 		title: 外部链接 filter
         description: 接受任何 CSS filter 值
 		type: variable-text
@@ -9378,7 +9385,7 @@ settings:
         collapsed: true
         level: 3
 	- 
-		id: table-header-color
+		id: table-header-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 自定义 表头颜色（亮色模式）
 		type: variable-themed-color
 		opacity: true
@@ -9688,7 +9695,7 @@ settings:
         title: 无缝嵌入
         type: class-toggle
     - 
-        id: embed-background
+        id: embed-background  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 背景
 		type: variable-themed-color
 		opacity: true
@@ -9696,7 +9703,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-        id: embed-padding
+        id: embed-padding  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 padding
         description: 输入任意 CSS padding 值
         type: variable-text
@@ -9708,13 +9715,13 @@ settings:
         type: variable-text
         default: ''
     - 
-        id: embed-font-style
+        id: embed-font-style  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 字体风格
         description: 输入任意 CSS font-style 值
         type: variable-text
         default: ''
     - 
-        id: embed-max-height
+        id: embed-max-height  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 最大高度
         description: 输入任意 CSS height 值
         type: variable-text
@@ -10461,13 +10468,7 @@ body:not(.is-mobile) .workspace-leaf-content[data-type=style-settings] .view-con
   padding-bottom: 8px;
 }
 
-.setting-item.style-settings-heading:is([data-id=Info],
-[data-id=Components],
-[data-id=Appearance-light],
-[data-id=Appearance-dark],
-[data-id=Editor],
-[data-id=Mobile],
-[data-id=Plugin]) .style-settings-collapse-indicator::after {
+.setting-item.style-settings-heading:is([data-id=Info], [data-id=Components], [data-id=Appearance-light], [data-id=Appearance-dark], [data-id=Editor], [data-id=Mobile], [data-id=Plugin]) .style-settings-collapse-indicator::after {
   content: "";
   margin-left: var(--size-4-2);
   display: inline-block;

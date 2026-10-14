@@ -75,29 +75,12 @@ body:not(.is-phone):not(.inline-title-divider-remove)
 }
 
 
-body .markdown-preview-view h1,
-body .markdown-source-view.mod-cm6 .HyperMD-header-1 {
-  color: var(--h1-color) !important;
-}
-body .markdown-preview-view h2,
-body .markdown-source-view.mod-cm6 .HyperMD-header-2 {
-  color: var(--h2-color) !important;
-}
-body .markdown-preview-view h3,
-body .markdown-source-view.mod-cm6 .HyperMD-header-3 {
-  color: var(--h3-color) !important;
-}
-body .markdown-preview-view h4,
-body .markdown-source-view.mod-cm6 .HyperMD-header-4 {
-  color: var(--h4-color) !important;
-}
-body .markdown-preview-view h5,
-body .markdown-source-view.mod-cm6 .HyperMD-header-5 {
-  color: var(--h5-color) !important;
-}
-body .markdown-preview-view h6,
-body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
-  color: var(--h6-color) !important;
+// 标题颜色：阅读视图的 hN 与源码视图的 HyperMD-header-N 共用一个令牌。
+@for $level from 1 through 6 {
+  body .markdown-preview-view h#{$level},
+  body .markdown-source-view.mod-cm6 .HyperMD-header-#{$level} {
+    color: var(--h#{$level}-color) !important;
+  }
 }
 .markdown-preview-view h1,
 .markdown-preview-view h2,
@@ -110,94 +93,30 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   font-weight: bold;
   position: relative;
   transition:
-    color 0.3s ease,
-    font-weight 0.3s ease;
+    color var(--anim-duration-moderate) ease,
+    font-weight var(--anim-duration-moderate) ease;
   margin-block-start: var(--heading-spacing);
   margin-block-end: var(--heading-spacing);
 }
-.markdown-preview-view h1 {
-  margin-block-start: calc(
-    var(--heading-spacing) * var(--h1-spacing-scale-start)
-  );
-  margin-block-end: calc(var(--heading-spacing) * var(--h1-spacing-scale-end));
+// 标题留白：--heading-spacing × 每级的上下倍数（倍数令牌来自 _variables.scss 的 $headings）。
+@for $level from 1 through 6 {
+  .markdown-preview-view h#{$level} {
+    margin-block-start: calc(
+      var(--heading-spacing) * var(--h#{$level}-spacing-scale-start)
+    );
+    margin-block-end: calc(var(--heading-spacing) * var(--h#{$level}-spacing-scale-end));
+  }
 }
-.markdown-preview-view h2 {
-  margin-block-start: calc(
-    var(--heading-spacing) * var(--h2-spacing-scale-start)
-  );
-  margin-block-end: calc(var(--heading-spacing) * var(--h2-spacing-scale-end));
-}
-.markdown-preview-view h3 {
-  margin-block-start: calc(
-    var(--heading-spacing) * var(--h3-spacing-scale-start)
-  );
-  margin-block-end: calc(var(--heading-spacing) * var(--h3-spacing-scale-end));
-}
-.markdown-preview-view h4 {
-  margin-block-start: calc(
-    var(--heading-spacing) * var(--h4-spacing-scale-start)
-  );
-  margin-block-end: calc(var(--heading-spacing) * var(--h4-spacing-scale-end));
-}
-.markdown-preview-view h5 {
-  margin-block-start: calc(
-    var(--heading-spacing) * var(--h5-spacing-scale-start)
-  );
-  margin-block-end: calc(var(--heading-spacing) * var(--h5-spacing-scale-end));
-}
-.markdown-preview-view h6 {
-  margin-block-start: calc(
-    var(--heading-spacing) * var(--h6-spacing-scale-start)
-  );
-  margin-block-end: calc(var(--heading-spacing) * var(--h6-spacing-scale-end));
-}
-.markdown-source-view.mod-cm6 .HyperMD-header-1 {
-  padding-top: calc(
-    var(--heading-spacing) * var(--h1-spacing-scale-start) - 0.25rem
-  );
-  padding-bottom: calc(
-    var(--heading-spacing) * var(--h1-spacing-scale-end) - 0.25rem
-  );
-}
-.markdown-source-view.mod-cm6 .HyperMD-header-2 {
-  padding-top: calc(
-    var(--heading-spacing) * var(--h2-spacing-scale-start) - 0.25rem
-  );
-  padding-bottom: calc(
-    var(--heading-spacing) * var(--h2-spacing-scale-end) - 0.25rem
-  );
-}
-.markdown-source-view.mod-cm6 .HyperMD-header-3 {
-  padding-top: calc(
-    var(--heading-spacing) * var(--h3-spacing-scale-start) - 0.25rem
-  );
-  padding-bottom: calc(
-    var(--heading-spacing) * var(--h3-spacing-scale-end) - 0.25rem
-  );
-}
-.markdown-source-view.mod-cm6 .HyperMD-header-4 {
-  padding-top: calc(
-    var(--heading-spacing) * var(--h4-spacing-scale-start) - 0.25rem
-  );
-  padding-bottom: calc(
-    var(--heading-spacing) * var(--h4-spacing-scale-end) - 0.25rem
-  );
-}
-.markdown-source-view.mod-cm6 .HyperMD-header-5 {
-  padding-top: calc(
-    var(--heading-spacing) * var(--h5-spacing-scale-start) - 0.25rem
-  );
-  padding-bottom: calc(
-    var(--heading-spacing) * var(--h5-spacing-scale-end) - 0.25rem
-  );
-}
-.markdown-source-view.mod-cm6 .HyperMD-header-6 {
-  padding-top: calc(
-    var(--heading-spacing) * var(--h6-spacing-scale-start) - 0.25rem
-  );
-  padding-bottom: calc(
-    var(--heading-spacing) * var(--h6-spacing-scale-end) - 0.25rem
-  );
+// 源码视图的标题行自带行内 padding，所以比留白少 0.25rem。
+@for $level from 1 through 6 {
+  .markdown-source-view.mod-cm6 .HyperMD-header-#{$level} {
+    padding-top: calc(
+      var(--heading-spacing) * var(--h#{$level}-spacing-scale-start) - 0.25rem
+    );
+    padding-bottom: calc(
+      var(--heading-spacing) * var(--h#{$level}-spacing-scale-end) - 0.25rem
+    );
+  }
 }
 .theme-light .markdown-preview-view .heading-collapse-indicator {
   margin-inline-start: -47px !important;
@@ -291,8 +210,8 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   margin-right: auto !important;
   position: relative;
   transition:
-    color 0.3s ease,
-    transform 0.3s ease;
+    color var(--anim-duration-moderate) ease,
+    transform var(--anim-duration-moderate) ease;
 }
 .theme-light .markdown-preview-view h1::after,
 .theme-light .markdown-source-view.mod-cm6 .HyperMD-header-1::after {
@@ -307,8 +226,8 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-size: 100% auto;
   transform: translateX(-50%);
   transition:
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s ease;
+    width var(--anim-duration-moderate) var(--anim-ease-standard),
+    transform var(--anim-duration-moderate) ease;
 }
 .theme-light .markdown-preview-view h1:hover {
   color: var(--phycat-primary-color);
@@ -340,15 +259,15 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--secondary-color);
   opacity: 0.5;
   transition:
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width var(--anim-duration-moderate) var(--anim-ease-standard),
+    height var(--anim-duration-moderate) var(--anim-ease-standard),
+    border-radius var(--anim-duration-moderate) var(--anim-ease-standard),
+    top var(--anim-duration-moderate) var(--anim-ease-standard),
+    transform var(--anim-duration-moderate) var(--anim-ease-standard),
+    margin-top var(--anim-duration-moderate) var(--anim-ease-standard),
+    left var(--anim-duration-moderate) var(--anim-ease-standard),
+    background-color var(--anim-duration-moderate) var(--anim-ease-standard),
+    opacity var(--anim-duration-moderate) var(--anim-ease-standard);
   z-index: 0;
 }
 .theme-light.h1-align-left .markdown-preview-view h1::after,
@@ -366,15 +285,15 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background: var(--phycat-primary-color);
   mix-blend-mode: multiply;
   transition:
-    bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    height 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    left 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+    bottom var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    width var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    height var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    border-radius var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    transform var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    margin-top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    left var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    box-shadow var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s;
   z-index: 1;
 }
 .theme-light.h1-align-left .markdown-preview-view h1:hover {
@@ -442,7 +361,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   padding-right: 0;
   display: block;
   width: 100%;
-  transition: color 0.3s ease;
+  transition: color var(--anim-duration-moderate) ease;
 }
 .theme-light:not(.h2-style-capsule)
   .markdown-preview-view
@@ -473,14 +392,14 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-m);
   opacity: 1;
   transition:
-    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    left 0.4s var(--anim-ease-smooth),
+    top 0.4s var(--anim-ease-smooth),
+    margin-top 0.4s var(--anim-ease-smooth),
+    height 0.4s var(--anim-ease-smooth),
+    width 0.4s var(--anim-ease-smooth),
+    background-color 0.4s var(--anim-ease-smooth),
+    border-radius 0.4s var(--anim-ease-smooth),
+    opacity 0.4s var(--anim-ease-smooth);
 }
 .theme-light:not(.h2-style-capsule)
   .markdown-source-view.mod-cm6
@@ -509,14 +428,14 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-xs);
   opacity: 0.6;
   transition:
-    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s;
+    left 0.4s var(--anim-ease-smooth) 0.05s,
+    top 0.4s var(--anim-ease-smooth) 0.05s,
+    margin-top 0.4s var(--anim-ease-smooth) 0.05s,
+    height 0.4s var(--anim-ease-smooth) 0.05s,
+    width 0.4s var(--anim-ease-smooth) 0.05s,
+    background-color 0.4s var(--anim-ease-smooth) 0.05s,
+    border-radius 0.4s var(--anim-ease-smooth) 0.05s,
+    opacity 0.4s var(--anim-ease-smooth) 0.05s;
 }
 .theme-light:not(.h2-style-capsule)
   .markdown-source-view.mod-cm6
@@ -561,9 +480,9 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   width: fit-content;
   padding-left: 15px;
   transition:
-    width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    padding-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    width var(--anim-duration-moderate) var(--anim-ease-smooth),
+    padding-left var(--anim-duration-moderate) var(--anim-ease-smooth),
+    color var(--anim-duration-moderate) var(--anim-ease-smooth);
 }
 .theme-light .markdown-preview-view h3::before {
   content: "";
@@ -576,13 +495,13 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-m);
   background-color: var(--phycat-primary-color);
   transition:
-    left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    border-radius 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    left var(--anim-duration-moderate) var(--anim-ease-smooth),
+    top var(--anim-duration-moderate) var(--anim-ease-smooth),
+    transform var(--anim-duration-moderate) var(--anim-ease-smooth),
+    width var(--anim-duration-moderate) var(--anim-ease-smooth),
+    height var(--anim-duration-moderate) var(--anim-ease-smooth),
+    border-radius var(--anim-duration-moderate) var(--anim-ease-smooth),
+    background-color var(--anim-duration-moderate) var(--anim-ease-smooth);
 }
 .theme-light .markdown-preview-view h3:hover {
   padding-left: 20px;
@@ -607,14 +526,14 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--phycat-primary-color);
   border: var(--domye-border-width) solid var(--phycat-primary-color);
   transition:
-    left 0.3s ease,
-    top 0.3s ease,
-    transform 0.3s ease,
-    width 0.3s ease,
-    height 0.3s ease,
-    border-radius 0.3s ease,
-    background-color 0.3s ease,
-    box-shadow 0.3s ease;
+    left var(--anim-duration-moderate) ease,
+    top var(--anim-duration-moderate) ease,
+    transform var(--anim-duration-moderate) ease,
+    width var(--anim-duration-moderate) ease,
+    height var(--anim-duration-moderate) ease,
+    border-radius var(--anim-duration-moderate) ease,
+    background-color var(--anim-duration-moderate) ease,
+    box-shadow var(--anim-duration-moderate) ease;
 }
 .theme-light .markdown-preview-view h4:hover {
   color: var(--light-deep);
@@ -639,14 +558,14 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border: calc(var(--domye-border-width) * 2) solid var(--phycat-primary-color);
   box-sizing: border-box;
   transition:
-    left 0.3s ease,
-    top 0.3s ease,
-    transform 0.3s ease,
-    width 0.3s ease,
-    height 0.3s ease,
-    border-radius 0.3s ease,
-    background-color 0.3s ease,
-    box-shadow 0.3s ease;
+    left var(--anim-duration-moderate) ease,
+    top var(--anim-duration-moderate) ease,
+    transform var(--anim-duration-moderate) ease,
+    width var(--anim-duration-moderate) ease,
+    height var(--anim-duration-moderate) ease,
+    border-radius var(--anim-duration-moderate) ease,
+    background-color var(--anim-duration-moderate) ease,
+    box-shadow var(--anim-duration-moderate) ease;
 }
 .theme-light .markdown-preview-view h5:hover {
   color: var(--light-deep);
@@ -669,11 +588,11 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   font-weight: bold;
   line-height: 1;
   transition:
-    left 0.3s ease,
-    top 0.3s ease,
-    transform 0.3s ease,
-    color 0.3s ease,
-    font-weight 0.3s ease;
+    left var(--anim-duration-moderate) ease,
+    top var(--anim-duration-moderate) ease,
+    transform var(--anim-duration-moderate) ease,
+    color var(--anim-duration-moderate) ease,
+    font-weight var(--anim-duration-moderate) ease;
 }
 .theme-light .markdown-preview-view h6:hover {
   color: var(--light-deep);
@@ -711,7 +630,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-m);
   background: var(--h1-underline-color);
   transform: translateX(-50%);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width var(--anim-duration-moderate) var(--anim-ease-standard);
   pointer-events: none;
 }
 .theme-dark .markdown-preview-view h1:hover::after {
@@ -740,15 +659,15 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background-color: var(--secondary-color);
   opacity: 0.6;
   transition:
-    top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    top var(--anim-duration-moderate) var(--anim-ease-standard),
+    transform var(--anim-duration-moderate) var(--anim-ease-standard),
+    margin-top var(--anim-duration-moderate) var(--anim-ease-standard),
+    left var(--anim-duration-moderate) var(--anim-ease-standard),
+    width var(--anim-duration-moderate) var(--anim-ease-standard),
+    height var(--anim-duration-moderate) var(--anim-ease-standard),
+    border-radius var(--anim-duration-moderate) var(--anim-ease-standard),
+    background-color var(--anim-duration-moderate) var(--anim-ease-standard),
+    opacity var(--anim-duration-moderate) var(--anim-ease-standard);
   z-index: 0;
 }
 .theme-dark.h1-align-left .markdown-preview-view h1::after,
@@ -766,15 +685,15 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background: var(--phycat-primary-color);
   mix-blend-mode: screen;
   transition:
-    bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    margin-top 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    left 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    height 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s,
-    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.05s;
+    bottom var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    transform var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    margin-top var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    left var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    width var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    height var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    border-radius var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s,
+    box-shadow var(--anim-duration-moderate) var(--anim-ease-standard) 0.05s;
   z-index: 1;
 }
 .theme-dark.h1-align-left .markdown-preview-view h1:hover::before {
@@ -853,7 +772,7 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   padding-right: 0;
   display: block;
   width: 100%;
-  transition: color 0.3s ease;
+  transition: color var(--anim-duration-moderate) ease;
 }
 .theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2::before,
 .theme-dark.h2-style-dark-twin .markdown-preview-view h2::before,
@@ -874,15 +793,15 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-m);
   opacity: 0.8;
   transition:
-    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    left 0.4s var(--anim-ease-smooth),
+    top 0.4s var(--anim-ease-smooth),
+    margin-top 0.4s var(--anim-ease-smooth),
+    height 0.4s var(--anim-ease-smooth),
+    width 0.4s var(--anim-ease-smooth),
+    background-color 0.4s var(--anim-ease-smooth),
+    border-radius 0.4s var(--anim-ease-smooth),
+    opacity 0.4s var(--anim-ease-smooth),
+    box-shadow 0.4s var(--anim-ease-smooth);
 }
 .theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2::after,
 .theme-dark.h2-style-dark-twin .markdown-preview-view h2::after,
@@ -903,15 +822,15 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: var(--domye-radius-xs);
   opacity: 0.6;
   transition:
-    left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    margin-top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    border-radius 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s,
-    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) 0.05s;
+    left 0.4s var(--anim-ease-smooth) 0.05s,
+    top 0.4s var(--anim-ease-smooth) 0.05s,
+    margin-top 0.4s var(--anim-ease-smooth) 0.05s,
+    height 0.4s var(--anim-ease-smooth) 0.05s,
+    width 0.4s var(--anim-ease-smooth) 0.05s,
+    background-color 0.4s var(--anim-ease-smooth) 0.05s,
+    border-radius 0.4s var(--anim-ease-smooth) 0.05s,
+    opacity 0.4s var(--anim-ease-smooth) 0.05s,
+    box-shadow 0.4s var(--anim-ease-smooth) 0.05s;
 }
 .theme-dark:not(.h2-style-dark-capsule) .markdown-preview-view h2:hover,
 .theme-dark.h2-style-dark-twin .markdown-preview-view h2:hover {
@@ -937,8 +856,8 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   padding-left: 15px;
   display: block;
   transition:
-    padding-left 0.3s ease,
-    color 0.3s ease;
+    padding-left var(--anim-duration-moderate) ease,
+    color var(--anim-duration-moderate) ease;
 }
 .theme-dark .markdown-preview-view h3::before {
   content: "";
@@ -951,14 +870,14 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   background: var(--phycat-primary-color);
   border-radius: var(--domye-radius-xs);
   transition:
-    left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    border-radius 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    opacity 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    left var(--anim-duration-moderate) var(--anim-ease-smooth),
+    top var(--anim-duration-moderate) var(--anim-ease-smooth),
+    transform var(--anim-duration-moderate) var(--anim-ease-smooth),
+    width var(--anim-duration-moderate) var(--anim-ease-smooth),
+    height var(--anim-duration-moderate) var(--anim-ease-smooth),
+    border-radius var(--anim-duration-moderate) var(--anim-ease-smooth),
+    opacity var(--anim-duration-moderate) var(--anim-ease-smooth),
+    box-shadow var(--anim-duration-moderate) var(--anim-ease-smooth);
   opacity: 0.8;
 }
 .theme-dark .markdown-preview-view h3:hover {
@@ -982,13 +901,13 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   height: 8px;
   border-radius: 50%;
   transition:
-    margin-right 0.3s ease,
-    background-color 0.3s ease,
-    width 0.3s ease,
-    height 0.3s ease,
-    border-radius 0.3s ease,
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+    margin-right var(--anim-duration-moderate) ease,
+    background-color var(--anim-duration-moderate) ease,
+    width var(--anim-duration-moderate) ease,
+    height var(--anim-duration-moderate) ease,
+    border-radius var(--anim-duration-moderate) ease,
+    transform var(--anim-duration-moderate) ease,
+    box-shadow var(--anim-duration-moderate) ease;
   flex-shrink: 0;
 }
 .theme-dark .markdown-preview-view h4:hover {
@@ -1013,14 +932,14 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   border-radius: 50%;
   box-sizing: border-box;
   transition:
-    margin-right 0.3s ease,
-    background-color 0.3s ease,
-    width 0.3s ease,
-    height 0.3s ease,
-    border-radius 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
+    margin-right var(--anim-duration-moderate) ease,
+    background-color var(--anim-duration-moderate) ease,
+    width var(--anim-duration-moderate) ease,
+    height var(--anim-duration-moderate) ease,
+    border-radius var(--anim-duration-moderate) ease,
+    border-color var(--anim-duration-moderate) ease,
+    box-shadow var(--anim-duration-moderate) ease,
+    transform var(--anim-duration-moderate) ease;
   flex-shrink: 0;
 }
 .theme-dark .markdown-preview-view h5:hover {
@@ -1043,11 +962,11 @@ body .markdown-source-view.mod-cm6 .HyperMD-header-6 {
   display: inline-block;
   font-weight: bold;
   transition:
-    color 0.3s ease,
-    margin-right 0.3s ease,
-    font-weight 0.3s ease,
-    text-shadow 0.3s ease,
-    transform 0.3s ease;
+    color var(--anim-duration-moderate) ease,
+    margin-right var(--anim-duration-moderate) ease,
+    font-weight var(--anim-duration-moderate) ease,
+    text-shadow var(--anim-duration-moderate) ease,
+    transform var(--anim-duration-moderate) ease;
 }
 .theme-dark .markdown-preview-view h6:hover {
   color: var(--phycat-primary-color);

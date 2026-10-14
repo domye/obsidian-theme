@@ -7,6 +7,11 @@ body {
   --anim-duration-fast: calc(150ms / var(--anim-speed));
   --anim-duration-moderate: calc(300ms / var(--anim-speed));
   --anim-duration-slow: calc(600ms / var(--anim-speed));
+  /* 缓和曲线：组件层里重复出现的那几条曲线在这里起名，改一处全站跟随。
+     值就是组件里原本写死的字面量，所以换过去不改渲染。 */
+  --anim-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --anim-ease-smooth: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --anim-ease-swing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --anim-in: var(--anim-duration-fast) var(--anim-duration-superfast)
     var(--anim-motion-swing);
   --anim-out: var(--anim-duration-moderate) var(--anim-duration-slow)

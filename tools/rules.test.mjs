@@ -8,11 +8,13 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import {
+  checkAnimLiterals,
   checkDeadVars,
   checkDefaults,
   checkDuplicateDecls,
   checkLiterals,
   checkPanelClassConsumers,
+  checkPanelTokenConsumers,
 } from './rules.mjs';
 
 const scss = (rel, extra) => ({ rel, src: '', defs: [], refs: [], literals: [], blocks: [], ...extra });
@@ -62,11 +64,37 @@ test('令牌层文件不报裸字面量，组件文件才报', () => {
   assert.deepEqual(checkLiterals(facts), [{ file: 'components/_editor.scss', n: 2 }]);
 });
 
+test('动效字面量：曲线与 0.3s 该写令牌，令牌定义处（_reset.scss）不报', () => {
+  const decls = (value, line) => [{ prop: 'transition', value, line }];
+  const facts = [
+    scss('foundations/_reset.scss', { blocks: [{ selector: 'body', decls: decls('cubic-bezier(0.25, 0.8, 0.25, 1)', 1) }] }),
+    scss('foundations/_typography.scss', {
+      blocks: [{ selector: 'h1', decls: [...decls('color 0.3s ease', 3), ...decls('cubic-bezier(0.4, 0, 0.2, 1)', 4)] }],
+    }),
+    scss('components/_editor.scss', {
+      blocks: [{ selector: '.x', decls: decls('transform 0.35s ease', 5) }],
+    }),
+  ];
+  const hits = checkAnimLiterals(facts);
+  assert.deepEqual(hits.map((h) => [h.file, h.line, h.want]), [
+    ['foundations/_typography.scss', 3, 'var(--anim-duration-moderate)'],
+    ['foundations/_typography.scss', 4, 'var(--anim-ease-standard)'],
+  ]);
+});
+
 test('默认值漂移会报出，且读的是面板事实里的默认值', () => {
-  const facts = [scss('_variables.scss', { src: '$radius-base: 4px;' })];
+  // 令牌默认值也走事实层（不再由规则自己去源码里写正则抓）
+  const facts = [scss('_variables.scss', { sassVars: [{ name: '$radius-base', value: '4px !default' }] })];
   const panel = [{ name: 'Editor', entries: [{ id: 'domye-radius', defaults: { default: '6' } }] }];
   const hit = checkDefaults(facts, panel).find((h) => h.id === 'domye-radius.default');
   assert.match(hit.why, /YAML=6 ↔ Sass=4px/);
+});
+
+test('令牌默认值两处一致时不报（!default 标志不算值）', () => {
+  const facts = [scss('_variables.scss', { sassVars: [{ name: '$radius-base', value: '4px !default' }] })];
+  const panel = [{ name: 'Editor', entries: [{ id: 'domye-radius', defaults: { default: '4px' } }] }];
+  const hits = checkDefaults(facts, panel).map((h) => h.id);
+  assert.equal(hits.includes('domye-radius.default'), false, `不该报：${hits.join(', ')}`);
 });
 
 test('绑定表里的条目或令牌整个找不到，也算违规（改名/删除时会报）', () => {
@@ -121,4 +149,34 @@ test('非 class 类条目（颜色/文本/滑块）不参与该规则', () => {
     },
   ];
   assert.deepEqual(checkPanelClassConsumers(panel, new Set()), []);
+});
+
+test('会写变量的选项，主题里没有同名变量就是死选项', () => {
+  const panel = [
+    {
+      name: 'Components',
+      entries: [{ id: 'background-mod-left-CSS-light', type: 'variable-text', line: 525, options: [] }],
+    },
+  ];
+  const hits = checkPanelTokenConsumers(panel, new Set());
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].line, 525);
+  assert.match(hits[0].why, /--background-mod-left-CSS-light/);
+});
+
+test('主题里有同名变量（定义或引用）就不报', () => {
+  const panel = [{ name: 'Editor', entries: [{ id: 'code-normal', type: 'variable-themed-color', options: [] }] }];
+  assert.deepEqual(checkPanelTokenConsumers(panel, new Set(['--code-normal'])), []);
+});
+
+test('标了 # core-consumed 的选项不报（值交给 Obsidian core 读）', () => {
+  const panel = [
+    { name: 'Editor', entries: [{ id: 'graph-text', type: 'variable-themed-color', coreConsumed: true, options: [] }] },
+  ];
+  assert.deepEqual(checkPanelTokenConsumers(panel, new Set()), []);
+});
+
+test('class 类选项不参与「变量没人读」这条规则（它们写的是 body 上的类）', () => {
+  const panel = [{ name: 'Editor', entries: [{ id: 'colorful-folder', type: 'class-toggle', options: [] }] }];
+  assert.deepEqual(checkPanelTokenConsumers(panel, new Set()), []);
 });

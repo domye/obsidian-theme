@@ -6,6 +6,10 @@
 //   非颜色令牌 → body {}
 //   颜色令牌   → body.theme-light / body.theme-dark
 //
+// 这里是令牌层的「非颜色 + 派生色」那一半；调色板（accent HSL、亮/暗两套颜色、
+// --shadow-s/l）在 foundations/_colors.scss —— 改令牌时两个文件要看，但别合并：
+// 两者的选择器优先级不同（body.theme-* vs .theme-*），搬动会改层叠。
+//
 // 这里所有值都是「用户没在 Style Settings 里改过」时的默认值。
 // Style Settings 的覆盖写在 body.css-settings-manager（优先级更高），
 // 所以滑块一改，下面的默认值就被顶掉，而依赖 --domye-* 派生的值自动跟随。

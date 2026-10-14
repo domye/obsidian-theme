@@ -3,6 +3,17 @@
 // 只放「确实被两个以上地方用到」的东西，避免出现无人调用的抽象。
 // ============================================================================
 
+/// 8 色轮转：$colors 里第 i 个色绑到 `:nth-child(8n + $offset + i - 1)`。
+/// 调用方用 `@include … using ($color, $n)` 拿到颜色名与序号，自己写选择器与声明。
+/// （两个消费方的色序不同，所以共用的只是「轮转」这件事实，不是色序。）
+@mixin color-rotation($colors, $offset: 1) {
+  $n: $offset;
+  @each $color in $colors {
+    @content ($color, $n);
+    $n: $n + 1;
+  }
+}
+
 /// h3–h6 的装饰图标：几何 + 遮罩（同时输出 -webkit- 与标准属性）。
 /// $shape 是图标形状变量名（不带 --），$content 在阅读视图与源码视图下原本不同。
 @mixin heading-icon($shape, $content: '', $opacity: 0.3) {

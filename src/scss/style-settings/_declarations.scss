@@ -135,7 +135,7 @@ settings:
         collapsed: true
         level: 3
     - 
-		id: graph-text
+		id: graph-text  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-text color
 		type: variable-themed-color
 		opacity: true
@@ -143,7 +143,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-line
+		id: graph-line  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-line color
 		type: variable-themed-color
 		opacity: true
@@ -151,7 +151,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node
+		id: graph-node  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node color
 		type: variable-themed-color
 		opacity: true
@@ -159,7 +159,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-unresolved
+		id: graph-node-unresolved  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-unresolved color
 		type: variable-themed-color
 		opacity: true
@@ -167,7 +167,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-focused
+		id: graph-node-focused  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-focused color
 		type: variable-themed-color
 		opacity: true
@@ -175,7 +175,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-tag
+		id: graph-node-tag  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-tag color
 		type: variable-themed-color
 		opacity: true
@@ -183,7 +183,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: graph-node-attachment
+		id: graph-node-attachment  # core-consumed：Obsidian core 读它，主题不消费
 		title: graph-node-attachment color
 		type: variable-themed-color
 		opacity: true
@@ -367,7 +367,7 @@ settings:
         collapsed: true
         level: 4
     - 
-        id: accent-light
+        id: accent-light  # core-consumed：Obsidian core 读它，主题不消费
         title: 主题色（亮色模式）
         description: 分开来设置亮色模式与暗色模式的强调色
         type: variable-color
@@ -863,7 +863,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-        id: text-on-accent-inverted
+        id: text-on-accent-inverted  # core-consumed：Obsidian core 读它，主题不消费
 		title: text-on-accent-inverted（亮色模式）
 		type: variable-themed-color
 		format: hex
@@ -1169,7 +1169,7 @@ settings:
         collapsed: true
         level: 4
     - 
-        id: accent-dark
+        id: accent-dark  # core-consumed：Obsidian core 读它，主题不消费
         title: 主题色（暗色模式）
         description: 分开来设置亮色模式与暗色模式的强调色
         type: variable-color
@@ -1665,7 +1665,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-        id: text-on-accent-inverted
+        id: text-on-accent-inverted  # core-consumed：Obsidian core 读它，主题不消费
 		title: text-on-accent-inverted（暗色模式）
 		type: variable-themed-color
 		format: hex
@@ -2055,18 +2055,18 @@ settings:
         title: 移除页内标题分隔线
         type: class-toggle
     - 
-		id: inline-title-font
+		id: inline-title-font  # core-consumed：Obsidian core 读它，主题不消费
 		title: 页内标题 字体
 		type: variable-text
 		default: ''
 	- 
-		id: inline-title-size
+		id: inline-title-size  # core-consumed：Obsidian core 读它，主题不消费
 		title: 页内标题 字体大小
         description: 接受任何 CSS font-size 值
 		type: variable-text
 		default: 1.5em
 	- 
-        id: inline-title-weight
+        id: inline-title-weight  # core-consumed：Obsidian core 读它，主题不消费
         title: 页内标题 字重
         description: 接受 100-900 的值
         type: variable-number
@@ -2089,7 +2089,7 @@ settings:
             -   label: Customized color
                 value: inline-title-color-customized
 	- 
-		id: inline-title-color
+		id: inline-title-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 自定义 页内标题 文本颜色
 		type: variable-themed-color
 		format: hex
@@ -2452,7 +2452,7 @@ settings:
         type: variable-number
         default: 1.5
 	- 
-		id: file-line-width
+		id: file-line-width  # core-consumed：Obsidian core 读它，主题不消费
 		title: 段落行宽（需开启“缩减栏宽”）
 		type: variable-text
 		default: 700px
@@ -2534,19 +2534,19 @@ settings:
 		default-light: '#'
 		default-dark: '#'
 	- 
-		id: link-decoration
+		id: link-decoration  # core-consumed：Obsidian core 读它，主题不消费
 		title: 链接装饰
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-decoration-hover
+		id: link-decoration-hover  # core-consumed：Obsidian core 读它，主题不消费
 		title: 链接装饰（鼠标悬停时）
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-decoration-thickness
+		id: link-decoration-thickness  # core-consumed：Obsidian core 读它，主题不消费
 		title: 链接装饰厚度
         description: 接受任何 CSS text-decoration-thickness 值
 		type: variable-text
@@ -2558,14 +2558,14 @@ settings:
 		level: 4
 		collapsed: true
 	- 
-		id: link-unresolved-color
+		id: link-unresolved-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接颜色
 		type: variable-themed-color
 		format: hex
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: link-unresolved-opacity
+		id: link-unresolved-opacity  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接透明度
 		type: variable-number-slider
 		default: 0.7
@@ -2573,19 +2573,19 @@ settings:
 		max: 1
 		step: 0.05
 	- 
-		id: link-unresolved-filter
+		id: link-unresolved-filter  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接 filter
         description: 接受任何 CSS filter 值
 		type: variable-text
 		default: none
 	- 
-		id: link-unresolved-decoration-style
+		id: link-unresolved-decoration-style  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接装饰风格
         description: 接受任何 CSS text-decoration-style 值
 		type: variable-text
 		default: solid
 	- 
-		id: link-unresolved-decoration-color
+		id: link-unresolved-decoration-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 未创建链接装饰颜色
 		type: variable-themed-color
 		format: hex
@@ -2613,19 +2613,19 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-		id: link-external-decoration
+		id: link-external-decoration  # core-consumed：Obsidian core 读它，主题不消费
 		title: 外部链接装饰
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-external-decoration-hover
+		id: link-external-decoration-hover  # core-consumed：Obsidian core 读它，主题不消费
 		title: 外部链接装饰（鼠标悬停时）
         description: 接受任何 CSS text-decoration-line 值
 		type: variable-text
 		default: underline
 	- 
-		id: link-external-filter
+		id: link-external-filter  # core-consumed：Obsidian core 读它，主题不消费
 		title: 外部链接 filter
         description: 接受任何 CSS filter 值
 		type: variable-text
@@ -2705,7 +2705,7 @@ settings:
         collapsed: true
         level: 3
 	- 
-		id: table-header-color
+		id: table-header-color  # core-consumed：Obsidian core 读它，主题不消费
 		title: 自定义 表头颜色（亮色模式）
 		type: variable-themed-color
 		opacity: true
@@ -3015,7 +3015,7 @@ settings:
         title: 无缝嵌入
         type: class-toggle
     - 
-        id: embed-background
+        id: embed-background  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 背景
 		type: variable-themed-color
 		opacity: true
@@ -3023,7 +3023,7 @@ settings:
 		default-light: '#'
 		default-dark: '#'
     - 
-        id: embed-padding
+        id: embed-padding  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 padding
         description: 输入任意 CSS padding 值
         type: variable-text
@@ -3035,13 +3035,13 @@ settings:
         type: variable-text
         default: ''
     - 
-        id: embed-font-style
+        id: embed-font-style  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 字体风格
         description: 输入任意 CSS font-style 值
         type: variable-text
         default: ''
     - 
-        id: embed-max-height
+        id: embed-max-height  # core-consumed：Obsidian core 读它，主题不消费
         title: 内嵌文档 最大高度
         description: 输入任意 CSS height 值
         type: variable-text

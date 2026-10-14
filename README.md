@@ -46,6 +46,8 @@ domye/
 └── versions.json
 ```
 
+`GLOSSARY.md` 记术语（区域背景、令牌层、黄金守卫……）；`tools/hooks/pre-commit` 是提交前的检查钩子（见下）。
+
 `attachments`、`index` 等笔记目录不受影响；`node_modules/`、`package-lock.json` 已在 `.gitignore` 里。
 
 ## 开发与构建
@@ -53,11 +55,28 @@ domye/
 ```bash
 npm install          # 只装 sass
 npm run dev          # 监听 src/scss → theme.css
-npm run build        # 一次性构建（expanded）
-npm run lint         # 静态检查：同块重复声明（error）、默认值漂移（error）、面板选项没有消费方（error）、零引用变量、裸字面量
-npm run verify       # 重建并守卫 theme.css：按「选择器 → 声明」逐条比对，容忍注释与选择器列表的拆分
-npm run test         # 检查工具自身的解析器回归测试（node --test）
+npm run build        # 一次性构建（expanded），同时把 theme.css 更新为新的比对基准
+npm run lint         # 静态检查：同块重复声明 / 默认值漂移 / 面板选项没有消费方 / 动效字面量（都是 error）、零引用变量、裸字面量（报告）
+npm run verify       # 守卫 theme.css：重编译后按「选择器 → 声明」逐条比对（不会改写 theme.css）
+npm run test         # 检查工具自身的解析器与规则回归测试（node --test）
 npm run check        # lint + test + verify
+```
+
+**为什么 `verify` 不先 `build`**：先 build 再比对等于拿刚写出的产物跟自己比，这个命令曾经因此恒真（改动会被静默放过）。现在改成：
+
+- 改了样式 → `npm run build` 更新基准，再 `npm run verify` 应当报「构建等价」；
+- 忘了 build → `npm run verify` 会报差异，并把 diff 的选择器与声明打出来。
+
+守卫看得到 / 看不到什么：
+
+- 看得到：同一个选择器上的声明增删改、以及同一选择器上多条规则的先后顺序。
+- 看不到：不同选择器之间的规则顺序（CSS 里会因此变层叠，要肉眼确认）；连续构建两次后消失的历史差异。
+
+把检查挂在提交前（可选，写进仓库本地配置）：
+
+```bash
+git config core.hooksPath tools/hooks   # 装
+git config --unset core.hooksPath       # 拆
 ```
 
 **构建产物就是主题本身**：`theme.css` 与 `manifest.json` 同目录，Obsidian 只认这两个文件，`src/`、`tools/`、`package.json` 不会被加载。
@@ -74,6 +93,8 @@ npm run check        # lint + test + verify
 5. `@settings` 的 YAML 一律用 `/* ... */` 普通注释即可；若要改成 `--style=compressed` 构建，必须写成 `/*!`，否则注释会被压掉、Style Settings 面板失效。
 6. 同一属性不要在同一个规则块里写两遍——`npm run lint` 会把第二种作为 error 报出来（后写的静默生效，先写的是死代码）。
 7. **面板选项必须有消费方**：`class-toggle` 的 `id`、`class-select` 的每个 `value`，在运行时都会变成 `body` 上的 class；`npm run lint` 会去编译产物里找对应的 `.类名`，找不到就报错（死开关）。确实只需要默认样式、不需要任何规则的选项，就在那行标 `# no-style 说明`——契约写在声明旁边，而不是散在检查器的白名单里。
+8. **会写变量的选项也必须有人读**：`variable-text` / `variable-color` / `variable-themed-color` / `variable-number(-slider)` 会把值写进与 `id` 同名的 `--变量`；主题里既没定义也没 `var()` 引用它，这个选项就是死的（`npm run lint` 报错）。值确实只给 Obsidian core / 第三方插件读的（图谱、内联标题、`link-decoration-*` …），就在 `id` 那行标 `# core-consumed 说明`。
+9. **动效写字面量会被拦**：时长与缓动一律用 `_reset.scss` 的 `--anim-duration-*` / `--anim-ease-*`，`npm run lint` 会报出重复写死的 `0.3s` 与那几条曲线。
 
 ## Style Settings
 
@@ -115,4 +136,5 @@ npm run check        # lint + test + verify
 ## 已知局限
 
 - 迁移等价性是用脚本按「属性:值」多重集 + 选择器多重集对迁移前单文件做结构比对验证的（结论：所有差异都属于上面那几类已知修复与 sass 的括号/转义重排）。**这不能替代渲染验证**，请在浅色/深色 × 阅读视图/源码视图下各扫一眼。
+- `--anim-motion-swing` / `--anim-motion-smooth` 在这里只被引用（`_reset.scss` 组装 `--anim-in/out`，`_editor.scss` 直接用于 `transition`），主题里没有定义，上游 Border 也没定义——它们应该是 Obsidian core 提供的。如果 core 里也没有，那这些 `transition` 声明是无效值（动效不生效）。在 DevTools 控制台里 `getComputedStyle(document.body).getPropertyValue('--anim-motion-swing')` 一查就知道。
 - `color-mix()`、`:is()`、CSS 嵌套都要求 Obsidian ≥ 1.0（Electron 25+）；`manifest.json` / `versions.json` 里的 `minAppVersion` 已改为 `1.0.0`，与这个要求一致。
